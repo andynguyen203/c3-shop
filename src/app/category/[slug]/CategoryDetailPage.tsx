@@ -264,7 +264,7 @@ export default function CategoryDetailPage({
               <ArrowUpDownIcon className="h-4 w-4 text-zinc-400" />
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
+                onChange={(e) => setSortBy(e.target.value as "featured" | "price-asc" | "price-desc" | "rating")}
                 className="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-xs font-medium text-zinc-700 dark:text-zinc-200 outline-none cursor-pointer focus:border-indigo-500"
               >
                 <option value="featured">Nổi bật nhất</option>

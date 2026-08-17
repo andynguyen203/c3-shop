@@ -6,6 +6,12 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+export function generateStaticParams() {
+  return productService.getAllProducts().map((product) => ({
+    id: product.id,
+  }));
+}
+
 export default async function Page({ params }: Props) {
   const { id } = await params;
   const product = productService.getProductById(id);

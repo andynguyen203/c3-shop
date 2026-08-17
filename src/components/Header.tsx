@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useTheme } from "@/context/ThemeContext";
 import SunIcon from "@/components/icons/SunIcon";
@@ -12,16 +12,20 @@ import MenuIcon from "./icons/MenuIcon";
 import CloseIcon from "./icons/CloseIcon";
 import { categoryService } from "@/services/categoryService";
 
+const emptySubscribe = () => () => {};
+function useIsMounted() {
+  return useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
+}
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { theme, toggleTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useIsMounted();
 
   const categories = categoryService.getAllCategories();
 

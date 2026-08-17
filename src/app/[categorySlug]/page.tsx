@@ -7,6 +7,12 @@ interface Props {
   params: Promise<{ categorySlug: string }>;
 }
 
+export function generateStaticParams() {
+  return categoryService.getAllCategories().map((category) => ({
+    categorySlug: category.slug,
+  }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { categorySlug } = await params;
   const category = categoryService.getCategoryBySlug(categorySlug);
