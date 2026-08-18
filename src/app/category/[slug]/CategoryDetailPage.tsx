@@ -27,6 +27,7 @@ import {
   SearchIcon
 } from "@/components/icons";
 import Breadcrumb from "@/components/Breadcrumb";
+import { getAssetPath } from "@/utils/assetPath";
 
 interface Props {
   category: Category;
@@ -424,7 +425,7 @@ export default function CategoryDetailPage({
                     <div className={`relative aspect-square w-full overflow-hidden rounded-2xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} border border-zinc-200/60 dark:border-zinc-800`}>
                       {product.image ? (
                         <Image
-                          src={product.image}
+                          src={getAssetPath(product.image)}
                           alt={product.name}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -529,7 +530,7 @@ export default function CategoryDetailPage({
                   <div className={`relative aspect-square w-full sm:w-44 shrink-0 overflow-hidden rounded-2xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} border border-zinc-200/60 dark:border-zinc-800`}>
                     {product.image ? (
                       <Image
-                        src={product.image}
+                        src={getAssetPath(product.image)}
                         alt={product.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"

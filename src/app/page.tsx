@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { productService } from "@/services/productService";
 import { categoryService } from "@/services/categoryService";
+import { getAssetPath } from "@/utils/assetPath";
 import {
   PillIcon,
   ToothIcon,
@@ -126,7 +127,7 @@ export default function Home() {
                     <div className={`relative aspect-square w-full overflow-hidden rounded-2xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} border border-zinc-200/60 dark:border-zinc-800`}>
                       {product.image ? (
                         <Image
-                          src={product.image}
+                          src={getAssetPath(product.image)}
                           alt={product.name}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-500"
