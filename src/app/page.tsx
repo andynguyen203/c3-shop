@@ -1,13 +1,21 @@
 import Link from "next/link";
+import Image from "next/image";
 import { productService } from "@/services/productService";
 import { categoryService } from "@/services/categoryService";
-import ShirtIcon from "@/components/icons/ShirtIcon";
-import DeviceIcon from "@/components/icons/DeviceIcon";
-import HomeIcon from "@/components/icons/HomeIcon";
-import SparklesIcon from "@/components/icons/SparklesIcon";
-import ChevronRightIcon from "@/components/icons/ChevronRightIcon";
-import StarIcon from "@/components/icons/StarIcon";
-import PlusIcon from "@/components/icons/PlusIcon";
+import {
+  PillIcon,
+  ToothIcon,
+  HeartIcon,
+  DropIcon,
+  EyeIcon,
+  ShirtIcon,
+  DeviceIcon,
+  HomeIcon,
+  SparklesIcon,
+  ChevronRightIcon,
+  StarIcon,
+  PlusIcon
+} from "@/components/icons";
 
 const formatPrice = (price: number) => {
   return price.toLocaleString("vi-VN") + "đ";
@@ -15,6 +23,16 @@ const formatPrice = (price: number) => {
 
 const renderCategoryIcon = (iconName: string) => {
   switch (iconName) {
+    case "PillIcon":
+      return <PillIcon className="h-6 w-6" />;
+    case "ToothIcon":
+      return <ToothIcon className="h-6 w-6" />;
+    case "HeartIcon":
+      return <HeartIcon className="h-6 w-6" />;
+    case "DropIcon":
+      return <DropIcon className="h-6 w-6" />;
+    case "EyeIcon":
+      return <EyeIcon className="h-6 w-6" />;
     case "ShirtIcon":
       return <ShirtIcon className="h-6 w-6" />;
     case "DeviceIcon":
@@ -24,13 +42,13 @@ const renderCategoryIcon = (iconName: string) => {
     case "SparklesIcon":
       return <SparklesIcon className="h-6 w-6" />;
     default:
-      return <ShirtIcon className="h-6 w-6" />;
+      return <SparklesIcon className="h-6 w-6" />;
   }
 };
 
 export default function Home() {
   const categories = categoryService.getAllCategories();
-  const featuredProducts = productService.getFeaturedProducts(4);
+  const featuredProducts = productService.getFeaturedProducts(8);
 
   return (
     <div className="flex-1 bg-zinc-50 dark:bg-zinc-950">
@@ -97,55 +115,75 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            {featuredProducts.map((product) => (
-              <div key={product.id} className="group relative flex flex-col justify-between">
-                <div>
-                  <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${product.imageBg} opacity-85 group-hover:scale-105 transition-transform duration-300 flex items-center justify-center`}>
-                      <span className="text-white font-bold text-sm tracking-wide bg-black/25 backdrop-blur-md px-4 py-2 rounded-full">
-                        {product.category}
-                      </span>
-                    </div>
-                    {product.tag && (
-                      <span className="absolute top-3 left-3 rounded-full bg-zinc-900/90 dark:bg-zinc-50/90 text-white dark:text-zinc-950 px-2.5 py-1 text-xs font-semibold">
-                        {product.tag}
-                      </span>
-                    )}
-                  </div>
+          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-8">
+            {featuredProducts.map((product) => {
+              const category = categoryService.getCategoryById(product.categoryId);
+              const categoryName = category ? category.name : "";
 
-                  <div className="mt-4 flex justify-between items-start">
-                    <div>
-                      <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">
-                        <Link href={`/product/${product.id}`}>
-                          <span aria-hidden="true" className="absolute inset-0" />
-                          {product.name}
-                        </Link>
-                      </h3>
-                      <div className="mt-1.5 flex items-center gap-1 text-xs text-amber-500">
-                        <StarIcon className="h-4 w-4 fill-current" />
-                        <span className="font-semibold text-zinc-700 dark:text-zinc-300">{product.rating}</span>
-                        <span className="text-zinc-400">({product.reviews})</span>
+              return (
+                <div key={product.id} className="group relative flex flex-col justify-between">
+                  <div>
+                    <div className={`relative aspect-square w-full overflow-hidden rounded-2xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} border border-zinc-200/60 dark:border-zinc-800`}>
+                      {product.image ? (
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-white font-bold text-sm tracking-wide bg-black/25 backdrop-blur-md px-4 py-2 rounded-full">
+                            {categoryName}
+                          </span>
+                        </div>
+                      )}
+                      {product.tag && (
+                        <span className="absolute top-3 left-3 rounded-full bg-zinc-900/90 dark:bg-zinc-50/90 text-white dark:text-zinc-950 px-2.5 py-1 text-xs font-semibold shadow-xs z-10">
+                          {product.tag}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="mt-4 flex justify-between items-start">
+                      <div>
+                        {categoryName && (
+                          <span className="text-[11px] font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 block mb-1">
+                            {categoryName}
+                          </span>
+                        )}
+                        <h3 className="text-sm font-semibold text-zinc-900 dark:text-white line-clamp-2">
+                          <Link href={`/product/${product.id}`}>
+                            <span aria-hidden="true" className="absolute inset-0" />
+                            {product.name}
+                          </Link>
+                        </h3>
+                        <div className="mt-1.5 flex items-center gap-1 text-xs text-amber-500">
+                          <StarIcon className="h-4 w-4 fill-current" />
+                          <span className="font-semibold text-zinc-700 dark:text-zinc-300">{product.rating}</span>
+                          <span className="text-zinc-400">({product.reviews})</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="mt-4 flex items-center justify-between z-10">
-                  <div className="flex flex-col">
-                    <span className="text-xs text-zinc-400 line-through">
-                      {product.oldPrice ? formatPrice(product.oldPrice) : "\u00A0"}
-                    </span>
-                    <span className="text-sm font-bold text-zinc-900 dark:text-white">
-                      {formatPrice(product.price)}
-                    </span>
+                  <div className="mt-4 flex items-center justify-between z-10">
+                    <div className="flex flex-col">
+                      <span className="text-xs text-zinc-400 line-through">
+                        {product.oldPrice ? formatPrice(product.oldPrice) : "\u00A0"}
+                      </span>
+                      <span className="text-sm font-bold text-zinc-900 dark:text-white">
+                        {formatPrice(product.price)}
+                      </span>
+                    </div>
+                    <button className="rounded-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 p-2 hover:bg-indigo-600 dark:hover:bg-indigo-400 hover:text-white transition-colors duration-200 cursor-pointer">
+                      <PlusIcon className="h-5 w-5" />
+                    </button>
                   </div>
-                  <button className="rounded-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 p-2 hover:bg-indigo-600 dark:hover:bg-indigo-400 hover:text-white transition-colors duration-200 cursor-pointer">
-                    <PlusIcon className="h-5 w-5" />
-                  </button>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

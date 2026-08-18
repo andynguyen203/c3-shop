@@ -14,6 +14,11 @@ export { default as PlusIcon } from "./PlusIcon";
 export { default as MinusIcon } from "./MinusIcon";
 export { default as CheckIcon } from "./CheckIcon";
 export { default as BoltIcon } from "./BoltIcon";
+export { default as PillIcon } from "./PillIcon";
+export { default as ToothIcon } from "./ToothIcon";
+export { default as HeartIcon } from "./HeartIcon";
+export { default as DropIcon } from "./DropIcon";
+export { default as EyeIcon } from "./EyeIcon";
 export { default as ShirtIcon } from "./ShirtIcon";
 export { default as DeviceIcon } from "./DeviceIcon";
 export { default as HomeIcon } from "./HomeIcon";
@@ -23,3 +28,4 @@ export { default as GridIcon } from "./GridIcon";
 export { default as ListIcon } from "./ListIcon";
 export { default as ArrowUpDownIcon } from "./ArrowUpDownIcon";
 export * from "./type";
+

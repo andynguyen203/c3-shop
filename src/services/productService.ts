@@ -12,20 +12,31 @@ export const productService = {
    * Lấy thông tin chi tiết một sản phẩm theo ID
    */
   getProductById(id: string): Product | undefined {
-    return PRODUCTS.find((product) => product.id === id);
+    return PRODUCTS.find(
+      (product) => product.id === id || product.id.toLowerCase() === id.toLowerCase()
+    );
   },
 
   /**
-   * Lấy danh sách sản phẩm theo danh mục
+   * Lấy danh sách sản phẩm theo Category ID
+   */
+  getProductsByCategoryId(categoryId: string): Product[] {
+    return PRODUCTS.filter((product) => product.categoryId === categoryId);
+  },
+
+  /**
+   * Lấy danh sách sản phẩm theo danh mục (hỗ trợ categoryId, tên hoặc alias)
    */
   getProductsByCategory(category: string): Product[] {
-    // So sánh không phân biệt hoa thường và bỏ dấu đơn giản
-    const normalize = (str: string) => 
+    const normalize = (str: string) =>
       str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    
+
     const targetCategory = normalize(category);
     return PRODUCTS.filter(
-      (product) => normalize(product.category) === targetCategory
+      (product) =>
+        product.categoryId === category ||
+        normalize(product.categoryId) === targetCategory ||
+        (product.category && normalize(product.category) === targetCategory)
     );
   },
 
@@ -44,10 +55,10 @@ export const productService = {
    */
   searchProducts(query: string): Product[] {
     if (!query || !query.trim()) return [];
-    
-    const normalize = (str: string) => 
+
+    const normalize = (str: string) =>
       str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    
+
     const searchTarget = normalize(query);
     return PRODUCTS.filter(
       (product) =>

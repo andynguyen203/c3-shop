@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { Product } from "@/data/products";
 import CartIcon from "@/components/icons/CartIcon";
 import StarIcon from "@/components/icons/StarIcon";
@@ -37,8 +38,9 @@ export default function ProductDetailPage({ product, related }: Props) {
     ? calcDiscount(product.price, product.oldPrice)
     : null;
 
-  const category = categoryService.getCategoryByName(product.category);
-  const categoryHref = category ? `/${category.slug}` : `/${product.category.toLowerCase()}`;
+  const category = categoryService.getCategoryById(product.categoryId) || (product.category ? categoryService.getCategoryByName(product.category) : undefined);
+  const categoryName = category ? category.name : "Sản phẩm";
+  const categoryHref = category ? `/${category.slug}` : "/";
 
   return (
     <div className="flex-1 bg-zinc-50 dark:bg-zinc-950">
@@ -47,7 +49,7 @@ export default function ProductDetailPage({ product, related }: Props) {
         <Breadcrumb
           items={[
             { label: "Trang chủ", href: "/" },
-            { label: product.category, href: categoryHref },
+            { label: categoryName, href: categoryHref },
             { label: product.name },
           ]}
         />
@@ -59,20 +61,31 @@ export default function ProductDetailPage({ product, related }: Props) {
           {/* Product Image */}
           <div className="flex flex-col gap-4">
             <div
-              className={`relative w-full aspect-square rounded-3xl bg-gradient-to-br ${product.imageBg} overflow-hidden shadow-xl`}
+              className={`relative w-full aspect-square rounded-3xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} overflow-hidden shadow-xl border border-zinc-200/60 dark:border-zinc-800`}
             >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-white font-bold text-2xl tracking-wide bg-black/20 backdrop-blur-md px-8 py-4 rounded-2xl">
-                  {product.category}
-                </span>
-              </div>
+              {product.image ? (
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  priority
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-white font-bold text-2xl tracking-wide bg-black/20 backdrop-blur-md px-8 py-4 rounded-2xl">
+                    {categoryName}
+                  </span>
+                </div>
+              )}
               {product.tag && (
-                <span className="absolute top-5 left-5 rounded-full bg-zinc-900/90 dark:bg-zinc-50/90 text-white dark:text-zinc-950 px-3 py-1.5 text-sm font-semibold">
+                <span className="absolute top-5 left-5 rounded-full bg-zinc-900/90 dark:bg-zinc-50/90 text-white dark:text-zinc-950 px-3 py-1.5 text-sm font-semibold shadow-md z-10">
                   {product.tag}
                 </span>
               )}
               {discount && (
-                <span className="absolute top-5 right-5 rounded-full bg-rose-600 text-white px-3 py-1.5 text-sm font-bold">
+                <span className="absolute top-5 right-5 rounded-full bg-rose-600 text-white px-3 py-1.5 text-sm font-bold shadow-md z-10">
                   -{discount}%
                 </span>
               )}
@@ -84,7 +97,7 @@ export default function ProductDetailPage({ product, related }: Props) {
             {/* Category & Name */}
             <div>
               <span className="text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
-                {product.category}
+                {categoryName}
               </span>
               <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
                 {product.name}
@@ -286,14 +299,23 @@ export default function ProductDetailPage({ product, related }: Props) {
                   href={`/product/${p.id}`}
                   className="group flex flex-col gap-3"
                 >
-                  <div className={`relative aspect-square w-full overflow-hidden rounded-2xl bg-gradient-to-br ${p.imageBg}`}>
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/20">
+                  <div className={`relative aspect-square w-full overflow-hidden rounded-2xl ${p.imageBg ? `bg-gradient-to-br ${p.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"}`}>
+                    {p.image && (
+                      <Image
+                        src={p.image}
+                        alt={p.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                      />
+                    )}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/25 z-10">
                       <span className="text-white text-xs font-semibold bg-black/40 backdrop-blur-sm px-3 py-1.5 rounded-full">
                         Xem chi tiết
                       </span>
                     </div>
                     {p.tag && (
-                      <span className="absolute top-2.5 left-2.5 rounded-full bg-zinc-900/90 text-white px-2 py-0.5 text-[11px] font-semibold">
+                      <span className="absolute top-2.5 left-2.5 rounded-full bg-zinc-900/90 text-white px-2 py-0.5 text-[11px] font-semibold z-10">
                         {p.tag}
                       </span>
                     )}

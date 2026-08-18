@@ -63,7 +63,7 @@ export const categoryService = {
 
     const targetCategoryName = normalize(category.name);
     return PRODUCTS.filter(
-      (p) => normalize(p.category) === targetCategoryName
+      (p) => p.categoryId === category.id || normalize(p.category || "") === targetCategoryName
     );
   },
 
