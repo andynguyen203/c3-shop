@@ -39,9 +39,9 @@ export default function ProductDetailPage({ product, related }: Props) {
     ? calcDiscount(product.price, product.oldPrice)
     : null;
 
-  const category = categoryService.getCategoryById(product.categoryId) || (product.category ? categoryService.getCategoryByName(product.category) : undefined);
+  const category = categoryService.getCategoryById(product.categoryId);
   const categoryName = category ? category.name : "Sản phẩm";
-  const categoryHref = category ? `/${category.slug}` : "/";
+  const categoryHref = category ? `/category/${category.slug}` : "/";
 
   return (
     <div className="flex-1 bg-zinc-50 dark:bg-zinc-950">

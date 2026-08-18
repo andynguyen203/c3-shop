@@ -648,7 +648,7 @@ export default function CategoryDetailPage({
             {otherCategories.map((cat) => (
               <Link
                 key={cat.id}
-                href={`/${cat.slug}`}
+                href={`/category/${cat.slug}`}
                 className="group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 transition-all duration-300 hover:shadow-xl hover:border-indigo-300 dark:hover:border-indigo-800"
               >
                 <div

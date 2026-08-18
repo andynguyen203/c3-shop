@@ -19,6 +19,13 @@ const normalize = (str: string) =>
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
 
+const normalizeId = (id: string) =>
+  id
+    .toLowerCase()
+    .trim()
+    .replace(/^c-0?/, "")
+    .replace(/^0+/, "");
+
 export const categoryService = {
   /**
    * Lấy danh sách toàn bộ danh mục
@@ -28,13 +35,16 @@ export const categoryService = {
   },
 
   /**
-   * Lấy chi tiết danh mục theo slug (ví dụ: "thoi-trang", "dien-tu")
+   * Lấy chi tiết danh mục theo slug (ví dụ: "thoi-trang", "cham-soc-rang-mieng")
    */
   getCategoryBySlug(slug: string): Category | undefined {
     if (!slug) return undefined;
     const targetSlug = normalize(slug);
     return CATEGORIES.find(
-      (cat) => normalize(cat.slug) === targetSlug || normalize(cat.id) === targetSlug
+      (cat) =>
+        normalize(cat.slug) === targetSlug ||
+        normalize(cat.id) === targetSlug ||
+        normalizeId(cat.id) === normalizeId(slug)
     );
   },
 
@@ -42,11 +52,19 @@ export const categoryService = {
    * Lấy chi tiết danh mục theo ID
    */
   getCategoryById(id: string): Category | undefined {
-    return CATEGORIES.find((cat) => cat.id === id);
+    if (!id) return undefined;
+    const targetId = id.trim().toLowerCase();
+    const targetNum = normalizeId(id);
+    return CATEGORIES.find(
+      (cat) =>
+        cat.id.toLowerCase() === targetId ||
+        normalizeId(cat.id) === targetNum ||
+        normalize(cat.slug) === normalize(id)
+    );
   },
 
   /**
-   * Lấy chi tiết danh mục theo tên (ví dụ: "Thời Trang")
+   * Lấy chi tiết danh mục theo tên (ví dụ: "Chăm Sóc Răng Miệng")
    */
   getCategoryByName(name: string): Category | undefined {
     if (!name) return undefined;
@@ -55,23 +73,30 @@ export const categoryService = {
   },
 
   /**
-   * Lấy danh sách sản phẩm thuộc danh mục dựa theo category slug
+   * Lấy danh sách sản phẩm thuộc danh mục dựa theo Category ID
    */
-  getProductsByCategorySlug(slug: string): Product[] {
-    const category = this.getCategoryBySlug(slug);
-    if (!category) return [];
+  getProductsByCategoryId(categoryId: string): Product[] {
+    if (!categoryId) return [];
+    const targetId = categoryId.trim().toLowerCase();
+    const targetNum = normalizeId(categoryId);
 
-    const targetCategoryName = normalize(category.name);
     return PRODUCTS.filter(
-      (p) => p.categoryId === category.id || normalize(p.category || "") === targetCategoryName
+      (p) =>
+        p.categoryId.toLowerCase() === targetId ||
+        normalizeId(p.categoryId) === targetNum
     );
   },
 
   /**
    * Tính toán thống kê cho danh mục (số lượng, giá thấp nhất, giá cao nhất, rating trung bình)
    */
-  getCategoryStats(slug: string): CategoryStats {
-    const products = this.getProductsByCategorySlug(slug);
+  getCategoryStats(categoryIdOrSlug: string): CategoryStats {
+    const category =
+      this.getCategoryById(categoryIdOrSlug) ||
+      this.getCategoryBySlug(categoryIdOrSlug);
+    const categoryId = category ? category.id : categoryIdOrSlug;
+    const products = this.getProductsByCategoryId(categoryId);
+
     if (products.length === 0) {
       return {
         totalProducts: 0,

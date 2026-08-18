@@ -69,7 +69,7 @@ export default function Home() {
             {categories.map((cat) => (
               <Link
                 key={cat.id}
-                href={`/${cat.slug}`}
+                href={`/category/${cat.slug}`}
                 className="group relative overflow-hidden rounded-3xl border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-indigo-300 dark:hover:border-indigo-700"
               >
                 <div

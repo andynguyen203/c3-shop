@@ -37,8 +37,8 @@ export default async function Page({ params }: Props) {
     notFound();
   }
 
-  const products = categoryService.getProductsByCategorySlug(category.slug);
-  const stats = categoryService.getCategoryStats(category.slug);
+  const products = categoryService.getProductsByCategoryId(category.id);
+  const stats = categoryService.getCategoryStats(category.id);
   const allCategories = categoryService.getAllCategories();
 
   return (
