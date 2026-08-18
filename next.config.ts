@@ -1,13 +1,18 @@
 import type { NextConfig } from "next";
 
-const isProd = process.env.NODE_ENV === "production";
+const isGitHubActions = process.env.GITHUB_ACTIONS === "true";
+const isProd = process.env.NODE_ENV === "production" || isGitHubActions;
 const repoName = "c3-shop";
-const basePath = isProd ? `/${repoName}` : "";
+
+// Ưu tiên NEXT_PUBLIC_BASE_PATH nếu được set, hoặc tự động gán /c3-shop khi ở production/CI
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH !== undefined
+  ? process.env.NEXT_PUBLIC_BASE_PATH
+  : (isProd ? `/${repoName}` : "");
 
 const nextConfig: NextConfig = {
   output: "export",
   basePath: basePath,
-  assetPrefix: isProd ? `/${repoName}/` : undefined,
+  assetPrefix: basePath ? `${basePath}/` : undefined,
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,
   },

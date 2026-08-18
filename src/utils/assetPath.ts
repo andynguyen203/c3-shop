@@ -1,4 +1,6 @@
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+const basePath =
+  process.env.NEXT_PUBLIC_BASE_PATH ??
+  (process.env.NODE_ENV === "production" ? "/c3-shop" : "");
 
 /**
  * Returns the correct asset path including Next.js basePath for GitHub Pages deployment
