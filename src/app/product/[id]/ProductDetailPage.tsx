@@ -12,6 +12,7 @@ import CheckIcon from "@/components/icons/CheckIcon";
 import BoltIcon from "@/components/icons/BoltIcon";
 import Breadcrumb from "@/components/Breadcrumb";
 import { categoryService } from "@/services/categoryService";
+import { getAssetPath } from "@/utils/assetPath";
 
 const formatPrice = (price: number) =>
   price.toLocaleString("vi-VN") + "đ";
@@ -65,7 +66,7 @@ export default function ProductDetailPage({ product, related }: Props) {
             >
               {product.image ? (
                 <Image
-                  src={product.image}
+                  src={getAssetPath(product.image)}
                   alt={product.name}
                   fill
                   priority
@@ -302,7 +303,7 @@ export default function ProductDetailPage({ product, related }: Props) {
                   <div className={`relative aspect-square w-full overflow-hidden rounded-2xl ${p.imageBg ? `bg-gradient-to-br ${p.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"}`}>
                     {p.image && (
                       <Image
-                        src={p.image}
+                        src={getAssetPath(p.image)}
                         alt={p.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
