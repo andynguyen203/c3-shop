@@ -1,5 +1,12 @@
 import { PRODUCTS, Product } from "@/data/products";
 
+const normalizeId = (id: string) =>
+  id
+    .toLowerCase()
+    .trim()
+    .replace(/^c-0?/, "")
+    .replace(/^0+/, "");
+
 export const productService = {
   /**
    * Lấy danh sách toàn bộ sản phẩm
@@ -21,23 +28,22 @@ export const productService = {
    * Lấy danh sách sản phẩm theo Category ID
    */
   getProductsByCategoryId(categoryId: string): Product[] {
-    return PRODUCTS.filter((product) => product.categoryId === categoryId);
+    if (!categoryId) return [];
+    const targetId = categoryId.trim().toLowerCase();
+    const targetNum = normalizeId(categoryId);
+
+    return PRODUCTS.filter(
+      (product) =>
+        product.categoryId.toLowerCase() === targetId ||
+        normalizeId(product.categoryId) === targetNum
+    );
   },
 
   /**
-   * Lấy danh sách sản phẩm theo danh mục (hỗ trợ categoryId, tên hoặc alias)
+   * Lấy danh sách sản phẩm theo danh mục (categoryId)
    */
-  getProductsByCategory(category: string): Product[] {
-    const normalize = (str: string) =>
-      str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-    const targetCategory = normalize(category);
-    return PRODUCTS.filter(
-      (product) =>
-        product.categoryId === category ||
-        normalize(product.categoryId) === targetCategory ||
-        (product.category && normalize(product.category) === targetCategory)
-    );
+  getProductsByCategory(categoryId: string): Product[] {
+    return this.getProductsByCategoryId(categoryId);
   },
 
   /**
