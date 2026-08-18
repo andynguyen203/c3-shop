@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Category } from "@/data/categories";
 import { Product } from "@/data/products";
 import { CategoryStats } from "@/services/categoryService";
@@ -10,6 +11,11 @@ import {
   DeviceIcon,
   HomeIcon,
   SparklesIcon,
+  PillIcon,
+  ToothIcon,
+  HeartIcon,
+  DropIcon,
+  EyeIcon,
   StarIcon,
   PlusIcon,
   CartIcon,
@@ -62,6 +68,16 @@ export default function CategoryDetailPage({
   // Render category icon dynamically
   const renderCategoryIcon = (iconName: string, className = "h-8 w-8") => {
     switch (iconName) {
+      case "PillIcon":
+        return <PillIcon className={className} />;
+      case "ToothIcon":
+        return <ToothIcon className={className} />;
+      case "HeartIcon":
+        return <HeartIcon className={className} />;
+      case "DropIcon":
+        return <DropIcon className={className} />;
+      case "EyeIcon":
+        return <EyeIcon className={className} />;
       case "ShirtIcon":
         return <ShirtIcon className={className} />;
       case "DeviceIcon":
@@ -71,7 +87,7 @@ export default function CategoryDetailPage({
       case "SparklesIcon":
         return <SparklesIcon className={className} />;
       default:
-        return <ShirtIcon className={className} />;
+        return <SparklesIcon className={className} />;
     }
   };
 
@@ -405,23 +421,33 @@ export default function CategoryDetailPage({
                 >
                   <div>
                     {/* Image Area */}
-                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800">
-                      <div
-                        className={`absolute inset-0 bg-gradient-to-br ${product.imageBg} opacity-90 group-hover:scale-105 transition-transform duration-300 flex items-center justify-center`}
-                      >
-                        <span className="text-white font-bold text-sm tracking-wide bg-black/25 backdrop-blur-md px-4 py-2 rounded-full">
-                          {product.category}
-                        </span>
-                      </div>
+                    <div className={`relative aspect-square w-full overflow-hidden rounded-2xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} border border-zinc-200/60 dark:border-zinc-800`}>
+                      {product.image ? (
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div
+                          className={`absolute inset-0 bg-gradient-to-br ${product.imageBg} opacity-90 group-hover:scale-105 transition-transform duration-300 flex items-center justify-center`}
+                        >
+                          <span className="text-white font-bold text-sm tracking-wide bg-black/25 backdrop-blur-md px-4 py-2 rounded-full">
+                            {category.name}
+                          </span>
+                        </div>
+                      )}
 
                       {product.tag && (
-                        <span className="absolute top-3 left-3 rounded-full bg-zinc-900/90 dark:bg-zinc-50/90 text-white dark:text-zinc-950 px-2.5 py-1 text-xs font-semibold shadow-xs">
+                        <span className="absolute top-3 left-3 rounded-full bg-zinc-900/90 dark:bg-zinc-50/90 text-white dark:text-zinc-950 px-2.5 py-1 text-xs font-semibold shadow-xs z-10">
                           {product.tag}
                         </span>
                       )}
 
                       {discount && (
-                        <span className="absolute top-3 right-3 rounded-full bg-rose-600 text-white px-2 py-0.5 text-xs font-bold shadow-xs">
+                        <span className="absolute top-3 right-3 rounded-full bg-rose-600 text-white px-2 py-0.5 text-xs font-bold shadow-xs z-10">
                           -{discount}%
                         </span>
                       )}
@@ -500,21 +526,31 @@ export default function CategoryDetailPage({
                   key={product.id}
                   className="group relative flex flex-col sm:flex-row items-center gap-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 transition-all duration-300 hover:shadow-lg"
                 >
-                  <div className="relative aspect-square w-full sm:w-44 shrink-0 overflow-hidden rounded-2xl bg-zinc-100 dark:bg-zinc-800">
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-br ${product.imageBg} opacity-90 group-hover:scale-105 transition-transform duration-300 flex items-center justify-center`}
-                    >
-                      <span className="text-white font-bold text-xs bg-black/25 backdrop-blur-md px-3 py-1 rounded-full">
-                        {product.category}
-                      </span>
-                    </div>
+                  <div className={`relative aspect-square w-full sm:w-44 shrink-0 overflow-hidden rounded-2xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} border border-zinc-200/60 dark:border-zinc-800`}>
+                    {product.image ? (
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 640px) 100vw, 176px"
+                      />
+                    ) : (
+                      <div
+                        className={`absolute inset-0 bg-gradient-to-br ${product.imageBg} opacity-90 group-hover:scale-105 transition-transform duration-300 flex items-center justify-center`}
+                      >
+                        <span className="text-white font-bold text-xs bg-black/25 backdrop-blur-md px-3 py-1 rounded-full">
+                          {category.name}
+                        </span>
+                      </div>
+                    )}
                     {product.tag && (
-                      <span className="absolute top-2.5 left-2.5 rounded-full bg-zinc-900/90 text-white px-2 py-0.5 text-xs font-semibold">
+                      <span className="absolute top-2.5 left-2.5 rounded-full bg-zinc-900/90 text-white px-2 py-0.5 text-xs font-semibold z-10">
                         {product.tag}
                       </span>
                     )}
                     {discount && (
-                      <span className="absolute top-2.5 right-2.5 rounded-full bg-rose-600 text-white px-2 py-0.5 text-xs font-bold">
+                      <span className="absolute top-2.5 right-2.5 rounded-full bg-rose-600 text-white px-2 py-0.5 text-xs font-bold z-10">
                         -{discount}%
                       </span>
                     )}

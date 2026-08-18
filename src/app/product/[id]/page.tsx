@@ -21,7 +21,7 @@ export default async function Page({ params }: Props) {
   }
 
   const related = productService
-    .getProductsByCategory(product.category)
+    .getProductsByCategoryId(product.categoryId)
     .filter((p) => p.id !== product.id)
     .slice(0, 4);
 
