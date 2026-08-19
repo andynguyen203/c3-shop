@@ -27,5 +27,6 @@ export { default as FilterIcon } from "./FilterIcon";
 export { default as GridIcon } from "./GridIcon";
 export { default as ListIcon } from "./ListIcon";
 export { default as ArrowUpDownIcon } from "./ArrowUpDownIcon";
+export { default as SettingsIcon } from "./SettingsIcon";
 export * from "./type";
 

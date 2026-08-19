@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Category } from "@/data/categories";
 import { Product } from "@/data/products";
 import { CategoryStats } from "@/services/categoryService";
+import { useProductData } from "@/context/ProductDataContext";
 import {
   ShirtIcon,
   DeviceIcon,
@@ -50,6 +51,25 @@ export default function CategoryDetailPage({
   stats,
   allCategories
 }: Props) {
+  const { getProductsByCategoryId, isLoaded } = useProductData();
+  const activeProducts = useMemo(() => {
+    return isLoaded ? getProductsByCategoryId(category.id) : products;
+  }, [isLoaded, getProductsByCategoryId, category.id, products]);
+
+  const activeStats = useMemo(() => {
+    if (activeProducts.length === 0) return stats;
+    const prices = activeProducts.map((p) => p.price);
+    return {
+      totalProducts: activeProducts.length,
+      minPrice: Math.min(...prices),
+      maxPrice: Math.max(...prices),
+      avgRating: Number(
+        (activeProducts.reduce((acc, p) => acc + p.rating, 0) / activeProducts.length).toFixed(1)
+      ),
+      totalReviews: activeProducts.reduce((acc, p) => acc + p.reviews, 0),
+    };
+  }, [activeProducts, stats]);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("all");
   const [priceFilter, setPriceFilter] = useState<string>("all");
@@ -94,7 +114,7 @@ export default function CategoryDetailPage({
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let result = [...products];
+    let result = [...activeProducts];
 
     // Search query
     if (searchQuery.trim()) {
@@ -170,7 +190,7 @@ export default function CategoryDetailPage({
                 {renderCategoryIcon(category.iconName, "h-4 w-4")}
                 <span>{category.name}</span>
                 <span className="opacity-60">•</span>
-                <span className="opacity-90">{stats.totalProducts} sản phẩm hiện có</span>
+                <span className="opacity-90">{activeStats.totalProducts} sản phẩm hiện có</span>
               </div>
               <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl text-white">
                 {category.name}
@@ -215,18 +235,18 @@ export default function CategoryDetailPage({
             {/* Quick Stats Box */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 rounded-2xl bg-black/30 backdrop-blur-md p-4 border border-white/10 text-center">
               <div className="p-3">
-                <span className="block text-2xl font-black text-white">{stats.totalProducts}</span>
+                <span className="block text-2xl font-black text-white">{activeStats.totalProducts}</span>
                 <span className="text-xs text-zinc-300">Mẫu sản phẩm</span>
               </div>
               <div className="p-3">
                 <span className="block text-2xl font-black text-amber-300">
-                  {stats.avgRating}★
+                  {activeStats.avgRating}★
                 </span>
                 <span className="text-xs text-zinc-300">Đánh giá trung bình</span>
               </div>
               <div className="col-span-2 sm:col-span-1 p-3">
                 <span className="block text-sm font-bold text-white truncate">
-                  {formatPrice(stats.minPrice)}
+                  {formatPrice(activeStats.minPrice)}
                 </span>
                 <span className="text-xs text-zinc-300">Giá chỉ từ</span>
               </div>

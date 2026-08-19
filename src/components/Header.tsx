@@ -10,6 +10,7 @@ import SearchIcon from "./icons/SearchIcon";
 import CartIcon from "./icons/CartIcon";
 import MenuIcon from "./icons/MenuIcon";
 import CloseIcon from "./icons/CloseIcon";
+import SettingsIcon from "./icons/SettingsIcon";
 import { categoryService } from "@/services/categoryService";
 import { getAssetPath } from "@/utils/assetPath";
 
@@ -69,7 +70,7 @@ export default function Header() {
           </nav>
         </div>
 
-        {/* Right side items: Search, Cart, Theme Toggle & Mobile menu */}
+        {/* Right side items: Search, Cart, Theme Toggle, Admin Settings & Mobile menu */}
         <div className="flex items-center gap-4">
           {/* Desktop Search Bar */}
           <form onSubmit={handleSearch} className="hidden sm:flex relative max-w-xs items-center">
@@ -113,6 +114,16 @@ export default function Header() {
             <div className="h-10 w-10" />
           )}
 
+          {/* Admin Settings Button */}
+          <Link
+            href="/admin"
+            className="p-2 rounded-lg text-zinc-700 hover:text-indigo-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:text-indigo-400 dark:hover:bg-zinc-900 cursor-pointer transition-colors"
+            title="Quản lý sản phẩm (Admin)"
+            aria-label="Quản lý sản phẩm"
+          >
+            <SettingsIcon className="h-6 w-6" />
+          </Link>
+
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -155,6 +166,13 @@ export default function Header() {
                 {category.name}
               </Link>
             ))}
+            <Link
+              href="/admin"
+              onClick={() => setIsMenuOpen(false)}
+              className="rounded-lg px-3 py-2 text-sm font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-950/40"
+            >
+              ⚙️ Quản lý sản phẩm (Admin)
+            </Link>
           </nav>
         </div>
       )}

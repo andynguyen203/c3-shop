@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { ProductDataProvider } from "@/context/ProductDataContext";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -13,8 +14,8 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Japan Shop - Hàng Nhật Nội Địa Chính Hãng",
-  description: "Cửa hàng chuyên cung cấp các sản phẩm nội địa Nhật Bản 100% chính hãng chất lượng cao",
+  title: "Japan Shop",
+  description: "",
 };
 
 export default function RootLayout({
@@ -30,9 +31,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-zinc-50 text-zinc-900 dark:bg-black dark:text-zinc-50 font-sans">
         <ThemeProvider>
-          <Header />
-          <main className="flex-1 flex flex-col">{children}</main>
-          <Footer />
+          <ProductDataProvider>
+            <Header />
+            <main className="flex-1 flex flex-col">{children}</main>
+            <Footer />
+          </ProductDataProvider>
         </ThemeProvider>
       </body>
     </html>
