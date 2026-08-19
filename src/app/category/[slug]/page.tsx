@@ -19,12 +19,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!category) {
     return {
-      title: "Danh mục không tồn tại - MyShop",
+      title: "Danh mục không tồn tại - Japan Shop",
     };
   }
 
   return {
-    title: `${category.name} - MyShop`,
+    title: `${category.name} - Japan Shop`,
     description: category.description,
   };
 }

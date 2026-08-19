@@ -1,4 +1,5 @@
 import { PRODUCTS, Product } from "@/data/products";
+import { FEATURED_PRODUCT_ORDER } from "@/data/order";
 
 const normalizeId = (id: string) =>
   id
@@ -47,12 +48,22 @@ export const productService = {
   },
 
   /**
-   * Lấy danh sách sản phẩm nổi bật (có gắn tag hoặc rating cao >= 4.7)
+   * Lấy danh sách sản phẩm bán chạy / nổi bật theo thứ tự cấu hình trong data/order.ts
    */
   getFeaturedProducts(limit?: number): Product[] {
-    const featured = PRODUCTS.filter(
-      (product) => product.tag !== undefined || product.rating >= 4.7
+    const orderMap = new Map<string, number>(
+      FEATURED_PRODUCT_ORDER.map((item) => [item.productId, item.order])
     );
+
+    const featured = [...PRODUCTS]
+      .filter((product) => product.tag !== undefined || product.rating >= 4.7)
+      .sort((a, b) => {
+        const orderA = orderMap.get(a.id) ?? Number.MAX_SAFE_INTEGER;
+        const orderB = orderMap.get(b.id) ?? Number.MAX_SAFE_INTEGER;
+
+        return orderA - orderB;
+      });
+
     return limit ? featured.slice(0, limit) : featured;
   },
 

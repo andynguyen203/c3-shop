@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Category } from "@/data/categories";
 import { Product } from "@/data/products";
 import { CategoryStats } from "@/services/categoryService";
+import { useProductData } from "@/context/ProductDataContext";
 import {
   ShirtIcon,
   DeviceIcon,
@@ -50,6 +51,25 @@ export default function CategoryDetailPage({
   stats,
   allCategories
 }: Props) {
+  const { getProductsByCategoryId, isLoaded } = useProductData();
+  const activeProducts = useMemo(() => {
+    return isLoaded ? getProductsByCategoryId(category.id) : products;
+  }, [isLoaded, getProductsByCategoryId, category.id, products]);
+
+  const activeStats = useMemo(() => {
+    if (activeProducts.length === 0) return stats;
+    const prices = activeProducts.map((p) => p.price);
+    return {
+      totalProducts: activeProducts.length,
+      minPrice: Math.min(...prices),
+      maxPrice: Math.max(...prices),
+      avgRating: Number(
+        (activeProducts.reduce((acc, p) => acc + p.rating, 0) / activeProducts.length).toFixed(1)
+      ),
+      totalReviews: activeProducts.reduce((acc, p) => acc + p.reviews, 0),
+    };
+  }, [activeProducts, stats]);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("all");
   const [priceFilter, setPriceFilter] = useState<string>("all");
@@ -94,7 +114,7 @@ export default function CategoryDetailPage({
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let result = [...products];
+    let result = [...activeProducts];
 
     // Search query
     if (searchQuery.trim()) {
@@ -170,7 +190,7 @@ export default function CategoryDetailPage({
                 {renderCategoryIcon(category.iconName, "h-4 w-4")}
                 <span>{category.name}</span>
                 <span className="opacity-60">•</span>
-                <span className="opacity-90">{stats.totalProducts} sản phẩm hiện có</span>
+                <span className="opacity-90">{activeStats.totalProducts} sản phẩm hiện có</span>
               </div>
               <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl text-white">
                 {category.name}
@@ -215,18 +235,18 @@ export default function CategoryDetailPage({
             {/* Quick Stats Box */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 rounded-2xl bg-black/30 backdrop-blur-md p-4 border border-white/10 text-center">
               <div className="p-3">
-                <span className="block text-2xl font-black text-white">{stats.totalProducts}</span>
+                <span className="block text-2xl font-black text-white">{activeStats.totalProducts}</span>
                 <span className="text-xs text-zinc-300">Mẫu sản phẩm</span>
               </div>
               <div className="p-3">
                 <span className="block text-2xl font-black text-amber-300">
-                  {stats.avgRating}★
+                  {activeStats.avgRating}★
                 </span>
                 <span className="text-xs text-zinc-300">Đánh giá trung bình</span>
               </div>
               <div className="col-span-2 sm:col-span-1 p-3">
                 <span className="block text-sm font-bold text-white truncate">
-                  {formatPrice(stats.minPrice)}
+                  {formatPrice(activeStats.minPrice)}
                 </span>
                 <span className="text-xs text-zinc-300">Giá chỉ từ</span>
               </div>
@@ -410,9 +430,10 @@ export default function CategoryDetailPage({
         {filteredProducts.length > 0 && viewMode === "grid" && (
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredProducts.map((product) => {
-              const discount = product.oldPrice
-                ? calcDiscount(product.price, product.oldPrice)
-                : null;
+              const discount =
+                product.oldPrice && product.oldPrice > product.price
+                  ? calcDiscount(product.price, product.oldPrice)
+                  : null;
               const isAdded = addedProductId === product.id;
 
               return (
@@ -422,13 +443,13 @@ export default function CategoryDetailPage({
                 >
                   <div>
                     {/* Image Area */}
-                    <div className={`relative aspect-square w-full overflow-hidden rounded-2xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} border border-zinc-200/60 dark:border-zinc-800`}>
+                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 p-2">
                       {product.image ? (
                         <Image
                           src={getAssetPath(product.image)}
                           alt={product.name}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                       ) : (
@@ -481,7 +502,7 @@ export default function CategoryDetailPage({
                   {/* Price & Action */}
                   <div className="mt-5 flex items-center justify-between border-t border-zinc-100 dark:border-zinc-800 pt-3 z-10">
                     <div className="flex flex-col">
-                      {product.oldPrice && (
+                      {product.oldPrice && product.oldPrice > product.price && (
                         <span className="text-xs text-zinc-400 line-through">
                           {formatPrice(product.oldPrice)}
                         </span>
@@ -517,9 +538,10 @@ export default function CategoryDetailPage({
         {filteredProducts.length > 0 && viewMode === "list" && (
           <div className="flex flex-col gap-4">
             {filteredProducts.map((product) => {
-              const discount = product.oldPrice
-                ? calcDiscount(product.price, product.oldPrice)
-                : null;
+              const discount =
+                product.oldPrice && product.oldPrice > product.price
+                  ? calcDiscount(product.price, product.oldPrice)
+                  : null;
               const isAdded = addedProductId === product.id;
 
               return (
@@ -527,13 +549,13 @@ export default function CategoryDetailPage({
                   key={product.id}
                   className="group relative flex flex-col sm:flex-row items-center gap-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 transition-all duration-300 hover:shadow-lg"
                 >
-                  <div className={`relative aspect-square w-full sm:w-44 shrink-0 overflow-hidden rounded-2xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} border border-zinc-200/60 dark:border-zinc-800`}>
+                  <div className="relative aspect-square w-full sm:w-44 shrink-0 overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 p-2">
                     {product.image ? (
                       <Image
                         src={getAssetPath(product.image)}
                         alt={product.name}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 640px) 100vw, 176px"
                       />
                     ) : (
@@ -588,7 +610,7 @@ export default function CategoryDetailPage({
                         <span className="text-xl font-extrabold text-zinc-900 dark:text-white">
                           {formatPrice(product.price)}
                         </span>
-                        {product.oldPrice && (
+                        {product.oldPrice && product.oldPrice > product.price && (
                           <span className="text-xs text-zinc-400 line-through">
                             {formatPrice(product.oldPrice)}
                           </span>
@@ -639,7 +661,7 @@ export default function CategoryDetailPage({
                 Khám phá các danh mục khác
               </h2>
               <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                Tìm kiếm thêm các sản phẩm đa dạng từ MyShop
+                Tìm kiếm thêm các sản phẩm đa dạng từ Japan Shop
               </p>
             </div>
           </div>
