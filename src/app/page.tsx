@@ -104,7 +104,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-12">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">Sản Phẩm Đang Hot</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">Sản Phẩm Bán Chạy</h2>
               <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Được mua nhiều nhất tuần này</p>
             </div>
             <Link
@@ -124,13 +124,13 @@ export default function Home() {
               return (
                 <div key={product.id} className="group relative flex flex-col justify-between">
                   <div>
-                    <div className={`relative aspect-square w-full overflow-hidden rounded-2xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} border border-zinc-200/60 dark:border-zinc-800`}>
+                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 p-2">
                       {product.image ? (
                         <Image
                           src={getAssetPath(product.image)}
                           alt={product.name}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="object-contain p-1 group-hover:scale-105 transition-transform duration-500"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
                         />
                       ) : (
@@ -172,7 +172,9 @@ export default function Home() {
                   <div className="mt-4 flex items-center justify-between z-10">
                     <div className="flex flex-col">
                       <span className="text-xs text-zinc-400 line-through">
-                        {product.oldPrice ? formatPrice(product.oldPrice) : "\u00A0"}
+                        {product.oldPrice && product.oldPrice > product.price
+                          ? formatPrice(product.oldPrice)
+                          : "\u00A0"}
                       </span>
                       <span className="text-sm font-bold text-zinc-900 dark:text-white">
                         {formatPrice(product.price)}

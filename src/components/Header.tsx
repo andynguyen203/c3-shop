@@ -2,15 +2,16 @@
 
 import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
 import SunIcon from "@/components/icons/SunIcon";
 import MoonIcon from "@/components/icons/MoonIcon";
 import SearchIcon from "./icons/SearchIcon";
 import CartIcon from "./icons/CartIcon";
-import BagIcon from "./icons/BagIcon";
 import MenuIcon from "./icons/MenuIcon";
 import CloseIcon from "./icons/CloseIcon";
 import { categoryService } from "@/services/categoryService";
+import { getAssetPath } from "@/utils/assetPath";
 
 const emptySubscribe = () => () => {};
 function useIsMounted() {
@@ -41,9 +42,17 @@ export default function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <div className="flex items-center gap-8">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight text-zinc-900 dark:text-white">
-            <BagIcon className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-            <span>MyShop</span>
+          <Link href="/" className="flex items-center gap-2.5 font-bold text-xl tracking-tight text-zinc-900 dark:text-white">
+            <div className="relative h-9 w-9 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-xs">
+              <Image
+                src={getAssetPath("/logo.jpg")}
+                alt="Japan Shop Logo"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+            <span>Japan Shop</span>
           </Link>
 
           {/* Desktop Navigation Categories */}

@@ -35,9 +35,10 @@ export default function ProductDetailPage({ product, related }: Props) {
     setTimeout(() => setAdded(false), 2000);
   };
 
-  const discount = product.oldPrice
-    ? calcDiscount(product.price, product.oldPrice)
-    : null;
+  const discount =
+    product.oldPrice && product.oldPrice > product.price
+      ? calcDiscount(product.price, product.oldPrice)
+      : null;
 
   const category = categoryService.getCategoryById(product.categoryId);
   const categoryName = category ? category.name : "Sản phẩm";
@@ -62,7 +63,7 @@ export default function ProductDetailPage({ product, related }: Props) {
           {/* Product Image */}
           <div className="flex flex-col gap-4">
             <div
-              className={`relative w-full aspect-square rounded-3xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} overflow-hidden shadow-xl border border-zinc-200/60 dark:border-zinc-800`}
+              className="relative w-full aspect-square rounded-3xl bg-white dark:bg-zinc-900 overflow-hidden shadow-xl border border-zinc-200/60 dark:border-zinc-800 p-4 sm:p-6 flex items-center justify-center"
             >
               {product.image ? (
                 <Image
@@ -70,7 +71,7 @@ export default function ProductDetailPage({ product, related }: Props) {
                   alt={product.name}
                   fill
                   priority
-                  className="object-cover"
+                  className="object-contain p-2 sm:p-4 transition-transform duration-300 hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               ) : (
@@ -134,7 +135,7 @@ export default function ProductDetailPage({ product, related }: Props) {
               <span className="text-4xl font-extrabold text-zinc-900 dark:text-white">
                 {formatPrice(product.price)}
               </span>
-              {product.oldPrice && (
+              {product.oldPrice && product.oldPrice > product.price && (
                 <div className="flex flex-col items-start">
                   <span className="text-lg text-zinc-400 line-through">
                     {formatPrice(product.oldPrice)}
@@ -249,15 +250,15 @@ export default function ProductDetailPage({ product, related }: Props) {
           </div>
 
           {activeTab === "desc" && (
-            <div className="max-w-3xl">
-              <p className="text-base leading-8 text-zinc-600 dark:text-zinc-400">
+            <div className="">
+              <p className="text-base leading-8 text-zinc-600 dark:text-zinc-400 whitespace-pre-line">
                 {product.description}
               </p>
             </div>
           )}
 
           {activeTab === "specs" && product.specs && (
-            <div className="max-w-2xl overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800">
+            <div className="w-full overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800">
               <table className="w-full text-sm">
                 <tbody>
                   {Object.entries(product.specs).map(([key, value], index) => (
@@ -269,10 +270,10 @@ export default function ProductDetailPage({ product, related }: Props) {
                           : "bg-white dark:bg-zinc-950"
                       }
                     >
-                      <td className="py-3.5 px-5 font-semibold text-zinc-700 dark:text-zinc-300 w-2/5 border-r border-zinc-200 dark:border-zinc-800">
+                      <td className="py-3.5 px-5 font-semibold text-zinc-700 dark:text-zinc-300 w-1/4 sm:w-1/5 align-top border-r border-zinc-200 dark:border-zinc-800">
                         {key}
                       </td>
-                      <td className="py-3.5 px-5 text-zinc-600 dark:text-zinc-400">
+                      <td className="py-3.5 px-5 text-zinc-600 dark:text-zinc-400 whitespace-pre-line leading-relaxed align-top">
                         {value}
                       </td>
                     </tr>
@@ -300,13 +301,13 @@ export default function ProductDetailPage({ product, related }: Props) {
                   href={`/product/${p.id}`}
                   className="group flex flex-col gap-3"
                 >
-                  <div className={`relative aspect-square w-full overflow-hidden rounded-2xl ${p.imageBg ? `bg-gradient-to-br ${p.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"}`}>
+                  <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800 p-2">
                     {p.image && (
                       <Image
                         src={getAssetPath(p.image)}
                         alt={p.name}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 768px) 50vw, 25vw"
                       />
                     )}
@@ -329,7 +330,7 @@ export default function ProductDetailPage({ product, related }: Props) {
                       <span className="text-sm font-bold text-zinc-900 dark:text-white">
                         {formatPrice(p.price)}
                       </span>
-                      {p.oldPrice && (
+                      {p.oldPrice && p.oldPrice > p.price && (
                         <span className="text-xs text-zinc-400 line-through">
                           {formatPrice(p.oldPrice)}
                         </span>

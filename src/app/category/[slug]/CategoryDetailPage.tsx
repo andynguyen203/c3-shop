@@ -410,9 +410,10 @@ export default function CategoryDetailPage({
         {filteredProducts.length > 0 && viewMode === "grid" && (
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredProducts.map((product) => {
-              const discount = product.oldPrice
-                ? calcDiscount(product.price, product.oldPrice)
-                : null;
+              const discount =
+                product.oldPrice && product.oldPrice > product.price
+                  ? calcDiscount(product.price, product.oldPrice)
+                  : null;
               const isAdded = addedProductId === product.id;
 
               return (
@@ -422,13 +423,13 @@ export default function CategoryDetailPage({
                 >
                   <div>
                     {/* Image Area */}
-                    <div className={`relative aspect-square w-full overflow-hidden rounded-2xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} border border-zinc-200/60 dark:border-zinc-800`}>
+                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 p-2">
                       {product.image ? (
                         <Image
                           src={getAssetPath(product.image)}
                           alt={product.name}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                       ) : (
@@ -481,7 +482,7 @@ export default function CategoryDetailPage({
                   {/* Price & Action */}
                   <div className="mt-5 flex items-center justify-between border-t border-zinc-100 dark:border-zinc-800 pt-3 z-10">
                     <div className="flex flex-col">
-                      {product.oldPrice && (
+                      {product.oldPrice && product.oldPrice > product.price && (
                         <span className="text-xs text-zinc-400 line-through">
                           {formatPrice(product.oldPrice)}
                         </span>
@@ -517,9 +518,10 @@ export default function CategoryDetailPage({
         {filteredProducts.length > 0 && viewMode === "list" && (
           <div className="flex flex-col gap-4">
             {filteredProducts.map((product) => {
-              const discount = product.oldPrice
-                ? calcDiscount(product.price, product.oldPrice)
-                : null;
+              const discount =
+                product.oldPrice && product.oldPrice > product.price
+                  ? calcDiscount(product.price, product.oldPrice)
+                  : null;
               const isAdded = addedProductId === product.id;
 
               return (
@@ -527,13 +529,13 @@ export default function CategoryDetailPage({
                   key={product.id}
                   className="group relative flex flex-col sm:flex-row items-center gap-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 transition-all duration-300 hover:shadow-lg"
                 >
-                  <div className={`relative aspect-square w-full sm:w-44 shrink-0 overflow-hidden rounded-2xl ${product.imageBg ? `bg-gradient-to-br ${product.imageBg}` : "bg-zinc-100 dark:bg-zinc-800"} border border-zinc-200/60 dark:border-zinc-800`}>
+                  <div className="relative aspect-square w-full sm:w-44 shrink-0 overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 p-2">
                     {product.image ? (
                       <Image
                         src={getAssetPath(product.image)}
                         alt={product.name}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 640px) 100vw, 176px"
                       />
                     ) : (
@@ -588,7 +590,7 @@ export default function CategoryDetailPage({
                         <span className="text-xl font-extrabold text-zinc-900 dark:text-white">
                           {formatPrice(product.price)}
                         </span>
-                        {product.oldPrice && (
+                        {product.oldPrice && product.oldPrice > product.price && (
                           <span className="text-xs text-zinc-400 line-through">
                             {formatPrice(product.oldPrice)}
                           </span>
@@ -639,7 +641,7 @@ export default function CategoryDetailPage({
                 Khám phá các danh mục khác
               </h2>
               <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                Tìm kiếm thêm các sản phẩm đa dạng từ MyShop
+                Tìm kiếm thêm các sản phẩm đa dạng từ Japan Shop
               </p>
             </div>
           </div>

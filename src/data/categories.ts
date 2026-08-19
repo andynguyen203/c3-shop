@@ -52,7 +52,7 @@ export const CATEGORIES: Category[] = [
     bannerGradient: "from-blue-600 via-indigo-500 to-sky-400",
     badgeColor: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
     iconName: "EyeIcon",
-    itemCountText: "1 sản phẩm",
+    itemCountText: "2 sản phẩm",
     subcategories: ["Nước nhỏ mắt", "Giảm mỏi mắt"]
   }
 ];
