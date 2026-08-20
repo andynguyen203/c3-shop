@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Product } from "@/data/products";
-import { CATEGORIES } from "@/data/categories";
 import { getAssetPath } from "@/utils/assetPath";
 import CloseIcon from "@/components/icons/CloseIcon";
 import PlusIcon from "@/components/icons/PlusIcon";
@@ -32,7 +31,6 @@ export default function ProductFormModal({
 
   const [id, setId] = useState("");
   const [name, setName] = useState("");
-  const [categoryId, setCategoryId] = useState("C-01");
   const [price, setPrice] = useState<number>(0);
   const [oldPrice, setOldPrice] = useState<string>("");
   const [tag, setTag] = useState<string>("");
@@ -46,7 +44,6 @@ export default function ProductFormModal({
     if (initialProduct) {
       setId(initialProduct.id);
       setName(initialProduct.name);
-      setCategoryId(initialProduct.categoryId);
       setPrice(initialProduct.price);
       setOldPrice(initialProduct.oldPrice ? String(initialProduct.oldPrice) : "");
       setTag(initialProduct.tag || "");
@@ -73,7 +70,6 @@ export default function ProductFormModal({
       // Defaults for new product
       setId("");
       setName("");
-      setCategoryId("C-04");
       setPrice(100000);
       setOldPrice("");
       setTag("Mới");
@@ -124,7 +120,6 @@ export default function ProductFormModal({
     onSave({
       id: isEdit ? id : id.trim() || undefined,
       name: name.trim(),
-      categoryId,
       price: Number(price),
       oldPrice: oldPrice ? Number(oldPrice) : undefined,
       tag: tag.trim() || undefined,
@@ -150,7 +145,7 @@ export default function ProductFormModal({
               {isEdit ? "Chỉnh sửa sản phẩm" : "Thêm sản phẩm mới"}
             </h2>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              {isEdit ? `Mã sản phẩm: #${id}` : "Nhập đầy đủ các thông tin để thêm sản phẩm mới vào danh mục"}
+              {isEdit ? `Mã sản phẩm: #${id}` : "Nhập đầy đủ các thông tin để lưu sản phẩm vào hệ thống"}
             </p>
           </div>
           <button
@@ -163,7 +158,7 @@ export default function ProductFormModal({
 
         {/* Form Body */}
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* Tên & Mã & Danh mục */}
+          {/* Tên & Mã */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-12">
             <div className="sm:col-span-8">
               <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5">
@@ -174,7 +169,7 @@ export default function ProductFormModal({
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="VD: Thuốc Nhỏ Mắt Rohto Vita Nhật Bản"
+                placeholder="VD: VIÊN UỐNG TĂNG CHIỀU CAO..."
                 className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2.5 text-sm text-zinc-900 dark:text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
               />
             </div>
@@ -194,25 +189,7 @@ export default function ProductFormModal({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {/* Danh mục */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5">
-                Danh mục
-              </label>
-              <select
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2.5 text-sm text-zinc-900 dark:text-white outline-none focus:border-indigo-500"
-              >
-                {CATEGORIES.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name} ({cat.id})
-                  </option>
-                ))}
-              </select>
-            </div>
-
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {/* Tag */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5">
@@ -256,7 +233,6 @@ export default function ProductFormModal({
                 type="number"
                 required
                 min={0}
-                step={1000}
                 value={price}
                 onChange={(e) => setPrice(Number(e.target.value))}
                 className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2.5 text-sm text-zinc-900 dark:text-white outline-none focus:border-indigo-500"
@@ -265,15 +241,14 @@ export default function ProductFormModal({
 
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5">
-                Giá gốc (oldPrice)
+                Giá niêm yết cũ (đ)
               </label>
               <input
                 type="number"
                 min={0}
-                step={1000}
                 value={oldPrice}
                 onChange={(e) => setOldPrice(e.target.value)}
-                placeholder="Ẩn nếu <= Giá bán"
+                placeholder="Để trống nếu không giảm giá"
                 className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2.5 text-sm text-zinc-900 dark:text-white outline-none focus:border-indigo-500"
               />
             </div>
@@ -292,21 +267,21 @@ export default function ProductFormModal({
             </div>
           </div>
 
-          {/* Hình ảnh */}
+          {/* Đường dẫn hình ảnh */}
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5">
-              Đường dẫn hình ảnh (Image Path / URL)
+              Đường dẫn hình ảnh
             </label>
             <div className="flex items-center gap-4">
               <input
                 type="text"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
-                placeholder="/images/C-04-02.jpg hoặc link ảnh online"
+                placeholder="/images/C-01-01.jpg hoặc https://..."
                 className="flex-1 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2.5 text-sm text-zinc-900 dark:text-white outline-none focus:border-indigo-500"
               />
               {image && (
-                <div className="relative h-12 w-12 shrink-0 rounded-xl overflow-hidden border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-1">
+                <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 p-1">
                   <Image
                     src={getAssetPath(image)}
                     alt="Preview"
@@ -318,62 +293,57 @@ export default function ProductFormModal({
             </div>
           </div>
 
-          {/* Mô tả */}
+          {/* Mô tả chi tiết */}
           <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-                Mô tả chi tiết sản phẩm
-              </label>
-              <span className="text-[11px] text-zinc-400">
-                (Dùng phím Enter để xuống dòng theo từng gạch đầu dòng &apos;-&apos;)
-              </span>
-            </div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5">
+              Mô tả & Hướng dẫn sử dụng
+            </label>
             <textarea
-              rows={6}
+              rows={5}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="CÔNG DỤNG:&#10;- Giúp tăng tuần hoàn máu...&#10;- Giảm mỏi mắt..."
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-4 text-sm text-zinc-900 dark:text-white outline-none focus:border-indigo-500 whitespace-pre-line leading-relaxed font-sans"
+              placeholder="Nhập thông tin chi tiết về sản phẩm..."
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-4 text-sm text-zinc-900 dark:text-white outline-none focus:border-indigo-500 leading-relaxed font-sans"
             />
           </div>
 
           {/* Thông số kỹ thuật (Specs) */}
-          <div className="border-t border-zinc-200 dark:border-zinc-800 pt-5">
+          <div>
             <div className="flex items-center justify-between mb-3">
               <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-                Bảng thông số kỹ thuật
+                Thông số / Thành phần chi tiết
               </label>
               <button
                 type="button"
                 onClick={handleAddSpecRow}
                 className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer"
               >
-                <PlusIcon className="h-3.5 w-3.5" /> Thêm dòng
+                <PlusIcon className="h-3.5 w-3.5" />
+                Thêm thông số
               </button>
             </div>
 
             <div className="space-y-3">
-              {specRows.map((row, idx) => (
-                <div key={idx} className="flex items-start gap-2 bg-zinc-50 dark:bg-zinc-800/40 p-3 rounded-xl border border-zinc-200/70 dark:border-zinc-700/60">
+              {specRows.map((row, index) => (
+                <div key={index} className="flex items-start gap-3">
                   <input
                     type="text"
-                    placeholder="Tên thông số (VD: Xuất xứ, Thành phần)"
+                    placeholder="Tên thông số (VD: Xuất xứ)"
                     value={row.key}
-                    onChange={(e) => handleSpecChange(idx, "key", e.target.value)}
-                    className="w-1/3 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-900 dark:text-white outline-none"
+                    onChange={(e) => handleSpecChange(index, "key", e.target.value)}
+                    className="w-1/3 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3.5 py-2 text-xs font-semibold text-zinc-900 dark:text-white outline-none focus:border-indigo-500"
                   />
                   <textarea
                     rows={2}
-                    placeholder="Nội dung thông số (hỗ trợ xuống dòng)"
+                    placeholder="Nội dung thông số (VD: Nhật Bản)"
                     value={row.value}
-                    onChange={(e) => handleSpecChange(idx, "value", e.target.value)}
-                    className="flex-1 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 text-xs text-zinc-800 dark:text-zinc-200 outline-none whitespace-pre-line leading-relaxed"
+                    onChange={(e) => handleSpecChange(index, "value", e.target.value)}
+                    className="flex-1 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3.5 py-2 text-xs text-zinc-900 dark:text-white outline-none focus:border-indigo-500"
                   />
                   <button
                     type="button"
-                    onClick={() => handleRemoveSpecRow(idx)}
-                    className="p-2 text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors"
-                    title="Xóa dòng này"
+                    onClick={() => handleRemoveSpecRow(index)}
+                    className="mt-2 rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-500 dark:hover:bg-rose-950/50 transition-colors"
                   >
                     <CloseIcon className="h-4 w-4" />
                   </button>

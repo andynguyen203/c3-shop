@@ -7,6 +7,7 @@ import { Category } from "@/data/categories";
 import { Product } from "@/data/products";
 import { CategoryStats } from "@/services/categoryService";
 import { useProductData } from "@/context/ProductDataContext";
+import { useCart } from "@/context/CartContext";
 import {
   ShirtIcon,
   DeviceIcon,
@@ -52,6 +53,7 @@ export default function CategoryDetailPage({
   allCategories
 }: Props) {
   const { getProductsByCategoryId, isLoaded } = useProductData();
+  const { addToCart } = useCart();
   const activeProducts = useMemo(() => {
     return isLoaded ? getProductsByCategoryId(category.id) : products;
   }, [isLoaded, getProductsByCategoryId, category.id, products]);
@@ -77,12 +79,13 @@ export default function CategoryDetailPage({
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [addedProductId, setAddedProductId] = useState<string | null>(null);
 
-  const handleAddToCart = (id: string, e: React.MouseEvent) => {
+  const handleAddToCart = (product: Product, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setAddedProductId(id);
+    addToCart(product, 1);
+    setAddedProductId(product.id);
     setTimeout(() => {
-      setAddedProductId((current) => (current === id ? null : current));
+      setAddedProductId((current) => (current === product.id ? null : current));
     }, 1800);
   };
 
@@ -513,7 +516,7 @@ export default function CategoryDetailPage({
                     </div>
 
                     <button
-                      onClick={(e) => handleAddToCart(product.id, e)}
+                      onClick={(e) => handleAddToCart(product, e)}
                       className={`flex items-center gap-1 rounded-full p-2.5 transition-all duration-200 cursor-pointer ${
                         isAdded
                           ? "bg-green-600 text-white"
@@ -625,7 +628,7 @@ export default function CategoryDetailPage({
                           Chi tiết
                         </Link>
                         <button
-                          onClick={(e) => handleAddToCart(product.id, e)}
+                          onClick={(e) => handleAddToCart(product, e)}
                           className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-semibold transition-all cursor-pointer ${
                             isAdded
                               ? "bg-green-600 text-white"

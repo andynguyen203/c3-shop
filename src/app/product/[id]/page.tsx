@@ -1,4 +1,5 @@
 import { productService } from "@/services/productService";
+import { CATEGORY_PRODUCTS } from "@/data/categoryProducts";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ProductDetailPage from "./ProductDetailPage";
@@ -37,10 +38,13 @@ export default async function Page({ params }: Props) {
     notFound();
   }
 
-  const related = productService
-    .getProductsByCategoryId(product.categoryId)
-    .filter((p) => p.id !== product.id)
-    .slice(0, 4);
+  const mapping = CATEGORY_PRODUCTS.find((cp) => cp.productId === product.id);
+  const related = mapping
+    ? productService
+        .getProductsByCategoryId(mapping.categoryId)
+        .filter((p) => p.id !== product.id)
+        .slice(0, 4)
+    : [];
 
   return <ProductDetailPage product={product} related={related} />;
 }

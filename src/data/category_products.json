@@ -1,0 +1,8 @@
+[
+  { "categoryId": "C-02", "productId": "1" },
+  { "categoryId": "C-01", "productId": "2" },
+  { "categoryId": "C-03", "productId": "3" },
+  { "categoryId": "C-01", "productId": "4" },
+  { "categoryId": "C-04", "productId": "5" },
+  { "categoryId": "C-04", "productId": "6" }
+]

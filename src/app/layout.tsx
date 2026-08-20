@@ -3,8 +3,10 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import MessengerFloatingButton from "@/components/MessengerFloatingButton";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { ProductDataProvider } from "@/context/ProductDataContext";
+import { CartProvider } from "@/context/CartContext";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -32,9 +34,12 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-zinc-50 text-zinc-900 dark:bg-black dark:text-zinc-50 font-sans">
         <ThemeProvider>
           <ProductDataProvider>
-            <Header />
-            <main className="flex-1 flex flex-col">{children}</main>
-            <Footer />
+            <CartProvider>
+              <Header />
+              <main className="flex-1 flex flex-col">{children}</main>
+              <Footer />
+              <MessengerFloatingButton />
+            </CartProvider>
           </ProductDataProvider>
         </ThemeProvider>
       </body>

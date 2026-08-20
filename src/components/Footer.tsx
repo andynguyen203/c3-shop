@@ -58,11 +58,13 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-zinc-500 dark:text-zinc-400">
               <li className="flex items-start gap-2">
                 <LocationIcon className="mt-0.5 h-4 w-4 shrink-0 text-zinc-400" />
-                <span>123 Đường Láng, Đống Đa, Hà Nội</span>
+                <span>1017/26/18 Lê Văn Lương (90A đường B7, khu B, làng đại học), Ấp 3, Nhà Bè, Hồ Chí Minh, Vietnam</span>
               </li>
               <li className="flex items-center gap-2">
                 <PhoneIcon className="h-4 w-4 shrink-0 text-zinc-400" />
-                <span>0987.654.321</span>
+                <a href="tel:0902493895" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                  0902493895
+                </a>
               </li>
               <li className="flex items-center gap-2">
                 <MailIcon className="h-4 w-4 shrink-0 text-zinc-400" />

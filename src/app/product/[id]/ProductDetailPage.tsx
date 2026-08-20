@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import type { Product } from "@/data/products";
 import CartIcon from "@/components/icons/CartIcon";
 import StarIcon from "@/components/icons/StarIcon";
@@ -14,6 +15,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { categoryService } from "@/services/categoryService";
 import { getAssetPath } from "@/utils/assetPath";
 import { useProductData } from "@/context/ProductDataContext";
+import { useCart } from "@/context/CartContext";
 
 const formatPrice = (price: number) =>
   price.toLocaleString("vi-VN") + "đ";
@@ -27,14 +29,19 @@ interface Props {
 }
 
 export default function ProductDetailPage({ product, related }: Props) {
-  const { getProductById, getProductsByCategoryId, isLoaded } = useProductData();
+  const router = useRouter();
+  const { getProductById, getProductsByCategoryId, getCategoryIdByProductId, isLoaded } = useProductData();
+  const { addToCart } = useCart();
 
   const currentProduct =
     (isLoaded ? getProductById(product.id) : null) || product;
 
+  const currentProductCategoryId =
+    getCategoryIdByProductId(currentProduct.id) || "C-01";
+
   const currentRelated =
     (isLoaded
-      ? getProductsByCategoryId(currentProduct.categoryId)
+      ? getProductsByCategoryId(currentProductCategoryId)
           .filter((p) => p.id !== currentProduct.id)
           .slice(0, 4)
       : null) || related;
@@ -44,8 +51,14 @@ export default function ProductDetailPage({ product, related }: Props) {
   const [added, setAdded] = useState(false);
 
   const handleAddToCart = () => {
+    addToCart(currentProduct, quantity);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
+  };
+
+  const handleBuyNow = () => {
+    addToCart(currentProduct, quantity);
+    router.push("/cart");
   };
 
   const discount =
@@ -53,7 +66,7 @@ export default function ProductDetailPage({ product, related }: Props) {
       ? calcDiscount(currentProduct.price, currentProduct.oldPrice)
       : null;
 
-  const category = categoryService.getCategoryById(currentProduct.categoryId);
+  const category = categoryService.getCategoryById(currentProductCategoryId);
   const categoryName = category ? category.name : "Sản phẩm";
   const categoryHref = category ? `/category/${category.slug}` : "/";
 
@@ -213,6 +226,7 @@ export default function ProductDetailPage({ product, related }: Props) {
                 )}
               </button>
               <button
+                onClick={handleBuyNow}
                 disabled={currentProduct.stock === 0}
                 className="flex-1 flex items-center justify-center gap-2 rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-6 py-3.5 text-sm font-semibold text-zinc-900 dark:text-white hover:border-indigo-500 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all duration-200 cursor-pointer active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               >
