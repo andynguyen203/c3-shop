@@ -1,17 +1,27 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useProductData } from "@/context/ProductDataContext";
-import { categoryService } from "@/services/categoryService";
+import { useCart } from "@/context/CartContext";
 import { getAssetPath } from "@/utils/assetPath";
-import { StarIcon, PlusIcon, ChevronRightIcon } from "@/components/icons";
+import { StarIcon, PlusIcon, CheckIcon, ChevronRightIcon } from "@/components/icons";
 
 const formatPrice = (price: number) => price.toLocaleString("vi-VN") + "đ";
 
 export default function FeaturedProductsSection() {
-  const { getFeaturedProducts } = useProductData();
+  const { getFeaturedProducts, getCategoryIdByProductId, categories } = useProductData();
+  const { addToCart } = useCart();
+  const [addedId, setAddedId] = useState<string | null>(null);
+
   const featuredProducts = getFeaturedProducts(10);
+
+  const handleAdd = (product: any) => {
+    addToCart(product, 1);
+    setAddedId(product.id);
+    setTimeout(() => setAddedId(null), 1500);
+  };
 
   return (
     <section className="bg-white py-16 dark:bg-zinc-900 sm:py-24">
@@ -36,8 +46,10 @@ export default function FeaturedProductsSection() {
 
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-8">
           {featuredProducts.map((product) => {
-            const category = categoryService.getCategoryById(product.categoryId);
+            const catId = getCategoryIdByProductId(product.id);
+            const category = categories.find((c) => c.id === catId);
             const categoryName = category ? category.name : "";
+            const isJustAdded = addedId === product.id;
 
             return (
               <div key={product.id} className="group relative flex flex-col justify-between">
@@ -100,8 +112,21 @@ export default function FeaturedProductsSection() {
                       {formatPrice(product.price)}
                     </span>
                   </div>
-                  <button className="rounded-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 p-2 hover:bg-indigo-600 dark:hover:bg-indigo-400 hover:text-white transition-colors duration-200 cursor-pointer">
-                    <PlusIcon className="h-5 w-5" />
+                  <button
+                    type="button"
+                    onClick={() => handleAdd(product)}
+                    className={`rounded-full p-2 transition-all duration-200 cursor-pointer shadow-xs ${
+                      isJustAdded
+                        ? "bg-emerald-600 text-white scale-110"
+                        : "bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 hover:bg-indigo-600 dark:hover:bg-indigo-400 hover:text-white"
+                    }`}
+                    title={isJustAdded ? "Đã thêm vào giỏ!" : "Thêm vào giỏ hàng"}
+                  >
+                    {isJustAdded ? (
+                      <CheckIcon className="h-5 w-5" />
+                    ) : (
+                      <PlusIcon className="h-5 w-5" />
+                    )}
                   </button>
                 </div>
               </div>

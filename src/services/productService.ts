@@ -1,4 +1,5 @@
 import { PRODUCTS, Product } from "@/data/products";
+import { CATEGORY_PRODUCTS } from "@/data/categoryProducts";
 import { FEATURED_PRODUCT_ORDER } from "@/data/order";
 
 const normalizeId = (id: string) =>
@@ -33,11 +34,15 @@ export const productService = {
     const targetId = categoryId.trim().toLowerCase();
     const targetNum = normalizeId(categoryId);
 
-    return PRODUCTS.filter(
-      (product) =>
-        product.categoryId.toLowerCase() === targetId ||
-        normalizeId(product.categoryId) === targetNum
+    const matchedProductIds = new Set(
+      CATEGORY_PRODUCTS.filter(
+        (cp) =>
+          cp.categoryId.toLowerCase() === targetId ||
+          normalizeId(cp.categoryId) === targetNum
+      ).map((cp) => cp.productId)
     );
+
+    return PRODUCTS.filter((product) => matchedProductIds.has(product.id));
   },
 
   /**

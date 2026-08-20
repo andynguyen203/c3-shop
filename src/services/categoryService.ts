@@ -1,5 +1,6 @@
 import { CATEGORIES, Category } from "@/data/categories";
 import { PRODUCTS, Product } from "@/data/products";
+import { CATEGORY_PRODUCTS } from "@/data/categoryProducts";
 
 export interface CategoryStats {
   totalProducts: number;
@@ -80,11 +81,15 @@ export const categoryService = {
     const targetId = categoryId.trim().toLowerCase();
     const targetNum = normalizeId(categoryId);
 
-    return PRODUCTS.filter(
-      (p) =>
-        p.categoryId.toLowerCase() === targetId ||
-        normalizeId(p.categoryId) === targetNum
+    const matchedProductIds = new Set(
+      CATEGORY_PRODUCTS.filter(
+        (cp) =>
+          cp.categoryId.toLowerCase() === targetId ||
+          normalizeId(cp.categoryId) === targetNum
+      ).map((cp) => cp.productId)
     );
+
+    return PRODUCTS.filter((p) => matchedProductIds.has(p.id));
   },
 
   /**

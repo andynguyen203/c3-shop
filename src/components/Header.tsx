@@ -4,6 +4,8 @@ import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext";
+import { useProductData } from "@/context/ProductDataContext";
+import { useCart } from "@/context/CartContext";
 import SunIcon from "@/components/icons/SunIcon";
 import MoonIcon from "@/components/icons/MoonIcon";
 import SearchIcon from "./icons/SearchIcon";
@@ -11,7 +13,6 @@ import CartIcon from "./icons/CartIcon";
 import MenuIcon from "./icons/MenuIcon";
 import CloseIcon from "./icons/CloseIcon";
 import SettingsIcon from "./icons/SettingsIcon";
-import { categoryService } from "@/services/categoryService";
 import { getAssetPath } from "@/utils/assetPath";
 
 const emptySubscribe = () => () => {};
@@ -25,11 +26,12 @@ function useIsMounted() {
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { theme, toggleTheme } = useTheme();
+  const { categories } = useProductData();
+  const { totalItems } = useCart();
   const mounted = useIsMounted();
-
-  const categories = categoryService.getAllCategories();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,31 +73,32 @@ export default function Header() {
         </div>
 
         {/* Right side items: Search, Cart, Theme Toggle, Admin Settings & Mobile menu */}
-        <div className="flex items-center gap-4">
-          {/* Desktop Search Bar */}
-          <form onSubmit={handleSearch} className="hidden sm:flex relative max-w-xs items-center">
-            <input
-              type="text"
-              placeholder="Tìm kiếm sản phẩm..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-48 lg:w-64 rounded-full border border-zinc-200 bg-zinc-50 py-1.5 pl-4 pr-10 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:focus:border-indigo-400 dark:focus:bg-zinc-950"
-            />
-            <button
-              type="submit"
-              className="absolute right-3 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
-            >
-              <SearchIcon className="h-4 w-4" />
-            </button>
-          </form>
-
-          {/* Cart Icon */}
-          <button className="relative p-2 text-zinc-700 hover:text-indigo-600 dark:text-zinc-300 dark:hover:text-indigo-400 cursor-pointer">
-            <CartIcon className="h-6 w-6" />
-            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white">
-              0
-            </span>
+        <div className="flex items-center gap-1 sm:gap-2">
+          {/* Search Icon Button */}
+          <button
+            type="button"
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            className="p-2 rounded-lg text-zinc-700 hover:text-indigo-600 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:text-indigo-400 dark:hover:bg-zinc-900 cursor-pointer transition-colors"
+            title="Tìm kiếm sản phẩm"
+            aria-label="Tìm kiếm sản phẩm"
+          >
+            <SearchIcon className="h-6 w-6" />
           </button>
+
+          {/* Cart Icon Link */}
+          <Link
+            href="/cart"
+            className="relative p-2 text-zinc-700 hover:text-indigo-600 dark:text-zinc-300 dark:hover:text-indigo-400 cursor-pointer transition-colors"
+            title="Giỏ hàng"
+            aria-label="Xem giỏ hàng"
+          >
+            <CartIcon className="h-6 w-6" />
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white animate-in zoom-in-50 duration-200">
+                {totalItems > 99 ? "99+" : totalItems}
+              </span>
+            )}
+          </Link>
 
           {/* Theme Toggle Button */}
           {mounted ? (
@@ -137,6 +140,41 @@ export default function Header() {
           </button>
         </div>
       </div>
+
+      {/* Expandable Search Bar */}
+      {isSearchOpen && (
+        <div className="border-t border-zinc-200 bg-white/95 backdrop-blur-md px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950/95 shadow-md animate-in fade-in duration-200">
+          <div className="mx-auto max-w-2xl">
+            <form onSubmit={handleSearch} className="relative flex items-center">
+              <input
+                type="text"
+                autoFocus
+                placeholder="Tìm kiếm sản phẩm..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full rounded-xl border border-zinc-200 bg-zinc-50 py-2 pl-4 pr-20 text-sm outline-none transition-all focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:focus:border-indigo-400 dark:focus:bg-zinc-950"
+              />
+              <div className="absolute right-2 flex items-center gap-1">
+                <button
+                  type="submit"
+                  className="p-1.5 text-zinc-500 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400 cursor-pointer"
+                  aria-label="Tìm kiếm"
+                >
+                  <SearchIcon className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsSearchOpen(false)}
+                  className="p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 cursor-pointer"
+                  aria-label="Đóng tìm kiếm"
+                >
+                  <CloseIcon className="h-4 w-4" />
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Mobile Menu */}
       {isMenuOpen && (
