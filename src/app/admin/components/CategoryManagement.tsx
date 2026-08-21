@@ -45,10 +45,7 @@ const renderCategoryIcon = (iconName: string) => {
 export default function CategoryManagement() {
   const {
     categories,
-    products,
     categoryProducts,
-    getProductsByCategoryId,
-    setCategoryProducts,
     addCategory,
     updateCategory,
     deleteCategory,
@@ -56,7 +53,6 @@ export default function CategoryManagement() {
     exportCategoriesJSON,
     importCategoriesJSON,
     exportCategoryProductsJSON,
-    importCategoryProductsJSON,
   } = useProductData();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -117,10 +113,8 @@ export default function CategoryManagement() {
     deleteCategory(id);
   };
 
-  const handleSaveCategory = (catData: Category, productIds?: string[]) => {
-    const assignedCount = productIds !== undefined
-      ? productIds.length
-      : (categoryProductCountMap.get(catData.id) || 0);
+  const handleSaveCategory = (catData: Category) => {
+    const assignedCount = categoryProductCountMap.get(catData.id) || 0;
 
     const withCountText = {
       ...catData,
@@ -131,10 +125,6 @@ export default function CategoryManagement() {
       updateCategory(editingCategory.id, withCountText);
     } else {
       addCategory(withCountText);
-    }
-
-    if (productIds !== undefined) {
-      setCategoryProducts(catData.id, productIds);
     }
   };
 
@@ -385,7 +375,7 @@ export default function CategoryManagement() {
                     onClick={() => handleOpenEdit(cat)}
                     className="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-1.5 text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors cursor-pointer"
                   >
-                    ✏️ Sửa & Gán SP
+                    ✏️ Sửa thông tin
                   </button>
                   <button
                     onClick={() => handleDelete(cat.id, cat.name)}

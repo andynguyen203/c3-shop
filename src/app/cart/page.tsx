@@ -79,7 +79,7 @@ export default function CartPage() {
   const handleSendViaMessenger = () => {
     if (items.length === 0) return;
 
-    let itemsText = items
+    const itemsText = items
       .map(
         (it, idx) =>
           `${idx + 1}. ${it.product.name} (SL: ${it.quantity}) - ${formatPrice(
