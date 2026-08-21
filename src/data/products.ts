@@ -15,4 +15,4 @@ export interface Product {
   specs?: Record<string, string>;
 }
 
-export const PRODUCTS: Product[] = rawProducts as any as Product[];
+export const PRODUCTS: Product[] = rawProducts as unknown as Product[];

@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useProductData } from "@/context/ProductDataContext";
 import CategoryManagement from "./components/CategoryManagement";
+import CategoryProductManagement from "./components/CategoryProductManagement";
 import ProductManagement from "./components/ProductManagement";
 import FeaturedManagement from "./components/FeaturedManagement";
 
-type AdminTab = "categories" | "products" | "featured";
+type AdminTab = "categories" | "category_products" | "products" | "featured";
 
 const AUTH_STORAGE_KEY = "japan_shop_admin_authenticated_v1";
 const ADMIN_PASSKEY = process.env.NEXT_PUBLIC_ADMIN_PASSKEY || "japan2024";
@@ -20,7 +21,7 @@ export default function AdminPage() {
   const [rememberDevice, setRememberDevice] = useState(true);
   const [activeTab, setActiveTab] = useState<AdminTab>("products");
 
-  const { categories, products, getFeaturedProducts } = useProductData();
+  const { categories, products, categoryProducts, getFeaturedProducts } = useProductData();
 
   // Check authentication status on mount
   useEffect(() => {
@@ -185,7 +186,7 @@ export default function AdminPage() {
               Trang Quản Trị Japan Shop
             </h1>
             <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-              Quản lý phân loại danh mục, kho sản phẩm và vị trí hiển thị sản phẩm bán chạy
+              Quản lý phân loại danh mục, sản phẩm thuộc danh mục, kho sản phẩm và vị trí hiển thị bán chạy
             </p>
           </div>
 
@@ -207,7 +208,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* 3 Main Screens Navigation Tabs */}
+        {/* 4 Main Screens Navigation Tabs */}
         <div className="mb-8 overflow-x-auto">
           <div className="inline-flex p-1.5 rounded-2xl bg-zinc-200/80 dark:bg-zinc-900 border border-zinc-300/60 dark:border-zinc-800 gap-1.5 min-w-full sm:min-w-0">
             {/* Tab 1: Categories */}
@@ -231,7 +232,28 @@ export default function AdminPage() {
               </span>
             </button>
 
-            {/* Tab 2: Products */}
+            {/* Tab 2: Category Products Assignment */}
+            <button
+              onClick={() => setActiveTab("category_products")}
+              className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+                activeTab === "category_products"
+                  ? "bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-md scale-[1.02]"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-zinc-800/50"
+              }`}
+            >
+              <span>🗂️ 2. Sản phẩm thuộc Danh mục</span>
+              <span
+                className={`px-2 py-0.5 rounded-full text-xs font-black ${
+                  activeTab === "category_products"
+                    ? "bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400"
+                    : "bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300"
+                }`}
+              >
+                {categoryProducts.length}
+              </span>
+            </button>
+
+            {/* Tab 3: Products */}
             <button
               onClick={() => setActiveTab("products")}
               className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
@@ -240,7 +262,7 @@ export default function AdminPage() {
                   : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-zinc-800/50"
               }`}
             >
-              <span>📦 2. Quản lý Sản phẩm</span>
+              <span>📦 3. Quản lý Sản phẩm</span>
               <span
                 className={`px-2 py-0.5 rounded-full text-xs font-black ${
                   activeTab === "products"
@@ -252,7 +274,7 @@ export default function AdminPage() {
               </span>
             </button>
 
-            {/* Tab 3: Featured Products */}
+            {/* Tab 4: Featured Products */}
             <button
               onClick={() => setActiveTab("featured")}
               className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
@@ -261,7 +283,7 @@ export default function AdminPage() {
                   : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-zinc-800/50"
               }`}
             >
-              <span>🔥 3. Quản lý Sản phẩm Bán chạy</span>
+              <span>🔥 4. Quản lý Sản phẩm Bán chạy</span>
               <span
                 className={`px-2 py-0.5 rounded-full text-xs font-black ${
                   activeTab === "featured"
@@ -278,6 +300,7 @@ export default function AdminPage() {
         {/* Screen Content */}
         <div>
           {activeTab === "categories" && <CategoryManagement />}
+          {activeTab === "category_products" && <CategoryProductManagement />}
           {activeTab === "products" && <ProductManagement />}
           {activeTab === "featured" && <FeaturedManagement />}
         </div>

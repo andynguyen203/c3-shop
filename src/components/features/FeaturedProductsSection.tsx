@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Product } from "@/data/products";
 import { useProductData } from "@/context/ProductDataContext";
 import { useCart } from "@/context/CartContext";
 import { getAssetPath } from "@/utils/assetPath";
@@ -17,7 +18,7 @@ export default function FeaturedProductsSection() {
 
   const featuredProducts = getFeaturedProducts(10);
 
-  const handleAdd = (product: any) => {
+  const handleAdd = (product: Product) => {
     addToCart(product, 1);
     setAddedId(product.id);
     setTimeout(() => setAddedId(null), 1500);
