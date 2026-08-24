@@ -121,9 +121,7 @@ export default function CategoryFormModal({
 
   const handleNameChange = (val: string) => {
     setName(val);
-    if (!isEdit) {
-      setSlug(generateSlug(val));
-    }
+    setSlug(generateSlug(val));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -138,7 +136,7 @@ export default function CategoryFormModal({
     const categoryData: Category = {
       id: id.trim() || `C-${Date.now()}`,
       name: name.trim(),
-      slug: slug.trim() || generateSlug(name),
+      slug: (slug.trim() || generateSlug(name)).toLowerCase(),
       description: description.trim(),
       iconName,
       bannerGradient: currentGrad.value,
@@ -153,7 +151,10 @@ export default function CategoryFormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto">
-      <div className="relative w-full max-w-2xl max-h-[92vh] flex flex-col rounded-3xl bg-white dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+      <form
+        onSubmit={handleSubmit}
+        className="relative w-full max-w-2xl max-h-[92vh] flex flex-col rounded-3xl bg-white dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden"
+      >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 px-6 py-4 bg-zinc-50/50 dark:bg-zinc-900/50">
           <div>
@@ -164,30 +165,42 @@ export default function CategoryFormModal({
               {isEdit ? `Mã danh mục: #${id}` : "Nhập thông tin nhóm ngành hàng sản phẩm"}
             </p>
           </div>
-          <button
-            onClick={onClose}
-            className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors cursor-pointer"
-          >
-            <CloseIcon className="h-5 w-5" />
-          </button>
+
+          {/* Action Buttons in Header */}
+          <div className="flex items-center gap-2.5">
+            <button
+              type="submit"
+              className="rounded-xl bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-500 shadow-sm transition-colors cursor-pointer"
+            >
+              Lưu
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors ml-1 cursor-pointer"
+              title="Đóng"
+            >
+              <CloseIcon className="h-5 w-5" />
+            </button>
+          </div>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="flex-1 overflow-y-auto p-6 space-y-4">
           {/* Tên & Mã */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-12">
             <div className="sm:col-span-4">
-              <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5">
-                Mã danh mục (ID) <span className="text-rose-500">*</span>
+              <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center justify-between">
+                <span>Mã danh mục (ID)</span>
+                <span className="text-[10px] text-zinc-400 font-normal lowercase tracking-normal bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded">Tự động</span>
               </label>
               <input
                 type="text"
-                required
-                disabled={isEdit}
+                readOnly
+                disabled
                 value={id}
-                onChange={(e) => setId(e.target.value)}
                 placeholder="VD: C-05"
-                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/60 px-3.5 py-2.5 text-sm text-zinc-900 dark:text-white outline-none disabled:opacity-60 font-mono"
+                className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800/80 px-3.5 py-2.5 text-sm text-zinc-600 dark:text-zinc-300 outline-none font-mono cursor-not-allowed"
               />
             </div>
 
@@ -198,6 +211,7 @@ export default function CategoryFormModal({
               <input
                 type="text"
                 required
+                autoFocus
                 value={name}
                 onChange={(e) => handleNameChange(e.target.value)}
                 placeholder="VD: Chăm Sóc Da Mặt"
@@ -207,16 +221,17 @@ export default function CategoryFormModal({
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5">
-              Đường dẫn tĩnh (Slug URL) <span className="text-rose-500">*</span>
+            <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center justify-between">
+              <span>Đường dẫn tĩnh (Slug URL)</span>
+              <span className="text-[10px] text-zinc-400 font-normal lowercase tracking-normal bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded">Tự động theo tên</span>
             </label>
             <input
               type="text"
-              required
+              readOnly
+              disabled
               value={slug}
-              onChange={(e) => setSlug(e.target.value)}
               placeholder="cham-soc-da-mat"
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2.5 text-sm text-zinc-900 dark:text-white outline-none focus:border-indigo-500 font-mono text-xs"
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800/80 px-4 py-2.5 text-xs text-zinc-600 dark:text-zinc-300 outline-none font-mono cursor-not-allowed"
             />
           </div>
 
@@ -293,25 +308,8 @@ export default function CategoryFormModal({
               })}
             </div>
           </div>
-
-          {/* Footer Buttons */}
-          <div className="flex items-center justify-end gap-3 border-t border-zinc-200 dark:border-zinc-800 pt-5 mt-6">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-xl border border-zinc-200 dark:border-zinc-700 px-5 py-2.5 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-            >
-              Hủy bỏ
-            </button>
-            <button
-              type="submit"
-              className="rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 shadow-md transition-colors cursor-pointer"
-            >
-              {isEdit ? "Cập nhật danh mục" : "Lưu danh mục mới"}
-            </button>
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }

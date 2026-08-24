@@ -159,7 +159,10 @@ export default function ProductFormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto">
-      <div className="relative w-full max-w-6xl max-h-[92vh] flex flex-col rounded-3xl bg-white dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+      <form
+        onSubmit={handleSubmit}
+        className="relative w-full max-w-6xl max-h-[92vh] flex flex-col rounded-3xl bg-white dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden"
+      >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 px-6 py-4 bg-zinc-50/50 dark:bg-zinc-900/50">
           <div>
@@ -172,16 +175,28 @@ export default function ProductFormModal({
                 : "Nhập đầy đủ thông tin để lưu sản phẩm vào hệ thống"}
             </p>
           </div>
-          <button
-            onClick={onClose}
-            className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors"
-          >
-            <CloseIcon className="h-5 w-5" />
-          </button>
+
+          {/* Action Buttons in Header */}
+          <div className="flex items-center gap-2.5">
+            <button
+              type="submit"
+              className="rounded-xl bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-500 shadow-sm transition-colors cursor-pointer"
+            >
+              Lưu
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors ml-1 cursor-pointer"
+              title="Đóng"
+            >
+              <CloseIcon className="h-5 w-5" />
+            </button>
+          </div>
         </div>
 
         {/* Form Body - 2 Columns */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* CỘT 1 (Bên trái): Thông tin cơ bản, Giá bán, Hình ảnh, Mô tả */}
             <div className="lg:col-span-6 space-y-4">
@@ -464,31 +479,8 @@ export default function ProductFormModal({
               </div>
             </div>
           </div>
-
-          {/* Footer Buttons */}
-          <div className="flex items-center justify-between border-t border-zinc-200 dark:border-zinc-800 pt-5 mt-6">
-            <span className="text-xs text-zinc-400">
-              Ảnh và thông số sẽ được lưu đồng bộ vào bộ nhớ sản phẩm.
-            </span>
-
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={onClose}
-                className="rounded-xl border border-zinc-200 dark:border-zinc-700 px-5 py-2.5 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-              >
-                Hủy bỏ
-              </button>
-              <button
-                type="submit"
-                className="rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 shadow-md transition-colors cursor-pointer"
-              >
-                {isEdit ? "Cập nhật sản phẩm" : "Lưu sản phẩm mới"}
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }

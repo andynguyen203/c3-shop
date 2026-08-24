@@ -1,110 +1,571 @@
 [
   {
     "id": "1",
-    "name": "VIÊN UỐNG TĂNG CHIỀU CAO GH CREATION EX+ NHẬT - 270 VIÊN",
-    "description": "Cách sử dụng\n- Mỗi ngày dùng 3 viên, uống trước khi đi ngủ vào khoảng 21-22 giờ, vì thời gian hấp thụ tốt nhất là vào 23h-2h sáng.\n- Trước và sau khi uống thuốc không nên ăn uống thêm gì.\n- Để đạt hiệu quả tốt nhất nên sử dụng theo liệu trình 3 lọ 1 năm.\n- Để đạt được hiệu quả tốt nhất cần ngủ đủ 7 - 8 tiếng/ ngày, luyện tập thể dục thể thao ít nhất 30 phút mỗi ngày và kết hợp chế độ dinh dưỡng hợp lý để thúc đẩy trao đổi chất.\nCông dụng nổi bật\n- Thúc đẩy hoạt động tiết Hormone tăng trưởng trong cơ thể sản sinh ra một cách tự nhiên nhất mà không hề gây tác dụng phụ.\n- Hiệu quả hỗ trợ tăng chiều cao từ 4-30 tuổi, cải thiện chiều cao tối đa 2-5cm/liệu trình.\n- Kích thích sự phát triển các mô sụn đầu xương giúp xương dài ra và tăng chiều cao.\n- Thành phần và cơ chế tăng chiều cao tự nhiên, an toàn, không tác dụng phụ được chứng nhận tại Nhật.\n- Rút ngắn thời gian phục hồi sau chấn thương hoặc phẫu thuật, làm lành vết thương và cải thiện chức năng miễn dịch của cơ thể.",
-    "image": "/images/C-02-01.jpg",
-    "imageBg": "from-amber-500 to-orange-500",
-    "price": 850000,
-    "oldPrice": 850000,
+    "name": "Nước rửa mắt Eyebon W Premium 500ml",
+    "description": "Đặc điểm sản phẩm:\n- Dung dịch rửa mắt chứa vitamin màu hồng, giúp rửa sạch bụi bẩn, dị vật và các tác nhân gây khó chịu cho mắt như cảm giác cộm, ngứa mắt.\n- Sử dụng sau khi tháo kính áp tròng, giúp làm sạch mắt và phòng ngừa các bệnh về mắt.\n- Cốc rửa mắt thiết kế hướng lên trên, giúp bao phủ và rửa sạch toàn bộ mắt.\n- Rửa mắt hướng lên: Dung dịch bao phủ toàn bộ nhãn cầu, giúp rửa sạch bụi bẩn, dị vật ở mọi vị trí.\n- Cốc ôm khít mắt: Hạn chế rò rỉ dung dịch khi ngửa mặt, giảm cảm giác đau quanh mắt và hạn chế để lại dấu vết trên da.\n\nCông dụng:\n- Rửa mắt.\n- Phòng ngừa các bệnh về mắt, chẳng hạn: Sau khi bơi, khi bụi hoặc mồ hôi rơi vào mắt.\n\nLiều dùng & Cách sử dụng:\n- Ngày sử dụng 3–6 lần.\n- Mỗi lần sử dụng 5ml dung dịch để rửa mắt.\n\nLưu ý quan trọng:\n- Trẻ em sử dụng phải có sự hướng dẫn và giám sát của người lớn.\n- Không sử dụng khi đang đeo kính áp tròng. Nếu muốn đeo lại kính áp tròng, cần rửa mắt và chờ khoảng 10–15 phút trước khi đeo lại.\n- Rửa sạch cốc rửa mắt bằng nước máy trước và sau khi sử dụng. Nên để cốc khô tự nhiên sau khi rửa.\n- Không sử dụng nếu dung dịch bị đục. Chỉ sử dụng để rửa mắt.\n- Không dùng dung dịch đã rửa một bên mắt để rửa bên mắt còn lại.\n- Không rửa mắt quá 30 giây mỗi lần.\n- Nếu đang sử dụng kính áp tròng, phải tháo kính trước khi sử dụng.\n- Trước khi rửa mắt, cần lau sạch mỹ phẩm hoặc bụi bẩn xung quanh mắt.\n- Tùy điều kiện bảo quản, có thể xuất hiện các tinh thể màu trắng quanh miệng chai. Nếu xảy ra, dùng gạc sạch hoặc vật tương tự lau nhẹ.\n- Người không sử dụng kính áp tròng cũng có thể sử dụng sản phẩm.\n- Màu của dung dịch là màu tự nhiên của Vitamin B12. Nếu dung dịch vô tình dính vào quần áo, hãy giặt/rửa bằng nước càng sớm càng tốt.\n- Nhà sản xuất: Kobayashi Pharmaceutical Co., Ltd.",
+    "image": "https://shop.r10s.jp/seikatsuzakka-plus1/cabinet/r310-dcitem/0028/4987072053287.jpg",
+    "imageBg": "from-rose-500 to-pink-600",
+    "price": 250000,
+    "oldPrice": 250000,
     "rating": 4.9,
-    "reviews": 312,
+    "reviews": 248,
     "tag": "Bán chạy nhất",
-    "stock": 85,
+    "stock": 120,
     "specs": {
       "Xuất xứ": "Nhật Bản",
-      "Quy cách": "Hộp 270 viên",
-      "Thành phần": "- Alpha-GPC: Hỗ trợ não bộ sản sinh ra lượng Hormone tăng trưởng GH và ức chế Somatostatin (chất ngăn cản sản sinh Hormone GH), từ đó giúp phát triển chiều cao tối ưu.\n- Arginine: Tăng cường tổng hợp Protein, góp phần vào quá trình hình thành và giải phóng Hormone tăng trưởng chiều cao GH, làm lành nhanh viết thương.\n- Bone Peptide: Hỗ trợ sản sinh tế bào mới liên tục, giúp xương chắc khỏe, tạo khung xương cứng cáp cho trẻ giai đoạn dậy thì.\n- Canxi san hô (Coral Calcium): Tham gia vào quá trình hình thành và phát triển xương, giúp tăng mật độ xương, ngừa loãng xương, thoái hóa.\n- Một số thành phần khác: Collagen Peptide, Men khô, Men chứa kẽm.\n- Hàm lượng dinh dưỡng có trong 3 viên uống: Năng lượng (3.46kcal), Protein (0.01g), Lipid (0.01g), Carbohydrates (0.83g), Sodium (0-2mg)."
+      "Nhà sản xuất": "Kobayashi Pharmaceutical Co., Ltd.",
+      "Dung tích": "Chai 500ml",
+      "Thành phần": "Dipotassium Glycyrrhizinate: 25mg\nChlorpheniramine Maleate: 3mg\nPyridoxine Hydrochloride (Vitamin B6): 10mg\nTaurine: 100mg\nCyanocobalamin (Vitamin B12): 1mg\nTocopherol Acetate (Vitamin E): 2,5mg\nSodium Chondroitin Sulfate: 10mg\nPhụ gia: Axit boric, Borax, Polysorbate 80, Sodium Edetate, Propylene Glycol, l-Menthol, dl-Camphor, chất điều chỉnh pH."
     }
   },
   {
     "id": "2",
-    "name": "KEM ĐÁNH RĂNG MUỐI SUNSTAR 170g",
-    "description": "CÔNG DỤNG:\n- Giúp bảo vệ nướu chắc khoẻ\n- Tiêu diệt vi khuẩn gây sâu răng\n- Bảo vệ khoảng miệng, răng và nướu chắc khoẻ\n- Loại bỏ mùi hôi miệng\nTrẻ em dùng được",
-    "image": "/images/C-01-01.jpg",
-    "imageBg": "from-cyan-500 to-blue-600",
-    "tag": "Hot",
-    "price": 80000,
-    "oldPrice": 80000,
+    "name": "Nước nhỏ mắt Rohto 40α 12ml",
+    "description": "Công dụng / Đặc điểm:\nLà thuốc nhỏ mắt cung cấp trực tiếp 4 dưỡng chất quan trọng cho mắt, giúp cải thiện hiệu quả tình trạng mỏi mắt, nhìn mờ/nhòe mắt và các triệu chứng khó chịu khác:\n- Vitamin E dạng tự nhiên: thúc đẩy lưu thông máu, giúp giảm mỏi mắt.\n- Vitamin B6: thúc đẩy quá trình chuyển hóa của tế bào mắt, giúp cải thiện tình trạng mỏi mắt.\n- Natri chondroitin sulfate: bảo vệ bề mặt giác mạc và giúp phòng ngừa các bệnh về mắt.\n- Kali L-aspartate: hỗ trợ đưa oxy vào mắt, giúp làm dịu tình trạng mỏi mắt.\n\nCông dụng:\nSản phẩm được sử dụng để cải thiện:\n- Nhìn mờ, nhòe mắt (ví dụ khi có nhiều ghèn mắt)\n- Mỏi mắt\n- Mắt bị đỏ, sung huyết kết mạc\n- Phòng ngừa các bệnh về mắt (sau khi bơi, khi bụi hoặc mồ hôi vào mắt...)\n- Viêm mi mắt, tình trạng da mí mắt bị tổn thương\n- Ngứa mắt\n- Viêm mắt do tia UV hoặc các loại ánh sáng khác (ví dụ: mắt bị tổn thương do ánh sáng phản chiếu từ tuyết)\n- Khó chịu khi đeo kính áp tròng cứng\n\nPhân loại:\n- Chai xanh: Rohto Cool 40α – độ mát cấp 5, cảm giác mát lạnh mạnh, phù hợp khi mắt mỏi, nhìn mờ/nhòe.\n- Chai vàng: Rohto Vita 40α – độ mát cấp 3, cảm giác mát dịu hơn, hỗ trợ cải thiện mỏi mắt, nhìn mờ/nhòe.\n\nCách dùng:\n- Mỗi lần nhỏ 2–3 giọt, ngày nhỏ 5–6 lần.\n\nLưu ý khi sử dụng:\n- Cần tham khảo ý kiến bác sĩ, dược sĩ hoặc người bán thuốc trước khi sử dụng nếu: Đang được bác sĩ điều trị; Từng bị dị ứng do thuốc hoặc các sản phẩm khác; Có triệu chứng đau mắt dữ dội; Được chẩn đoán mắc bệnh tăng nhãn áp (glôcôm).\n- Nếu xuất hiện tác dụng phụ (phát ban, đỏ mắt, ngứa, sưng, xót và đau), ngừng dùng ngay.\n- Ngừng sử dụng và tham khảo ý kiến chuyên gia nếu tình trạng mờ không cải thiện sau 2 tuần.",
+    "image": "https://scontent.fsgn5-6.fna.fbcdn.net/v/t39.30808-6/488656278_1136480471823040_3934764796339638221_n.jpg?stp=dst-jpg_tt6&cstp=mx940x788&ctp=s940x788&_nc_cat=111&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=127cfc&_nc_ohc=sG3i8mrfiMUQ7kNvwGI3cKC&_nc_oc=AdoXZ1kYRLYjJ5ZCDFpsXiMqABwB3PlRGG8Kpd49cJFob_SR4X0uYWNF_2aHVyXc7bU&_nc_zt=23&_nc_ht=scontent.fsgn5-6.fna&_nc_gid=i5G6CXfehlXGAnyy8As2cw&_nc_ss=7b2a8&oh=00_AQGE5_64tT4F7FXTxo42p1-ed7n5xKFL5fCXetCryYQv-A&oe=6A905298",
+    "imageBg": "from-sky-500 to-blue-600",
+    "price": 60000,
+    "oldPrice": 60000,
     "rating": 4.9,
-    "reviews": 428,
-    "stock": 110,
+    "reviews": 415,
+    "tag": "Hot",
+    "stock": 250,
     "specs": {
       "Xuất xứ": "Nhật Bản",
-      "Dung tích": "Tuýp 170g",
-      "Thành phần": "Canxi carbonate, Vitamin E, Tinh thể muối, Sorbitol"
+      "Dung tích": "Lọ 12ml",
+      "Thành phần": "d-α-Tocopherol acetate (Vitamin E dạng tự nhiên): 0,05%\nVitamin B6: 0,1%\nNatri chondroitin sulfate: 0,1%\nKali L-aspartate: 1%\nNeostigmine methyl sulfate: 0,005%\nChlorpheniramine maleate: 0,03%\nPhụ gia: Axit boric, borax, l-menthol, d-borneol, dầu khuynh diệp, disodium EDTA, dầu thầu dầu hydro hóa polyoxyethylene, chất điều chỉnh pH."
     }
   },
   {
     "id": "3",
-    "name": "Bọt vệ sinh phụ nữ Laurier Delicate Foaming Wash 150ml",
-    "description": "- Sử dụng cho vùng da nhạy cảm cần chăm sóc một cách dịu nhẹ.\n- Làm sạch chất bẩn gây mùi và khô ráp da.\n- Bọt rửa siêu mịn rất nhẹ nhàng và làm sạch hiệu quả.\n- Độ pH nhẹ nhàng phù hợp làn da.\n- Không gây kích ứng\n- Không mùi\n- Không màu",
-    "image": "/images/C-03-01.jpg",
-    "imageBg": "from-pink-500 to-rose-500",
-    "tag": "Khuyên dùng",
-    "price": 260000,
-    "oldPrice": 260000,
+    "name": "Nước Nhỏ Mắt Nhật Bản Sante Fx Neo 12ml",
+    "description": "Sante FX Neo giúp thúc đẩy quá trình trao đổi chất của các mô mắt đang mệt mỏi, từ đó hỗ trợ cải thiện mỏi mắt, đỏ mắt và các tình trạng khó chịu ở mắt. Đồng thời, sản phẩm mang lại cảm giác mát lạnh mạnh mẽ, giúp tạo cảm giác sảng khoái, tỉnh táo cho đôi mắt.\n\nĐây là thuốc nhỏ mắt dành cho những ai muốn làm mới và thư giãn đôi mắt.\n\nCông dụng:\nHỗ trợ cải thiện:\n- Mỏi mắt\n- Đỏ kết mạc\n- Ngứa mắt\n- Phòng ngừa các bệnh về mắt (sau khi bơi, khi bụi hoặc mồ hôi lọt vào mắt...)\n- Viêm mắt do tia cực tím và các loại ánh sáng khác (ví dụ: tuyết gây bỏng mắt)\n- Mờ mắt (khi có nhiều ghèn mắt...)\n- Viêm mí mắt, tình trạng da mí mắt bị tổn thương\n- Cảm giác khó chịu khi đang đeo kính áp tròng cứng\n\nCách dùng:\n- Mỗi lần nhỏ 2–3 giọt, ngày nhỏ 5–6 lần.",
+    "image": "https://shop.r10s.jp/kwrydrug/cabinet/07530672/4987084410443.jpg",
+    "imageBg": "from-slate-700 to-zinc-900",
+    "price": 90000,
+    "oldPrice": 90000,
     "rating": 4.9,
-    "reviews": 340,
+    "reviews": 360,
+    "tag": "Bán chạy",
     "stock": 180,
     "specs": {
       "Xuất xứ": "Nhật Bản",
-      "Dung tích": "Chai tạo bọt 150ml",
-      "Thành phần": ""
+      "Dung tích": "Lọ 12ml",
+      "Thành phần": "Neostigmine methyl sulfate: 0,005%\nTaurine: 1,0%\nL-Aspartic acid potassium: 1,0%\nTetrahydrozoline hydrochloride: 0,05%\nChlorpheniramine maleate: 0,03%\nEpsilon-aminocaproic acid: 1,0%\nPhụ gia: Chlorobutanol, Benzalkonium chloride, Acid boric, d-Borneol, dl-Camphor, l-Menthol, chất điều chỉnh pH."
     }
   },
   {
     "id": "4",
-    "name": "NƯỚC SÚC MIỆNG PROPOLINSE PURE",
-    "description": "CÔNG DỤNG:\n- Đánh bay các mảng bám, chất bẩn trong miệng mà bàn chải không làm sạch ngay khi dùng lần đầu\n- Màu răng cải thiện rõ rệt sau 2 tuần sử dụng\n- Ngừa hôi miệng\n- Ngừa sâu răng\n- Hương thơm tươi mát dễ chịu và sảng khoái",
-    "image": "/images/C-01-02.jpg",
-    "imageBg": "from-teal-500 to-emerald-600",
-    "tag": "Bán chạy",
-    "price": 280000,
-    "oldPrice": 280000,
+    "name": "Nước nhỏ mắt Santen PC 12ml",
+    "description": "Mỗi ngày, mắt phải chịu nhiều áp lực do ánh sáng xanh (Blue Light) phát ra từ màn hình máy tính, điện thoại thông minh và các thiết bị điện tử.\n\nSante PC chứa Vitamin B12 giúp cải thiện chức năng điều tiết và lấy nét của mắt, Sodium chondroitin sulfate ester giúp bảo vệ giác mạc và Vitamin B6 giúp thúc đẩy quá trình trao đổi chất của các mô mắt bị tổn thương. Ba thành phần này được phối hợp ở nồng độ tối đa theo tiêu chuẩn phê duyệt thuốc nhỏ mắt không kê đơn của Nhật Bản.\n\nSản phẩm chứa tổng cộng 8 thành phần hoạt chất, giúp cải thiện tình trạng viêm, mỏi mắt và mang lại cảm giác nhỏ mắt sảng khoái, dễ chịu.\n\nĐặc biệt phù hợp với những người thường xuyên nhìn chăm chú vào màn hình máy tính, điện thoại thông minh trong thời gian dài và dễ bị mỏi mắt.\n\nCông dụng:\n- Viêm mắt do tia cực tím và các loại ánh sáng khác (ánh sáng xanh, bỏng mắt do tuyết)\n- Mỏi mắt, đỏ kết mạc, ngứa mắt\n- Phòng ngừa các bệnh về mắt khi bơi lội, bụi, mồ hôi\n- Mờ mắt (nhiều ghèn mắt), viêm mí mắt\n- Cảm giác khó chịu khi đang đeo kính áp tròng cứng\n\nCách dùng:\n- Mỗi lần nhỏ 1–3 giọt, ngày nhỏ 5–6 lần.",
+    "image": "https://shop.r10s.jp/curecarat/cabinet/dai2/09141886/4987084411983.jpg",
+    "imageBg": "from-blue-600 to-indigo-600",
+    "price": 150000,
+    "oldPrice": 150000,
     "rating": 4.9,
-    "reviews": 680,
-    "stock": 220,
+    "reviews": 520,
+    "tag": "Khuyên dùng",
+    "stock": 190,
     "specs": {
       "Xuất xứ": "Nhật Bản",
-      "Dung tích": "Chai lớn 600ml",
-      "Thành phần": "Nước, ethanol (dung môi), glycerin (tác nhân làm ướt), axit citric, axit citric Na, axit malic (PH modifier), dầu thầu dầu hydro hóa, PEG 60 (chất hòa tan), chiết xuất lá trà, chiết xuất từ keo ong, Xylitol, menthol, saccharin Na (chất tạo hương), caramel (chất tạo màu), methuylparaben (chất bảo quản, hương liệu."
+      "Nhà sản xuất": "Santen (参天製薬)",
+      "Dung tích": "Lọ 12ml",
+      "Thành phần": "Vitamin B12 (Cyanocobalamin): 0,02%\nSodium chondroitin sulfate ester: 0,5%\nVitamin B6 (Pyridoxine hydrochloride): 0,1%\nNeostigmine methyl sulfate: 0,002%\nTaurine: 0,1%\nDipotassium glycyrrhizinate: 0,1%\nChlorpheniramine maleate: 0,01%\nTetrahydrozoline hydrochloride: 0,03%\nPhụ gia: Aminocaproic acid, Sodium edetate hydrate, Chlorobutanol, Geraniol, Dextran, Hydroxyethyl cellulose, Benzalkonium chloride solution, Polysorbate 80, d-Camphor, l-Menthol, chất điều chỉnh áp suất thẩm thấu, chất điều chỉnh pH."
     }
   },
   {
     "id": "5",
-    "name": "NƯỚC NHỎ MẮT SANTEN PC",
-    "description": "- Ngăn ngừa và làm giảm sự tác động của các tia bức xạ đến mắt, cải thiện sự tập trung khi làm việc\n- Tăng cường khả năng điều tiết giúp giảm thiểu tình trạng khô mắt, mỏi mắt, mờ mắt, nhức mắt,…\n- Cải thiện những vấn đề của mắt bị tổn thương thông qua việc tăng cường trao đổi chất ở mắt\n- Bảo vệ giác mạc, ngăn ngừa tình trạng lão hoá ở mắt\n- Tránh tình trạng thoái hoá điểm vàng, đục thể thuỷ tinh khi lớn tuổi\n- Phòng chống các bệnh lý liên quan đến mắt như xuất huyết mắt, viêm võng mạc do mắt phải làm việc quá tải\n- Duy trì đôi mắt khỏe mạnh, cải thiện thị lực\n- Màu đỏ: độ cay vừa phải, không dùng khi đeo kính áp tròng\n- Màu vàng: không cay, dùng trực tiếp lên kính áp tròng",
-    "image": "/images/C-04-01.jpg",
-    "imageBg": "from-blue-600 to-indigo-600",
-    "tag": "Mới",
-    "price": 160000,
-    "oldPrice": 160000,
-    "rating": 4.9,
-    "reviews": 540,
-    "stock": 190,
+    "name": "Nước nhỏ mắt Sante Kaiteki 40 – 15ml",
+    "description": "Mỏi mắt và mờ mắt được cho là một phần có nguyên nhân từ sự suy giảm chức năng điều tiết và lấy nét của mắt do tuổi tác hoặc sử dụng mắt quá mức.\n\nSante Kaiteki 40 chứa Vitamin E dạng tự nhiên có tác dụng thúc đẩy tuần hoàn máu và chống oxy hóa, cùng Neostigmine methyl sulfate giúp cải thiện chức năng điều tiết của mắt. Sản phẩm giúp cải thiện mỏi mắt, mờ mắt (ví dụ khi có nhiều ghèn mắt) và mang lại cảm giác nhỏ mắt sảng khoái, dễ chịu.\n\nCông dụng của các thành phần chính:\n- Vitamin E dạng tự nhiên: Giúp cải thiện lưu thông máu ở các mạch máu ngoại vi.\n- Neostigmine methyl sulfate: Cải thiện chức năng điều tiết của mắt, giúp giảm mỏi mắt.\n- Taurine: Thúc đẩy quá trình trao đổi chất của các mô mắt.\n- Chlorpheniramine maleate: Ức chế hoạt động của histamine, giúp giảm viêm và ngứa mắt.\n\nCách dùng:\n- Mỗi lần nhỏ 1–3 giọt, ngày nhỏ 5–6 lần.",
+    "image": "https://shop.r10s.jp/webdrug/cabinet/00795625/img61259970.jpg",
+    "imageBg": "from-teal-600 to-cyan-700",
+    "price": 55000,
+    "oldPrice": 55000,
+    "rating": 4.8,
+    "reviews": 190,
+    "tag": "Tiết kiệm",
+    "stock": 160,
     "specs": {
       "Xuất xứ": "Nhật Bản",
-      "Dung tích": "Lọ 12ml",
-      "Thành phần": "Vitamin B12, Natri chondroitin sulfat, Vitamin B6, Neostigmine methyl sulfate, Taurin, Dipotassium glycyrrhizinate, Chlorpheniramine maleate, Tetrahydrozoline hydrochloride và các thành phần khác"
+      "Dung tích": "Lọ 15ml",
+      "Thành phần": "Vitamin E dạng tự nhiên (d-α-Tocopheryl acetate): 0,015%\nNeostigmine methyl sulfate: 0,005%\nTaurine: 0,1%\nChlorpheniramine maleate: 0,01%\nPhụ gia: Aminocaproic acid, Sodium edetate hydrate, Chlorobutanol, Geraniol, Benzalkonium chloride solution, Polysorbate 80, d-Borneol, l-Menthol, chất điều chỉnh áp suất thẩm thấu, chất điều chỉnh pH."
     }
   },
   {
     "id": "6",
-    "name": "Thuốc Nhỏ Mắt Rohto Vita Nhật Bản",
-    "description": "CÔNG DỤNG:\n- Giúp lưu thông máu và làm giảm mỏi mắt. “Vitamin B6” đã thúc đẩy việc trao đổi chất của tế bào mắt, và cải thiện sự mệt mỏi cho mắt.\n- Phòng chống các bệnh về mắt do tác nhân của môi trường như máy tính, bơi lội, khói bụi.\n- Điều trị các bệnh về mắt như đau mắt đỏ, đau mí mắt, viêm mắt do tia cực tím.\n- Người cận thị hay đeo kính áp tròng, bị sung huyết, ngứa mắt, nhìn mờ.\n- Đặc biệt tốt cho dân văn phòng.\n\nĐối tượng sử dụng:\n- Người làm việc nhiều trước máy tính, người làm văn phòng, IT.\n- Người hay phải đi nhiều ngoài đường (tiếp xúc với nhiều khí thải, khói bụi) hay những vận động viên bơi lội, người thường xuyên đi bơi.\n- Người bị cận thị cần được hỗ trợ điều trị một số vấn đề về mắt.",
-    "image": "/images/C-04-02.jpg",
-    "imageBg": "from-sky-500 to-blue-600",
-    "tag": "Mới",
-    "price": 60000,
-    "oldPrice": 60000,
+    "name": "Nước nhỏ mắt Rohto Lycee b 8ml",
+    "description": "Rohto Lycee b chứa Tetrahydrozoline hydrochloride – hoạt chất giúp giảm đỏ mắt – ở nồng độ tối đa theo tiêu chuẩn phê duyệt thuốc nhỏ mắt không kê đơn của Nhật Bản.\n\nSản phẩm giúp giảm tình trạng đỏ mắt, mang lại đôi mắt trông trong và sáng hơn. Đồng thời, sản phẩm tác động tổng hợp đến các nguyên nhân gây đỏ mắt như tổn thương do tia UV và ngứa mắt.\n\nDung dịch có màu hồng dễ thương đến từ Vitamin B12 – một thành phần dinh dưỡng đồng thời có tác dụng hỗ trợ cải thiện chức năng điều tiết và lấy nét của mắt.\n\nMang lại cảm giác nhỏ mắt mát mẻ, sảng khoái, kết hợp hương hoa hồng nhẹ nhàng.\n\nCông dụng:\n- Giảm đỏ kết mạc, giảm ngứa mắt, giảm mỏi mắt\n- Phòng ngừa các bệnh về mắt (sau khi bơi, khi bụi hoặc mồ hôi lọt vào mắt...)\n- Giảm cảm giác khó chịu khi đang đeo kính áp tròng cứng\n- Hỗ trợ cải thiện viêm mắt do tia cực tím và các loại ánh sáng khác\n- Viêm mí mắt, tình trạng mí mắt bị tổn thương\n- Mờ mắt (ví dụ khi có nhiều ghèn mắt)\n\nCách dùng:\n- Mỗi lần nhỏ 1–3 giọt, ngày nhỏ 5–6 lần.\n\nLưu ý khi sử dụng:\n- Tham khảo ý kiến chuyên gia nếu đang điều trị, từng bị dị ứng thuốc, đau mắt dữ dội, glôcôm.\n- Ngừng sử dụng nếu xuất hiện tác dụng phụ hoặc không thuyên giảm sau 5–6 ngày.",
+    "image": "https://shop.r10s.jp/kwrydrug/cabinet/07530672/4987241135653.jpg",
+    "imageBg": "from-pink-500 to-rose-500",
+    "price": 170000,
+    "oldPrice": 170000,
     "rating": 4.9,
-    "reviews": 215,
+    "reviews": 310,
+    "tag": "Yêu thích",
+    "stock": 140,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Dung tích": "Lọ 8ml",
+      "Thành phần": "Tetrahydrozoline hydrochloride: 0,05%\nZinc sulfate hydrate: 0,1%\nVitamin B12: 0,006%\nChlorpheniramine maleate: 0,01%\nSodium chondroitin sulfate ester: 0,5%\nL-Potassium aspartate: 1%\nPhụ gia: Acid boric, l-Menthol, d-Camphor, dầu Bergamot, Geraniol, Hypromellose, Chlorobutanol, Sodium hyaluronate, Polysorbate 80, chất điều chỉnh pH."
+    }
+  },
+  {
+    "id": "7",
+    "name": "Nước nhỏ mắt trẻ em Rohto Kodomo Soft 8ml",
+    "description": "Rohto Kodomo Soft là thuốc nhỏ mắt dành cho trẻ nhỏ, được thiết kế với tiêu chí dịu nhẹ và không gây cay mắt.\n\nSản phẩm không chứa chất bảo quản, đồng thời:\n- Không hương liệu\n- Không chất tạo màu\n- Không chất hoạt động bề mặt\n- Không chất tạo cảm giác mát (độ mát: 0)\n- Không gây kích ứng\n\nDung dịch có độ pH gần với nước mắt, mang lại cảm giác êm dịu, không cay mắt, phù hợp cho trẻ nhỏ.\n\nCông dụng:\n- Phòng ngừa các bệnh về mắt (sau khi bơi, khi bụi hoặc mồ hôi lọt vào mắt...)\n- Giảm đỏ kết mạc, giảm ngứa mắt, giảm mỏi mắt\n- Viêm mí mắt, tình trạng da mí mắt bị tổn thương\n- Mờ mắt (khi có nhiều ghèn mắt)\n- Viêm mắt do tia cực tím và các loại ánh sáng khác\n- Giảm cảm giác khó chịu khi đeo kính áp tròng cứng\n\nCách dùng:\n- Trẻ dưới 15 tuổi: Mỗi lần nhỏ 2–3 giọt, ngày nhỏ 5–6 lần.",
+    "image": "https://jp.rohto.com/-/media/com/kidseye/kodomosoft/img_100620_01.jpg?sc_lang=ja-jp",
+    "imageBg": "from-amber-400 to-orange-400",
+    "price": 160000,
+    "oldPrice": 160000,
+    "rating": 4.9,
+    "reviews": 275,
+    "tag": "Dành cho bé",
     "stock": 150,
     "specs": {
       "Xuất xứ": "Nhật Bản",
-      "Dung tích": "Lọ 12ml",
-      "Thành phần": "Vitamin E tự nhiên (d-α-tocopherol acetate), Vitamin B6, Sodium Chondroitin Sulfate, L-Potassium Aspartate"
+      "Đối tượng": "Trẻ dưới 15 tuổi",
+      "Dung tích": "Lọ 8ml",
+      "Thành phần": "Aminoethylsulfonic acid (Taurine): 1%\nChlorpheniramine maleate: 0,03%\nVitamin B6: 0,05%\nL-Potassium aspartate: 0,2%\nPhụ gia: Acid boric, Borax, chất điều chỉnh pH."
+    }
+  },
+  {
+    "id": "8",
+    "name": "Nước nhỏ mắt trẻ em Rohto Alguard Kodomo Clear 10ml",
+    "description": "Rohto Alguard Kodomo Clear là thuốc nhỏ mắt có thể sử dụng cho trẻ từ 1 tuổi trở lên, giúp giảm ngứa mắt và đỏ kết mạc. Sản phẩm giúp làm dịu tình trạng ngứa mắt do phấn hoa, bụi nhà và các tác nhân khác.\n\nSản phẩm chứa:\n- Hoạt chất giảm ngứa: Chlorpheniramine maleate\n- Hoạt chất giúp giảm viêm: Dipotassium glycyrrhizinate\n- Hoạt chất hỗ trợ phục hồi tế bào: Potassium L-aspartate\n- Vitamin B6\n\nĐặc biệt, sản phẩm không chứa chất bảo quản Benzalkonium chloride và Paraben:\n- Không hương liệu\n- Không chất tạo màu\n- Độ pH gần với nước mắt\n- Cảm giác nhỏ dịu nhẹ, ít gây xót mắt\n\nCông dụng:\n- Giảm ngứa mắt, đỏ kết mạc\n- Hỗ trợ điều trị viêm mí mắt, tổn thương da mí mắt\n- Giảm mờ mắt trong trường hợp mắt có nhiều ghèn\n- Phòng ngừa các bệnh về mắt (sau khi bơi hoặc khi bụi, mồ hôi lọt vào mắt)\n- Giảm mỏi mắt, giảm khó chịu khi đeo kính áp tròng cứng\n\nCách dùng – Liều dùng:\n- Trẻ dưới 15 tuổi: Mỗi lần nhỏ 1–3 giọt, ngày 5–6 lần.\n- Không sử dụng khi đang đeo kính áp tròng mềm.",
+    "image": "https://jp.rohto.com/-/media/com/rohto-alguard/eyedrop-kids/img_134427_01.jpg",
+    "imageBg": "from-emerald-500 to-teal-600",
+    "price": 170000,
+    "oldPrice": 170000,
+    "rating": 4.9,
+    "reviews": 185,
+    "tag": "Chống dị ứng",
+    "stock": 130,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Đối tượng": "Trẻ từ 1 tuổi trở lên",
+      "Dung tích": "Lọ 10ml",
+      "Thành phần": "Dipotassium glycyrrhizinate: 0,1%\nChlorpheniramine maleate: 0,03%\nVitamin B6 (Pyridoxine hydrochloride): 0,05%\nPotassium L-aspartate: 0,2%\nThành phần phụ gia: Axit boric, Borax, dầu bạc hà, Edetate sodium (EDTA-Na), Polysorbate 80, chất điều chỉnh pH. (Không chứa chất bảo quản Benzalkonium chloride và Paraben)."
+    }
+  },
+  {
+    "id": "9",
+    "name": "Nước nhỏ mắt V.Rohto Dry Guard Premium 15ml",
+    "description": "V.Rohto Dry Guard Premium là thuốc nhỏ mắt OTC đầu tiên tại Nhật Bản chứa 1% Natri chondroitin sulfate ester, tác động kép đến giác mạc và nước mắt.\n\nSản phẩm giúp:\n- Bảo vệ và hỗ trợ phục hồi giác mạc, qua đó hỗ trợ khả năng phục hồi của các tế bào giác mạc.\n- Hạn chế sự bay hơi của nước mắt\n- Điều trị các triệu chứng khô mắt khó chịu\n- Giảm mỏi mắt, hỗ trợ cải thiện tình trạng thiếu nước mắt.\n\nNgoài ra, sản phẩm có chứa dầu mè với vai trò là chất ổn định công thức.\nCó thể sử dụng khi mắt không đeo kính áp tròng, cũng như khi đang đeo kính áp tròng cứng hoặc mềm.\n\nCông dụng:\n- Giảm mỏi mắt\n- Hỗ trợ bổ sung nước mắt, giảm khô mắt\n- Giảm cảm giác khó chịu khi đeo kính áp tròng mềm hoặc cứng\n- Giảm mờ mắt, chẳng hạn khi mắt có nhiều ghèn\n\nCách dùng – Liều dùng:\n- Mỗi lần nhỏ 1–2 giọt, ngày 3–4 lần.",
+    "image": "https://shop.r10s.jp/fortress/cabinet/products/12374699/4987241194193mede.jpg",
+    "imageBg": "from-cyan-600 to-blue-700",
+    "price": 370000,
+    "oldPrice": 370000,
+    "rating": 5.0,
+    "reviews": 145,
+    "tag": "Cao cấp",
+    "stock": 95,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Dung tích": "Lọ 15ml",
+      "Thành phần": "Natri chondroitin sulfate ester: 1%\nThành phần phụ gia: Kali clorua, Natri clorua, Povidone, Axit boric, Borax, Dầu mè, l-Menthol, Polyoxyethylene hydrogenated castor oil, Polyoxyl stearate, Polyoxyethylene castor oil, Polyoxyethylene polyoxypropylene glycol, Polyhexanide hydrochloride, chất điều chỉnh pH."
+    }
+  },
+  {
+    "id": "10",
+    "name": "Nước nhỏ mắt V.Rohto Active Premium 15ml",
+    "description": "V.Rohto Active Premium sử dụng công thức hỗ trợ phục hồi chức năng thị giác, tập trung vào tình trạng suy giảm chức năng thị giác xảy ra khi mắt bị mỏi.\n\nSản phẩm giúp cải thiện:\n- Mỏi mắt do tuổi tác\n- Mỏi mắt do khô mắt\n- Nhìn mờ, chẳng hạn khi mắt có nhiều ghèn.\n\nThành phần nổi bật:\n- Neostigmine methyl sulfate: hỗ trợ cải thiện khả năng điều tiết và lấy nét của mắt, vốn có thể suy giảm khi mắt bị mỏi.\n- Chondroitin sulfate ester sodium: thành phần bảo vệ giác mạc, giúp tạo lớp phủ bảo vệ giác mạc và hỗ trợ giảm mỏi mắt.\n- Vitamin A: hỗ trợ phục hồi giác mạc và cải thiện tình trạng mỏi mắt.\n- Hỗ trợ thúc đẩy tiết mucin – một thành phần của nước mắt – giúp ổn định màng nước mắt.\n\nThiết kế chai tiện dụng:\n- “Chai Rakusashi”: có thể nhỏ thuốc ở nhiều góc độ khác nhau, giúp dễ nhỏ mắt mà không cần giơ tay quá cao.\n- “Nắp Rakuake”: chỉ cần xoay nhẹ để mở và đóng nắp.\n\nKính áp tròng: Có thể sử dụng khi không đeo kính hoặc khi đang đeo kính áp tròng cứng. Không sử dụng khi đang đeo kính áp tròng mềm.\n\nCông dụng:\n- Cải thiện nhìn mờ (ví dụ khi mắt có nhiều ghèn)\n- Giảm mỏi mắt, đỏ kết mạc, ngứa mắt\n- Phòng ngừa các bệnh về mắt (sau khi bơi hoặc khi bụi, mồ hôi lọt vào mắt)\n- Hỗ trợ điều trị viêm mí mắt, giảm viêm mắt do tia cực tím\n- Giảm cảm giác khó chịu khi đeo kính áp tròng cứng\n\nCách dùng – Liều dùng:\n- Mỗi lần nhỏ 1–3 giọt, ngày 5–6 lần.\n- Không sử dụng khi đang đeo kính áp tròng mềm.",
+    "image": "https://jp.rohto.com/-/media/com/vrohto-premium-series/eyedrop-active/img_174461_01.jpg",
+    "imageBg": "from-amber-600 to-yellow-600",
+    "price": 370000,
+    "oldPrice": 370000,
+    "rating": 5.0,
+    "reviews": 230,
+    "tag": "Cao cấp",
+    "stock": 110,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Dung tích": "Lọ 15ml",
+      "Thành phần": "Retinol palmitate (Vitamin A): 50.000 đơn vị/100ml\nTetrahydrozoline hydrochloride: 0,01%\nNeostigmine methyl sulfate: 0,005%\nChlorpheniramine maleate: 0,03%\nVitamin B6: 0,01%\nd-α-Tocopherol acetate (Vitamin E tự nhiên): 0,045%\nPotassium L-aspartate: 0,5%\nTaurine: 1%\nSodium chondroitin sulfate ester: 0,1%\nThành phần phụ gia: Axit boric, Borax, Natri clorua, Edetate sodium (EDTA-Na), BHT, Polyhexanide hydrochloride, l-Menthol, Geraniol, dầu khuynh diệp, Polyoxyethylene hydrogenated castor oil, Polyoxyethylene castor oil, chất điều chỉnh pH."
+    }
+  },
+  {
+    "id": "11",
+    "name": "Trị muỗi Muhi S2a 50ml",
+    "description": "Muhi S2a dạng nước 50ml - Thẩm thấu nhanh, điều trị hiệu quả vết côn trùng đốt và ngứa.\n\nĐặc điểm nổi bật:\n- Nhanh chóng giảm ngứa, hiệu quả đối với sưng và đỏ nhờ phối hợp Diphenhydramine hydrochloride và Dexamethasone acetate.\n- Cảm giác mát lạnh sảng khoái từ l-Menthol và dl-Camphor, thẩm thấu nhanh và không gây nhờn dính.\n- Đầu mút dạng mút xốp thông minh, dễ dàng thoa trực tiếp lên da mà không làm bẩn tay.\n\nCông dụng:\n- Dùng trong các trường hợp: Ngứa, Côn trùng đốt, Viêm da, Viêm da tiếp xúc/kích ứng, Mề đay, Chàm, Cước, Rôm sảy.\n\nCách dùng – Liều dùng:\n- Thoa một lượng thích hợp lên vùng da bị ảnh hưởng vài lần mỗi ngày. Khuyến nghị cho trẻ từ 6 tháng tuổi trở lên và người lớn.",
+    "image": "https://www.ikedamohando.co.jp/products/downloads/img-r-muhi-s-01.webp",
+    "imageBg": "from-blue-500 to-cyan-600",
+    "price": 200000,
+    "oldPrice": 200000,
+    "rating": 4.9,
+    "reviews": 320,
+    "tag": "Bán chạy",
+    "stock": 150,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Dung tích": "Lọ 50ml",
+      "Độ tuổi": "Từ 6 tháng tuổi",
+      "Thành phần": "Trong 100ml: Dexamethasone acetate: 25mg, Diphenhydramine hydrochloride: 2,0g, l-Menthol: 3,5g, dl-Camphor: 1,0g, Glycyrrhetinic acid: 0,2g, Isopropyl methylphenol: 0,1g. Phụ gia: BHT, axit citric, natri citrat, ethanol."
+    }
+  },
+  {
+    "id": "12",
+    "name": "Kem chống nắng KISSME Mommy! Aqua Milk 50g",
+    "description": "Sữa chống nắng dịu nhẹ cho làn da – có thể rửa sạch bằng xà phòng thông thường.\n\nĐặc điểm nổi bật:\n- Sữa chống nắng không gây vệt trắng, hiệu quả bảo vệ cao với chỉ số SPF50+ PA++++.\n- Được làm từ 80% thành phần có nguồn gốc thực phẩm, cực kỳ lành tính và dịu nhẹ với da.\n- Không chứa chất tạo màu, dầu khoáng, chất bảo quản, hương liệu, cồn.\n- Công thức Waterproof chống trôi nước và mồ hôi hiệu quả khi trẻ vui chơi ngoài trời hoặc dưới nước.\n- Chứa Ceramide, Collagen, Hyaluronic Acid và các chiết xuất thảo mộc dưỡng ẩm mềm mịn.\n\nĐộ tuổi khuyến nghị: Từ 1 tuổi trở lên và người có làn da nhạy cảm.",
+    "image": "https://shop.r10s.jp/koyama-p/cabinet/5cosme/5/4901433071833.jpg",
+    "imageBg": "from-amber-400 to-yellow-500",
+    "price": 220000,
+    "oldPrice": 220000,
+    "rating": 4.9,
+    "reviews": 210,
+    "tag": "Mẹ & Bé",
+    "stock": 140,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Trọng lượng": "Tuýp 50g",
+      "Chỉ số chống nắng": "SPF50+ PA++++",
+      "Độ tuổi": "Từ 1 tuổi trở lên",
+      "Thành phần": "Dầu jojoba, Chiết xuất quả acerola, Chiết xuất lá nha đam (Aloe vera), Chiết xuất quả mâm xôi, Ceramide, Collagen, Hyaluronic Acid (80% nguồn gốc thực phẩm)."
+    }
+  },
+  {
+    "id": "13",
+    "name": "Kem chống nắng KISSME Mommy! UV Mild Gel N 100g",
+    "description": "Gel chống nắng dịu nhẹ dạng chai vòi nhấn tiện dụng, có thể rửa sạch bằng xà phòng.\n\nĐặc điểm nổi bật:\n- 90% thành phần có nguồn gốc thực phẩm lành tính.\n- Dạng gel nước lỏng nhẹ, thấm nhanh tức thì, không gây bí rít hay nặng mặt.\n- Chỉ số chống nắng SPF33 PA+++ phù hợp dùng hàng ngày đi học, đi dạo phố.\n- Công thức 6 KHÔNG: Không chất tạo màu, không dầu khoáng, không chất bảo quản, không hương liệu, không cồn, không silicone.\n- Thiết kế chai hình chú gấu dễ thương, vòi nhấn tiện lợi cho bé tự dùng.\n\nĐộ tuổi khuyến nghị: Từ 1 tuổi trở lên.",
+    "image": "https://shop.r10s.jp/koyama-p/cabinet/5cosme/5/4901433074902.jpg",
+    "imageBg": "from-yellow-400 to-amber-500",
+    "price": 220000,
+    "oldPrice": 220000,
+    "rating": 4.9,
+    "reviews": 280,
+    "tag": "Yêu thích",
+    "stock": 160,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Trọng lượng": "Chai 100g",
+      "Chỉ số chống nắng": "SPF33 PA+++",
+      "Độ tuổi": "Từ 1 tuổi trở lên",
+      "Thành phần": "Dầu jojoba, Chiết xuất quả Acerola, Chiết xuất lá nha đam, Chiết xuất quả mâm xôi, Hyaluronic acid, Trehalose (90% thành phần có nguồn gốc thực phẩm)."
+    }
+  },
+  {
+    "id": "14",
+    "name": "Kem chống nắng KISSME Mommy! UV Pure Cream 50g",
+    "description": "Kem chống nắng thuần vật lý không màng lọc UV hóa học, dịu êm cho cả mẹ bầu và bé sơ sinh.\n\nĐặc điểm nổi bật:\n- 80% thành phần có nguồn gốc từ thực phẩm tự nhiên.\n- Công thức không sử dụng chất hấp thụ tia UV hóa học, an toàn tuyệt đối cho làn da mỏng manh của trẻ sơ sinh.\n- Chỉ số SPF29 PA+++ bảo vệ tối ưu khỏi ánh nắng mặt trời hàng ngày.\n- Dễ tán đều, không gây bết dính, dưỡng ẩm mịn màng với Hyaluronic Acid và chiết xuất lá đào.\n- Rửa sạch dễ dàng bằng sữa tắm hoặc xà phòng thông thường.\n\nĐộ tuổi khuyến nghị: Từ 6 tháng tuổi trở lên.",
+    "image": "https://shop.r10s.jp/fines-f/cabinet/12/4901433072298.jpg",
+    "imageBg": "from-orange-400 to-rose-400",
+    "price": 250000,
+    "oldPrice": 250000,
+    "rating": 4.8,
+    "reviews": 165,
+    "tag": "Thuần vật lý",
+    "stock": 110,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Trọng lượng": "Tuýp 50g",
+      "Chỉ số chống nắng": "SPF29 PA+++",
+      "Độ tuổi": "Từ 6 tháng tuổi trở lên",
+      "Thành phần": "Dầu jojoba, Chiết xuất quả acerola, Chiết xuất lá nha đam, Chiết xuất quả mâm xôi, Chiết xuất lá đào, Hyaluronic Acid (Không màng lọc UV hóa học, không cồn, không paraben)."
+    }
+  },
+  {
+    "id": "15",
+    "name": "Xịt chống muỗi SKIN VAPE MIST Hello Kitty 200ml – Phiên bản giới hạn",
+    "description": "Xịt chống muỗi SKIN VAPE MIST Hello Kitty 200ml – Phiên bản giới hạn Nhật Bản đáng yêu.\n\nĐặc điểm nổi bật:\n- Xua đuổi nhiều loại côn trùng gây hại: Muỗi, bọ chét, mạt/ve chó nhà, ruồi đen, rệp giường, đỉa núi...\n- Chứa 10% thành phần chống côn trùng duy trì hiệu quả bảo vệ trong nhiều giờ liên tục.\n- Công thức nền nước kết hợp Sodium Hyaluronate giữ ẩm, làm dịu da không bết dính.\n- Hương thơm đào & mơ (Peach Apricot) ngọt ngào dễ chịu, không nồng mùi thuốc muỗi.\n- Chai dung tích lớn 200ml tiết kiệm cho cả gia đình.",
+    "image": "https://shop.r10s.jp/fines-f/cabinet/06547305/06802343/imgrc0071610412.jpg",
+    "imageBg": "from-pink-400 to-rose-500",
+    "price": 180000,
+    "oldPrice": 180000,
+    "rating": 4.9,
+    "reviews": 390,
+    "tag": "Bản giới hạn",
+    "stock": 190,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Dung tích": "Chai 200ml",
+      "Hoạt chất": "DEET 10%",
+      "Mùi hương": "Peach Apricot (Đào & Mơ)",
+      "Thành phần": "DEET 10%, Sodium Hyaluronate, Ethanol, Nước tinh khiết, Hương liệu."
+    }
+  },
+  {
+    "id": "16",
+    "name": "Xịt chống muỗi SKIN VAPE MIST 200ml",
+    "description": "Xịt chống muỗi SKIN VAPE MIST chai xanh 200ml bảo vệ làn da cho cả gia đình.\n\nĐặc điểm nổi bật:\n- Hiệu quả xua đuổi muỗi, bọ chét, mạt ve, ruồi đen, rệp giường và đỉa núi.\n- Chứa 10% thành phần chống côn trùng duy trì bảo vệ kéo dài.\n- Nền nước bổ sung Sodium Hyaluronate dưỡng ẩm, thấm nhanh mát da.\n- Hương cam chanh biển (Citrus Marine) thanh mát sảng khoái.\n\nĐộ tuổi và tần suất sử dụng:\n- Dưới 6 tháng tuổi: Không sử dụng.\n- Từ 6 tháng đến dưới 2 tuổi: Tối đa 1 lần/ngày.\n- Từ 2 đến dưới 12 tuổi: 1–3 lần/ngày.",
+    "image": "https://shop.r10s.jp/kyorindo/cabinet/item12/4902424433050.jpg",
+    "imageBg": "from-cyan-500 to-blue-600",
+    "price": 175000,
+    "oldPrice": 175000,
+    "rating": 4.9,
+    "reviews": 480,
+    "tag": "Bán chạy nhất",
+    "stock": 220,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Dung tích": "Chai 200ml",
+      "Hoạt chất": "DEET 10%",
+      "Mùi hương": "Citrus Marine (Cam chanh biển)",
+      "Thành phần": "DEET 10%, Sodium Hyaluronate, Ethanol, Nước, Hương liệu."
+    }
+  },
+  {
+    "id": "17",
+    "name": "Xịt chống muỗi Skin Vape Mist Premium – 200ml",
+    "description": "Xịt chống muỗi Skin Vape Mist Premium nồng độ cao Icaridin 15% – hiệu quả tối đa 8 giờ.\n\nĐặc điểm nổi bật:\n- Hoạt chất thế hệ mới Icaridin 15% không giới hạn độ tuổi, dùng an toàn từ trẻ sơ sinh.\n- Khả năng bảo vệ vượt trội lên đến 8 tiếng chống muỗi, bọ chét, ve, rệp giường, đỉa...\n- Dạng xịt phun sương ít phát tán, mùi hương xà phòng em bé thoang thoảng dịu nhẹ.\n- Bổ sung Sodium Hyaluronate dưỡng ẩm cho da mềm mịn.\n- Dùng được trực tiếp trên quần áo mà không làm ố màu vải thông thường.",
+    "image": "https://fumakilla.jp/products/2024/01/23_angelmist_pre200ph.jpg",
+    "imageBg": "from-amber-500 to-yellow-600",
+    "price": 265000,
+    "oldPrice": 265000,
+    "rating": 5.0,
+    "reviews": 310,
+    "tag": "Cao cấp",
+    "stock": 170,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Dung tích": "Chai 200ml",
+      "Hoạt chất": "Icaridin 15%",
+      "Độ tuổi": "Dùng được từ trẻ sơ sinh",
+      "Thành phần": "Icaridin 15%, Sodium Hyaluronate, Ethanol, Nước tinh khiết, Hương xà phòng em bé."
+    }
+  },
+  {
+    "id": "18",
+    "name": "Miếng dán chống côn trùng Pigeon - 30 Miếng",
+    "description": "Miếng dán chống muỗi & côn trùng Pigeon 30 miếng chiết xuất tinh dầu thảo mộc tự nhiên.\n\nĐặc điểm nổi bật:\n- Sử dụng tinh dầu sả (Citronella) tự nhiên khuếch tán mùi hương xua đuổi côn trùng hiệu quả trong 6–8 giờ.\n- An toàn tuyệt đối cho bé từ 0 tháng tuổi (trẻ sơ sinh).\n- Dán tiện lợi lên quần áo, mũ nón, xe đẩy, nôi cũi mà không cần tiếp xúc trực tiếp lên làn da non nớt của bé.\n- Họa tiết hình thú ngộ nghĩnh, hương cam chanh tươi mát dễ chịu.\n\nLượng dùng tham khảo: Dán khoảng 3–4 miếng mỗi lần ở các vị trí khác nhau.",
+    "image": "https://products.pigeon.co.jp/catalog/photo/1044462a.jpg",
+    "imageBg": "from-emerald-500 to-teal-600",
+    "price": 240000,
+    "oldPrice": 240000,
+    "rating": 4.9,
+    "reviews": 230,
+    "tag": "Từ 0 tháng",
+    "stock": 150,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Quy cách": "Gói 30 miếng dán",
+      "Độ tuổi": "Từ 0 tháng tuổi (sơ sinh)",
+      "Thành phần": "Tinh dầu thảo mộc tự nhiên – dầu sả Citronella."
+    }
+  },
+  {
+    "id": "19",
+    "name": "Xịt chống côn trùng Pigeon 200ml",
+    "description": "Xịt chống côn trùng Pigeon chứa Icaridin 15% bảo vệ tối đa 8 giờ dành cho bé từ 0 tuổi.\n\nĐặc điểm nổi bật:\n- Nồng độ Icaridin 15% công nghệ cao bảo vệ bền bỉ khỏi muỗi, bọ chét, ve, rệp giường, đỉa...\n- Công thức khô thoáng, không gây cảm giác bết dính trên da.\n- Bổ sung Sodium Hyaluronate duy trì độ ẩm tự nhiên cho da bé.\n- Hương xà phòng nhẹ nhàng, êm dịu cho khứu giác nhạy cảm của trẻ nhỏ.\n- Phù hợp sử dụng hàng ngày cho cả gia đình.",
+    "image": "https://products.pigeon.co.jp/catalog/photo/1047136a.jpg",
+    "imageBg": "from-teal-500 to-cyan-600",
+    "price": 235000,
+    "oldPrice": 235000,
+    "rating": 4.9,
+    "reviews": 195,
+    "tag": "Khuyên dùng",
+    "stock": 140,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Dung tích": "Chai 200ml",
+      "Hoạt chất": "Icaridin 15%",
+      "Độ tuổi": "Từ 0 tuổi",
+      "Thành phần": "Icaridin 15%, Ethanol, Sodium Hyaluronate, Glycerin đậm đặc, Nước tinh khiết, Hương liệu."
+    }
+  },
+  {
+    "id": "20",
+    "name": "Siro ho Pabron Kids 120ml",
+    "description": "Siro ho cảm Pabron Kids chai 120ml vị dâu thơm ngọt dễ uống cho bé từ 3 tháng tuổi.\n\nCông dụng:\n- Giảm nhanh các triệu chứng cảm lạnh: Sốt, ho, sổ mũi, đau họng, hắt hơi, có đờm, nghẹt mũi, ớn lạnh, đau đầu, đau mỏi người.\n- Vị dâu ngọt dịu giúp bé dễ dàng hợp tác uống thuốc.\n- Công thức an toàn: KHÔNG caffeine, KHÔNG codeine, KHÔNG dl-methylephedrine hydrochloride gây ảnh hưởng đến giấc ngủ của bé.\n\nLiều dùng:\n- Bé 3 tháng – dưới 6 tháng: 5ml/lần\n- Bé 6 tháng – dưới 1 tuổi: 6ml/lần\n- Bé 1 – dưới 3 tuổi: 7.5ml/lần\n- Bé 3 – dưới 7 tuổi: 10ml/lần\n- Ngày uống 3 lần sau bữa ăn.",
+    "image": "https://taisho.scene7.com/is/image/taisho/syrup?obj=1691566593591&fmt=png-alpha",
+    "imageBg": "from-red-500 to-rose-600",
+    "price": 225000,
+    "oldPrice": 225000,
+    "rating": 4.9,
+    "reviews": 370,
+    "tag": "Thuốc cho bé",
+    "stock": 180,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Dung tích": "Chai 120ml",
+      "Độ tuổi": "Từ 3 tháng tuổi",
+      "Thành phần": "Trong 60ml: Acetaminophen 300mg, Dextromethorphan HBr hydrate 16mg, Guaifenesin 83.3mg, Chlorpheniramine maleate 2.5mg. Tá dược: Đường trắng, Sucralose, Axit citric, hương dâu..."
+    }
+  },
+  {
+    "id": "21",
+    "name": "Kem đánh răng Pigeon Petit Kids 50g",
+    "description": "Kem đánh răng dạng gel Pigeon Petit Kids 50g dành cho răng sữa của bé từ 12 tháng tuổi.\n\nĐặc điểm nổi bật:\n- Chứa Sodium Fluoride 500ppm chuẩn khoa học giúp tái khoáng men răng và phòng ngừa sâu răng vượt trội.\n- Dạng gel trong không tạo bọt, vị ngọt tự nhiên từ Xylitol giúp ba mẹ dễ dàng quan sát và chải kỹ từng kẽ răng của bé.\n- Chất làm sạch Silica khan dịu nhẹ, không làm mòn men răng sữa mới nhú.\n- Không phẩm màu, không paraben, không hương cay nồng.\n- Có 3 vị: Xylitol tự nhiên, Dâu tây 🍓 và Nho 🍇.",
+    "image": "https://images.openai.com/static-rsc-4/7RBGqQA5DeTBOFGA-2mZ6X6M1aOTwgwAw2TowLdkuT3pG8d-lvo__lDKYwOtWqiSMGmT9yNxWyadvR1yM-DJEPlT05ByNPKMF9KhFCb6AHBWZHX5DqcevirC0qCV7ZIQ8C_08XVDLI5CIZyMo5O7mWADz19U_uKpkse2uUqo-SOZNyH8LRdfo6KwRCLFSDlE?purpose=fullsize",
+    "imageBg": "from-cyan-500 to-teal-600",
+    "price": 165000,
+    "oldPrice": 165000,
+    "rating": 4.9,
+    "reviews": 290,
+    "tag": "Răng miệng",
+    "stock": 200,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Trọng lượng": "Tuýp 50g",
+      "Độ tuổi": "Từ 12 tháng tuổi",
+      "Thành phần": "Sodium Fluoride (500ppm), Xylitol, Propylene Glycol, Glycerin Fatty Acid Ester, Anhydrous Silica, Sodium Citrate..."
+    }
+  },
+  {
+    "id": "22",
+    "name": "Bột canxi FINE JAPAN Socola 140 g",
+    "description": "Bột bổ sung Canxi cá & Sắt FINE JAPAN vị Socola 140g – dinh dưỡng tăng trưởng chiều cao cho bé.\n\nĐặc điểm nổi bật:\n- Cung cấp Canxi hữu cơ chiết xuất từ xương cá kết hợp Vitamin D và Vitamin K2 giúp hấp thụ canxi tối đa vào xương.\n- Bổ sung 7.5mg Sắt và các vitamin thiết yếu B1, B2, B6, C thúc đẩy thể lực và chiều cao.\n- Vị socola thơm lừng, dễ hòa tan vào sữa tươi, sữa hạt hoặc đồ uống ấm.\n- Không sử dụng 8 nhóm nguyên liệu gây dị ứng đặc định (trứng, sữa, lúa mì, kiều mạch, đậu phộng, tôm, cua, óc chó).\n\nCách dùng: Pha 1 muỗng (10g) vào 150ml sữa, uống 1–2 ly mỗi ngày.",
+    "image": "https://www.fine-kagaku.co.jp/Contents/ProductImages/0/j_kidschoko__LL.jpg",
+    "imageBg": "from-amber-600 to-yellow-700",
+    "price": 230000,
+    "oldPrice": 230000,
+    "rating": 4.9,
+    "reviews": 340,
+    "tag": "Bột Canxi",
+    "stock": 160,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Trọng lượng": "Túi 140g",
+      "Thành phần": "Canxi nung từ xương cá (500mg/20g), Sắt (7.5mg), Vitamin D (5µg), Vitamin K2 (70µg), Vitamin B1, B2, B6, Vitamin C, Bột cacao, Lecithin đậu nành..."
+    }
+  },
+  {
+    "id": "23",
+    "name": "Bột canxi FINE JAPAN Milky 100 g",
+    "description": "Bột canxi FINE JAPAN vị sữa Milky 100g – giải pháp tuyệt vời cho bé lười uống sữa.\n\nĐặc điểm nổi bật:\n- 10g bột cung cấp đến 500mg Canxi sữa hấp thu nhanh.\n- Bổ sung Vitamin D và Vitamin K hỗ trợ tối ưu quá trình tạo xương và răng chắc khỏe.\n- Tích hợp thêm Sắt, L-Arginine và Kẽm – dưỡng chất vàng kích thích hormone tăng trưởng ở trẻ nhỏ.\n- Vị sữa Milky béo ngậy thơm ngon, dễ pha cùng sữa hạt hoặc nước ấm.",
+    "image": "https://tshop.r10s.jp/fines-f/cabinet/13/4976652016736.jpg?_ex=300x300&s=0&r=1",
+    "imageBg": "from-sky-400 to-indigo-500",
+    "price": 230000,
+    "oldPrice": 230000,
+    "rating": 4.9,
+    "reviews": 215,
+    "tag": "Bột Canxi",
+    "stock": 130,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Trọng lượng": "Túi 100g",
+      "Thành phần": "Canxi sữa (500mg/10g), Vitamin D, Vitamin K, Sắt (7.5mg), Kẽm, L-Arginine, Vitamin B1, B2, B6, Sữa đặc có đường..."
+    }
+  },
+  {
+    "id": "24",
+    "name": "Bột canxi FINE JAPAN Banana 196 g",
+    "description": "Bột canxi & Protein FINE JAPAN vị chuối 196g hỗ trợ dinh dưỡng toàn diện.\n\nĐặc điểm nổi bật:\n- Bổ sung công thức toàn diện: Canxi 500mg + Protein 6g + Vitamin D + Vitamin K + Sắt trong mỗi khẩu phần.\n- Cung cấp Magie, Axit Folic, Niacin, Vitamin B1, B2, B6, B12, C, E giúp phát triển thể chất và cơ bắp vượt trội.\n- Hương chuối tự nhiên thơm ngậy, dễ uống và được các bé yêu thích.",
+    "image": "https://www.fine-kagaku.co.jp/Contents/ProductImages/0/a-000353_LL.jpg",
+    "imageBg": "from-yellow-400 to-amber-500",
+    "price": 230000,
+    "oldPrice": 230000,
+    "rating": 4.9,
+    "reviews": 180,
+    "tag": "Canxi & Đạm",
+    "stock": 120,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Trọng lượng": "Túi 196g",
+      "Thành phần": "Protein sữa (6g/14g), Canxi sữa (500mg), Vitamin D, Vitamin K, Sắt (4.62mg), Magie (10mg), Vitamin B1, B2, B6, B12, Niacin, Vitamin C, Axit Folic, Puree chuối..."
+    }
+  },
+  {
+    "id": "25",
+    "name": "Viên uống Axit Folic + Canxi Pigeon 60 viên",
+    "description": "Viên uống bổ sung Axit Folic + Canxi + Sắt Pigeon 60 viên cho phụ nữ chuẩn bị mang thai & đang mang thai.\n\nĐặc điểm nổi bật:\n- Cung cấp chuẩn 400µg Axit Folic mỗi ngày – hàm lượng vàng được Bộ Y tế Nhật khuyến nghị giúp phòng ngừa dị tật ống thần kinh thai nhi.\n- Kết hợp hoàn hảo 12 loại vitamin & khoáng chất: Sắt 10mg, Canxi 160mg, Kẽm 2mg, Vitamin D, Vitamin nhóm B và Vitamin C.\n- Viên nén siêu nhỏ chỉ 9mm, hoàn toàn không mùi tanh, cực kỳ dễ uống kể cả với mẹ đang bị ốm nghén.\n\nCách dùng: Uống 2 viên/ngày chia đều cùng nước ấm. 1 hộp 60 viên dùng trong 30 ngày.",
+    "image": "https://products.pigeon.co.jp/catalog/photo/1043678a.jpg",
+    "imageBg": "from-pink-400 to-rose-500",
+    "price": 345000,
+    "oldPrice": 345000,
+    "rating": 5.0,
+    "reviews": 410,
+    "tag": "Mẹ Bầu",
+    "stock": 170,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Quy cách": "Hộp 60 viên (30 ngày)",
+      "Đối tượng": "Phụ nữ chuẩn bị & đang mang thai",
+      "Thành phần": "Axit folic: 400µg, Sắt: 10mg, Canxi: 160mg, Kẽm: 2mg, Vitamin B1, B2, B6, B12 (2.8µg), Niacin: 11mg, Vitamin C: 10mg, Axit pantothenic: 5mg, Vitamin D: 3.5–10.2µg."
+    }
+  },
+  {
+    "id": "26",
+    "name": "Viên uống Axit Folic Mamaru  - chuẩn bị mang thai",
+    "description": "Viên uống bổ sung Axit Folic hữu cơ cao cấp mitas / mamaru – số 1 Nhật Bản cho giai đoạn Ninkatsu chuẩn bị mang thai & thai kỳ.\n\nĐặc điểm nổi bật:\n- Cung cấp Axit Folic dạng men hữu cơ dễ hấp thu vượt trội cùng Sắt Heme tự nhiên, Canxi từ vỏ sò và DHA/EPA từ dầu cá tinh chế.\n- Bổ sung lợi khuẩn Axit Lactic và các chiết xuất thảo mộc (nhân sâm, gừng, vỏ quýt, kỷ tử, quả mọng) làm ấm cơ thể và tăng cường sức khỏe sinh sản.\n- Không chứa chất phụ gia hóa học độc hại, an toàn tuyệt đối cho mẹ và bé.\n\nCách dùng: Mỗi ngày uống 4 viên cùng nước hoặc nước ấm.",
+    "image": "https://brands.naturaltech.jp/_astro/kv-1.CfdwD1DT_3MQqA.webp",
+    "imageBg": "from-rose-500 to-fuchsia-600",
+    "price": 1100000,
+    "oldPrice": 1100000,
+    "rating": 5.0,
+    "reviews": 160,
+    "tag": "Cao cấp",
+    "stock": 80,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Nhà sản xuất": "natural tech Co., Ltd.",
+      "Quy cách": "Gói 120 viên (36g)",
+      "Thành phần": "Axit folic, Sắt heme, Canxi vỏ sò, DHA/EPA, Men kẽm, Lợi khuẩn Lactic, Nhân sâm, Gừng, Kỷ tử, Chiết xuất quả mọng, Vitamin B1, B2, B3, B5, B6, B12, C, D, E..."
+    }
+  },
+  {
+    "id": "27",
+    "name": "Viên uống Axit Folic DHC",
+    "description": "Viên uống bổ sung Axit Folic DHC 30 ngày – giải pháp gọn nhẹ cho mẹ bầu và người cần tăng cường sức khỏe.\n\nĐặc điểm nổi bật:\n- Cung cấp 400µg Axit Folic mỗi ngày dưới dạng monoglutamate – dạng dễ hấp thu nhất, tương đương lượng folate trong 12 phần rau bina luộc.\n- Bổ sung Vitamin B2 (1.3mg), Vitamin B6 (1.7mg) và Vitamin B12 (2.5µg) hỗ trợ quá trình tạo máu và trao đổi chất.\n- Chỉ 1 viên nhỏ mỗi ngày, cực kỳ tiện lợi và kinh tế.\n\nCách dùng: Uống 1 viên mỗi ngày sau ăn cùng nước ấm.",
+    "image": "https://shop.r10s.jp/dhcshop-2/cabinet/8000002404.jpg",
+    "imageBg": "from-emerald-500 to-teal-600",
+    "price": 850000,
+    "oldPrice": 85000,
+    "rating": 4.9,
+    "reviews": 560,
+    "tag": "Tiết kiệm",
+    "stock": 250,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Thương hiệu": "DHC",
+      "Quy cách": "Gói 30 viên (30 ngày)",
+      "Thành phần": "Axit folic: 400μg, Vitamin B2: 1.3mg, Vitamin B6: 1.7mg, Vitamin B12: 2.5μg, Maltose, Dextrin, Cellulose..."
+    }
+  },
+  {
+    "id": "28",
+    "name": "Viên uống Asahi bổ sung Axit folic × Sắt × Canxi 60 ngày",
+    "description": "Viên uống tổng hợp Asahi Dear-Natura bổ sung Axit Folic × Sắt × Canxi 60 ngày.\n\nĐặc điểm nổi bật:\n- Bổ sung bộ ba dưỡng chất thiết yếu: Axit Folic + Sắt + Canxi từ trước khi mang thai, suốt thai kỳ đến khi cho con bú.\n- Tích hợp thêm lợi khuẩn Axit Lactic và các Vitamin C, B1, B6, B12, D giúp nâng cao sức đề kháng và giảm ốm nghén mệt mỏi.\n- Tiết kiệm kinh tế với liệu trình 60 ngày (120 viên).\n\nLiều dùng: Uống 2 viên mỗi ngày cùng nước ấm.",
+    "image": "https://www.dear-natura.com/_var/images/product/54/693f7ab2f3e91.png",
+    "imageBg": "from-pink-500 to-rose-600",
+    "price": 230000,
+    "oldPrice": 230000,
+    "rating": 4.9,
+    "reviews": 290,
+    "tag": "Khuyên dùng",
+    "stock": 150,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Thương hiệu": "Asahi Dear-Natura",
+      "Quy cách": "Lọ 120 viên (60 ngày)",
+      "Thành phần": "Axit Folic, Sắt, Canxi, Lợi khuẩn Lactic, Vitamin C, Vitamin B1, B6, B12, Vitamin D..."
+    }
+  },
+  {
+    "id": "29",
+    "name": "Viên nhai bổ sung Sắt + Axit folic ORIHIRO",
+    "description": "Viên kẹo nhai bổ sung Sắt + Axit Folic ORIHIRO 120 viên vị quả mọng (Mixed Berry).\n\nĐặc điểm nổi bật:\n- Cung cấp 10mg Sắt hữu cơ mỗi ngày (tương đương lượng sắt trong 100 quả mận khô) kết hợp Axit Folic 140µg và Vitamin C 80mg giúp phòng ngừa và cải thiện thiếu máu.\n- Dạng viên nhai thơm ngon chua ngọt vị dâu & việt quất, không cần dùng nước, không có vị tanh của sắt.\n- Thích hợp cho phụ nữ mang thai, cho con bú, người thiếu máu hoặc sợ uống thuốc viên.\n\nCách dùng: Nhai hoặc ngậm 4 viên mỗi ngày.",
+    "image": "https://shop.r10s.jp/doremi/cabinet/n2000/4571157256658.jpg",
+    "imageBg": "from-purple-500 to-indigo-600",
+    "price": 160000,
+    "oldPrice": 160000,
+    "rating": 4.9,
+    "reviews": 310,
+    "tag": "Viên nhai",
+    "stock": 180,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Thương hiệu": "ORIHIRO",
+      "Quy cách": "Túi 120 viên (30 ngày)",
+      "Thành phần": "Trong 4 viên: Sắt 10mg, Axit folic 140µg, Vitamin C 80mg, Vitamin B6 1.0mg, Vitamin B12 1.8µg, Đồng 0.1mg, Bột chiết xuất việt quất..."
+    }
+  },
+  {
+    "id": "30",
+    "name": "Viên nhai UHA Kids bổ sung Canxi + Sắt ( trẻ em từ 5 tuôỉ) 100 viên",
+    "description": "Kẹo dẻo gumi UHA Mikakuto Kids bổ sung Canxi + Sắt cho bé từ 5 tuổi.\n\nĐặc điểm nổi bật:\n- Dạng kẹo dẻo gummy dẻo dai thơm lừng hương vị trái cây nhiệt đới (xoài, dứa) khiến bé vô cùng thích thú bổ sung mỗi ngày.\n- Cung cấp Canxi từ vỏ sò và Vitamin D hỗ trợ phát triển hệ xương răng cứng cáp, tăng trưởng chiều cao.\n- Bổ sung Sắt và Vitamin B6 tăng cường tuần hoàn máu và đề kháng cho trẻ.\n- Sản phẩm dinh dưỡng hàng đầu của tập đoàn bánh kẹo UHA Mikakuto Nhật Bản.\n\nCách dùng: Nhai kỹ khoảng 5 viên mỗi ngày. Dành cho trẻ từ 5 tuổi trở lên.",
+    "image": "https://image.rakuten.co.jp/biccamera/cabinet/product/4492/00000006923463_a01.jpg",
+    "imageBg": "from-amber-400 to-orange-500",
+    "price": 215000,
+    "oldPrice": 215000,
+    "rating": 4.9,
+    "reviews": 270,
+    "tag": "Kẹo dẻo Canxi",
+    "stock": 190,
+    "specs": {
+      "Xuất xứ": "Nhật Bản",
+      "Thương hiệu": "UHA Mikakuto",
+      "Quy cách": "Gói 100 viên (20 ngày)",
+      "Độ tuổi": "Trẻ em từ 5 tuổi trở lên",
+      "Thành phần": "Canxi từ vỏ sò, Sắt pyrophosphate, Vitamin B6, Vitamin D, Collagen, Nước ép xoài, dứa, chà là..."
     }
   }
 ]
