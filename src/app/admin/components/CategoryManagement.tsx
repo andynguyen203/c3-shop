@@ -7,7 +7,6 @@ import { useProductData } from "@/context/ProductDataContext";
 import CategoryFormModal from "./CategoryFormModal";
 import PlusIcon from "@/components/icons/PlusIcon";
 import SearchIcon from "@/components/icons/SearchIcon";
-import CloseIcon from "@/components/icons/CloseIcon";
 import {
   ToothIcon,
   PillIcon,
@@ -51,17 +50,11 @@ export default function CategoryManagement() {
     updateCategory,
     deleteCategory,
     resetCategoriesToDefault,
-    exportCategoriesJSON,
-    importCategoriesJSON,
-    exportCategoryProductsJSON,
   } = useProductData();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  const [importJsonText, setImportJsonText] = useState("");
-  const [copiedNotification, setCopiedNotification] = useState<string | null>(null);
 
   // Map category product counts
   const categoryProductCountMap = useMemo(() => {
@@ -126,58 +119,6 @@ export default function CategoryManagement() {
       updateCategory(editingCategory.id, withCountText);
     } else {
       addCategory(withCountText);
-    }
-  };
-
-  const handleExportJSON = () => {
-    const jsonStr = exportCategoriesJSON();
-    const blob = new Blob([jsonStr], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "categories.json";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const handleExportCategoryProductsJSON = () => {
-    const jsonStr = exportCategoryProductsJSON();
-    const blob = new Blob([jsonStr], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "category_products.json";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const handleCopyJSON = () => {
-    const jsonStr = exportCategoriesJSON();
-    navigator.clipboard.writeText(jsonStr);
-    setCopiedNotification("categories");
-    setTimeout(() => setCopiedNotification(null), 2000);
-  };
-
-  const handleCopyCategoryProductsJSON = () => {
-    const jsonStr = exportCategoryProductsJSON();
-    navigator.clipboard.writeText(jsonStr);
-    setCopiedNotification("mappings");
-    setTimeout(() => setCopiedNotification(null), 2000);
-  };
-
-  const handleImportSubmit = () => {
-    if (!importJsonText.trim()) return;
-    const success = importCategoriesJSON(importJsonText);
-    if (success) {
-      alert("Đã nhập dữ liệu danh mục JSON thành công!");
-      setIsImportModalOpen(false);
-      setImportJsonText("");
-    } else {
-      alert("Dữ liệu JSON không hợp lệ! Vui lòng kiểm tra lại cấu trúc mảng danh mục.");
     }
   };
 
@@ -365,61 +306,6 @@ export default function CategoryManagement() {
         initialCategory={editingCategory}
         existingCount={categories.length}
       />
-
-      {/* Import JSON Modal */}
-      {isImportModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto">
-          <div className="relative w-full max-w-xl flex flex-col rounded-3xl bg-white dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 px-6 py-4 bg-zinc-50/50 dark:bg-zinc-900/50">
-              <div>
-                <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
-                  Nhập dữ liệu danh mục từ JSON
-                </h2>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Dán nội dung JSON mảng danh mục
-                </p>
-              </div>
-
-              {/* Action Buttons in Header */}
-              <div className="flex items-center gap-2.5">
-                <button
-                  type="button"
-                  onClick={handleImportSubmit}
-                  className="rounded-xl bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-500 shadow-sm transition-colors cursor-pointer"
-                >
-                  Lưu
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsImportModalOpen(false);
-                    setImportJsonText("");
-                  }}
-                  className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors ml-1 cursor-pointer"
-                  title="Đóng"
-                >
-                  <CloseIcon className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Body */}
-            <div className="p-6 space-y-3">
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Dán nội dung JSON mảng danh mục vào bên dưới để nạp vào hệ thống:
-              </p>
-              <textarea
-                rows={8}
-                value={importJsonText}
-                onChange={(e) => setImportJsonText(e.target.value)}
-                placeholder="[\n  {\n    &quot;id&quot;: &quot;C-01&quot;,\n    &quot;name&quot;: &quot;...&quot;\n  }\n]"
-                className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 p-3.5 font-mono text-xs text-zinc-900 dark:text-white outline-none focus:border-indigo-500"
-              />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

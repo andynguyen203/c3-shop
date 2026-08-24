@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useProductData } from "@/context/ProductDataContext";
@@ -10,7 +10,6 @@ import ProductFormModal from "../ProductFormModal";
 import SearchIcon from "@/components/icons/SearchIcon";
 import PlusIcon from "@/components/icons/PlusIcon";
 import StarIcon from "@/components/icons/StarIcon";
-import CloseIcon from "@/components/icons/CloseIcon";
 
 const formatPrice = (price: number) => price.toLocaleString("vi-VN") + "đ";
 
@@ -25,8 +24,6 @@ export default function ProductManagement() {
     getCategoryIdByProductId,
     getProductsByCategoryId,
     resetToDefault,
-    exportJSON,
-    importJSON,
   } = useProductData();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,9 +31,8 @@ export default function ProductManagement() {
   const [stockFilter, setStockFilter] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  const [importJsonText, setImportJsonText] = useState("");
-  const [copiedNotification, setCopiedNotification] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   // Map order for quick lookup
   const orderMap = useMemo(() => {
@@ -63,6 +59,37 @@ export default function ProductManagement() {
     });
   }, [products, selectedCategory, stockFilter, searchQuery, getCategoryIdByProductId]);
 
+  // Reset về trang 1 khi thay đổi tìm kiếm hoặc bộ lọc
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategory, stockFilter, pageSize]);
+
+  // Tính toán phân trang
+  const totalProducts = filteredProducts.length;
+  const totalPages = Math.max(1, Math.ceil(totalProducts / pageSize));
+  const validCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+  const startIndex = (validCurrentPage - 1) * pageSize;
+  const endIndex = Math.min(startIndex + pageSize, totalProducts);
+  const paginatedProducts = useMemo(() => {
+    return filteredProducts.slice(startIndex, endIndex);
+  }, [filteredProducts, startIndex, endIndex]);
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (validCurrentPage <= 4) {
+        pages.push(1, 2, 3, 4, 5, "...", totalPages);
+      } else if (validCurrentPage >= totalPages - 3) {
+        pages.push(1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, "...", validCurrentPage - 1, validCurrentPage, validCurrentPage + 1, "...", totalPages);
+      }
+    }
+    return pages;
+  };
+
   const handleOpenAdd = () => {
     setEditingProduct(null);
     setIsModalOpen(true);
@@ -86,38 +113,6 @@ export default function ProductManagement() {
       updateProduct(editingProduct.id, data);
     } else {
       addProduct(data);
-    }
-  };
-
-  const handleExportJSON = () => {
-    const jsonStr = exportJSON();
-    const blob = new Blob([jsonStr], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "products.json";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const handleCopyJSON = () => {
-    const jsonStr = exportJSON();
-    navigator.clipboard.writeText(jsonStr);
-    setCopiedNotification(true);
-    setTimeout(() => setCopiedNotification(false), 2000);
-  };
-
-  const handleImportSubmit = () => {
-    if (!importJsonText.trim()) return;
-    const success = importJSON(importJsonText);
-    if (success) {
-      alert("Đã nhập dữ liệu JSON thành công!");
-      setIsImportModalOpen(false);
-      setImportJsonText("");
-    } else {
-      alert("Dữ liệu JSON không hợp lệ! Vui lòng kiểm tra lại cấu trúc mảng sản phẩm.");
     }
   };
 
@@ -251,6 +246,84 @@ export default function ProductManagement() {
         </div>
       </div>
 
+      {/* Pagination Bar Above Table */}
+      {totalProducts > 0 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 sm:px-6 py-3.5 shadow-xs">
+          <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+            <span>
+              Hiển thị <strong>{startIndex + 1} - {endIndex}</strong> / <strong>{totalProducts}</strong> sản phẩm
+            </span>
+            <span className="hidden sm:inline text-zinc-300 dark:text-zinc-700">•</span>
+            <div className="flex items-center gap-1.5">
+              <span>Số lượng mỗi trang:</span>
+              <select
+                value={pageSize}
+                onChange={(e) => setPageSize(Number(e.target.value))}
+                className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-2 py-1 text-xs font-bold text-zinc-800 dark:text-zinc-200 outline-none cursor-pointer focus:border-indigo-500 shadow-2xs"
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={15}>15</option>
+                <option value={20}>20</option>
+                <option value={30}>30</option>
+              </select>
+            </div>
+          </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                disabled={validCurrentPage === 1}
+                className="rounded-xl border border-zinc-200 dark:border-zinc-700 px-3 py-1.5 text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer bg-white dark:bg-zinc-800/80"
+              >
+                ‹ Trước
+              </button>
+
+              <div className="flex items-center gap-1">
+                {getPageNumbers().map((page, idx) => {
+                  if (page === "...") {
+                    return (
+                      <span
+                        key={`ellipsis-${idx}`}
+                        className="px-2 text-xs text-zinc-400 font-bold"
+                      >
+                        ...
+                      </span>
+                    );
+                  }
+                  const isCurrent = page === validCurrentPage;
+                  return (
+                    <button
+                      key={`page-${page}`}
+                      type="button"
+                      onClick={() => setCurrentPage(page as number)}
+                      className={`min-w-[32px] h-8 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                        isCurrent
+                          ? "bg-indigo-600 text-white shadow-xs"
+                          : "border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 bg-white dark:bg-zinc-800/60"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                disabled={validCurrentPage === totalPages}
+                className="rounded-xl border border-zinc-200 dark:border-zinc-700 px-3 py-1.5 text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer bg-white dark:bg-zinc-800/80"
+              >
+                Sau ›
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Products Table */}
       <div className="overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm">
         <div className="overflow-x-auto">
@@ -266,14 +339,14 @@ export default function ProductManagement() {
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
-              {filteredProducts.length === 0 ? (
+              {paginatedProducts.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="py-12 text-center text-zinc-400">
                     Không tìm thấy sản phẩm nào phù hợp.
                   </td>
                 </tr>
               ) : (
-                filteredProducts.map((p) => {
+                paginatedProducts.map((p) => {
                   const productCatId = getCategoryIdByProductId(p.id);
                   const cat = categories.find((c) => c.id === productCatId);
 
@@ -408,60 +481,7 @@ export default function ProductManagement() {
         onClose={() => setIsModalOpen(false)}
         onSave={handleSaveProduct}
         initialProduct={editingProduct}
-        initialOrder={editingProduct ? orderMap.get(editingProduct.id) : products.length + 1}
       />
-
-      {/* Modal Import JSON */}
-      {isImportModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto">
-          <div className="relative w-full max-w-xl flex flex-col rounded-3xl bg-white dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 px-6 py-4 bg-zinc-50/50 dark:bg-zinc-900/50">
-              <div>
-                <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
-                  Nhập dữ liệu từ file JSON
-                </h2>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Dán toàn bộ mã JSON của mảng sản phẩm
-                </p>
-              </div>
-
-              {/* Action Buttons in Header */}
-              <div className="flex items-center gap-2.5">
-                <button
-                  type="button"
-                  onClick={handleImportSubmit}
-                  className="rounded-xl bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-500 shadow-sm transition-colors cursor-pointer"
-                >
-                  Lưu
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsImportModalOpen(false)}
-                  className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors ml-1 cursor-pointer"
-                  title="Đóng"
-                >
-                  <CloseIcon className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Body */}
-            <div className="p-6 space-y-3">
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                {"Dán toàn bộ nội dung mã JSON của mảng sản phẩm ([ { id, name, ... } ]) vào ô dưới đây:"}
-              </p>
-              <textarea
-                rows={10}
-                value={importJsonText}
-                onChange={(e) => setImportJsonText(e.target.value)}
-                placeholder="[ { &quot;id&quot;: &quot;1&quot;, &quot;name&quot;: &quot;...&quot; } ]"
-                className="w-full font-mono text-xs rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 p-3 text-zinc-900 dark:text-white outline-none focus:border-indigo-500"
-              />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

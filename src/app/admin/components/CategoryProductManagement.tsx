@@ -18,8 +18,6 @@ export default function CategoryProductManagement() {
     categoryProducts,
     assignProductToCategory,
     removeProductFromCategory,
-    exportCategoryProductsJSON,
-    importCategoryProductsJSON,
     resetCategoryProductsToDefault,
   } = useProductData();
 
@@ -29,9 +27,6 @@ export default function CategoryProductManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [pickerSearch, setPickerSearch] = useState("");
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  const [importJsonText, setImportJsonText] = useState("");
-  const [copiedNotification, setCopiedNotification] = useState(false);
 
   // Map category to product count
   const categoryCountMap = useMemo(() => {
@@ -114,38 +109,6 @@ export default function CategoryProductManagement() {
       removeProductFromCategory(productId, activeCategory.id);
     }
     assignProductToCategory(productId, newCategoryId);
-  };
-
-  const handleExportJSON = () => {
-    const jsonStr = exportCategoryProductsJSON();
-    const blob = new Blob([jsonStr], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "category_products.json";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const handleCopyJSON = () => {
-    const jsonStr = exportCategoryProductsJSON();
-    navigator.clipboard.writeText(jsonStr);
-    setCopiedNotification(true);
-    setTimeout(() => setCopiedNotification(false), 2000);
-  };
-
-  const handleImportSubmit = () => {
-    if (!importJsonText.trim()) return;
-    const success = importCategoryProductsJSON(importJsonText);
-    if (success) {
-      alert("Đã nhập dữ liệu phân loại sản phẩm JSON thành công!");
-      setIsImportModalOpen(false);
-      setImportJsonText("");
-    } else {
-      alert("Dữ liệu JSON không hợp lệ! Vui lòng kiểm tra lại cấu trúc [{ categoryId, productId }].");
-    }
   };
 
   return (
@@ -512,60 +475,6 @@ export default function CategoryProductManagement() {
         </div>
       )}
 
-      {/* Import JSON Modal */}
-      {isImportModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto">
-          <div className="relative w-full max-w-xl flex flex-col rounded-3xl bg-white dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 px-6 py-4 bg-zinc-50/50 dark:bg-zinc-900/50">
-              <div>
-                <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
-                  Nhập dữ liệu phân loại từ JSON
-                </h2>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Dán nội dung JSON mảng phân loại sản phẩm
-                </p>
-              </div>
-
-              {/* Action Buttons in Header */}
-              <div className="flex items-center gap-2.5">
-                <button
-                  type="button"
-                  onClick={handleImportSubmit}
-                  className="rounded-xl bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-500 shadow-sm transition-colors cursor-pointer"
-                >
-                  Lưu
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsImportModalOpen(false);
-                    setImportJsonText("");
-                  }}
-                  className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors ml-1 cursor-pointer"
-                  title="Đóng"
-                >
-                  <CloseIcon className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Body */}
-            <div className="p-6 space-y-3">
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                Dán nội dung JSON mảng phân loại (cấu trúc: <code>&#91;&#123; &quot;categoryId&quot;: &quot;C-01&quot;, &quot;productId&quot;: &quot;1&quot; &#125;&#93;</code>):
-              </p>
-              <textarea
-                rows={8}
-                value={importJsonText}
-                onChange={(e) => setImportJsonText(e.target.value)}
-                placeholder="[\n  {\n    &quot;categoryId&quot;: &quot;C-01&quot;,\n    &quot;productId&quot;: &quot;1&quot;\n  }\n]"
-                className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 p-3.5 font-mono text-xs text-zinc-900 dark:text-white outline-none focus:border-indigo-500"
-              />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

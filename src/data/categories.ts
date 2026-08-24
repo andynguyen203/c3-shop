@@ -1,3 +1,5 @@
+import rawCategories from "./categories.json";
+
 export interface Category {
   id: string;
   slug: string;
@@ -10,49 +12,5 @@ export interface Category {
   subcategories?: string[];
 }
 
-export const CATEGORIES: Category[] = [
-  {
-    id: "C-01",
-    slug: "cham-soc-rang-mieng",
-    name: "Chăm Sóc Răng Miệng",
-    description: "Các giải pháp bảo vệ răng miệng cho bé và gia đình, ngừa sâu răng và giúp răng chắc khỏe.",
-    bannerGradient: "from-cyan-500 via-blue-500 to-indigo-600",
-    badgeColor: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20",
-    iconName: "ToothIcon",
-    itemCountText: "1 sản phẩm",
-    subcategories: ["Kem đánh răng cho bé", "Chăm sóc răng miệng"]
-  },
-  {
-    id: "C-02",
-    slug: "thuc-pham-bo-sung",
-    name: "Thực Phẩm Bổ Sung",
-    description: "Bột canxi cá, kẹo dẻo dinh dưỡng, viên uống Axit Folic, Sắt và Vitamin cho trẻ nhỏ và mẹ bầu nội địa Nhật.",
-    bannerGradient: "from-amber-500 via-orange-500 to-rose-500",
-    badgeColor: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
-    iconName: "PillIcon",
-    itemCountText: "9 sản phẩm",
-    subcategories: ["Bột canxi", "Axit Folic & Sắt", "Kẹo dẻo dinh dưỡng"]
-  },
-  {
-    id: "C-03",
-    slug: "cham-soc-me-va-be",
-    name: "Chăm Sóc Mẹ & Bé",
-    description: "Sản phẩm xịt chống muỗi, lăn trị côn trùng cắn, kem chống nắng và siro ho dịu nhẹ cho mẹ & bé.",
-    bannerGradient: "from-pink-500 via-rose-400 to-fuchsia-500",
-    badgeColor: "bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-500/20",
-    iconName: "HeartIcon",
-    itemCountText: "20 sản phẩm",
-    subcategories: ["Chống muỗi & côn trùng", "Chống nắng mẹ & bé", "Bổ sung dinh dưỡng", "Siro ho & Chăm sóc bé"]
-  },
-  {
-    id: "C-04",
-    slug: "cham-soc-mat",
-    name: "Chăm Sóc Mắt",
-    description: "Dung dịch nhỏ mắt và nước rửa mắt chuyên sâu, bảo vệ thị lực, giảm mỏi và khô mắt từ Nhật Bản.",
-    bannerGradient: "from-blue-600 via-indigo-500 to-sky-400",
-    badgeColor: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
-    iconName: "EyeIcon",
-    itemCountText: "10 sản phẩm",
-    subcategories: ["Nước nhỏ mắt", "Nước rửa mắt", "Nhỏ mắt trẻ em"]
-  }
-];
+export const CATEGORIES: Category[] = rawCategories as unknown as Category[];
+

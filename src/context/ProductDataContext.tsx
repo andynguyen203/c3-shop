@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { PRODUCTS as DEFAULT_PRODUCTS, Product } from "@/data/products";
 import { CATEGORIES as DEFAULT_CATEGORIES, Category } from "@/data/categories";
 import { CATEGORY_PRODUCTS as DEFAULT_CATEGORY_PRODUCTS, CategoryProductMapping } from "@/data/categoryProducts";
@@ -53,34 +53,99 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
   const [orders, setOrders] = useState<ProductOrder[]>(DEFAULT_ORDER);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from localStorage on mount
-  useEffect(() => {
-    try {
-      const savedProducts = localStorage.getItem(STORAGE_PRODUCTS_KEY);
-      const savedCategories = localStorage.getItem(STORAGE_CATEGORIES_KEY);
-      const savedCategoryProducts = localStorage.getItem(STORAGE_CATEGORY_PRODUCTS_KEY);
-      const savedOrders = localStorage.getItem(STORAGE_ORDER_KEY);
+  // Helper gửi đồng bộ dữ liệu lên Server API (alter-*.json)
+  const syncToServer = useCallback(
+    async (type: "products" | "categories" | "categoryProducts" | "orders", data: unknown) => {
+      try {
+        await fetch("/api/admin/data", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ type, data }),
+        });
+      } catch (err) {
+        console.error(`Failed to sync ${type} to server:`, err);
+      }
+    },
+    []
+  );
 
-      if (savedProducts) {
-        setProducts(JSON.parse(savedProducts));
+  // Helper gửi lệnh reset dữ liệu lên Server API
+  const resetOnServer = useCallback(
+    async (type: "products" | "categories" | "categoryProducts" | "orders" | "all") => {
+      try {
+        await fetch("/api/admin/reset", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ type }),
+        });
+      } catch (err) {
+        console.error(`Failed to reset ${type} on server:`, err);
       }
-      if (savedCategories) {
-        setCategories(JSON.parse(savedCategories));
+    },
+    []
+  );
+
+  // Load dữ liệu từ Server API khi khởi chạy ứng dụng (với fallback LocalStorage)
+  useEffect(() => {
+    async function initData() {
+      try {
+        // Cố gắng đọc từ Server API trước
+        const res = await fetch("/api/admin/data", { cache: "no-store" });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && json.data) {
+            const {
+              products: serverProducts,
+              categories: serverCategories,
+              categoryProducts: serverMappings,
+              orders: serverOrders,
+            } = json.data;
+
+            if (serverProducts) setProducts(serverProducts);
+            if (serverCategories) setCategories(serverCategories);
+            if (serverMappings) setCategoryProductsState(serverMappings);
+            if (serverOrders) setOrders(serverOrders);
+
+            // Cập nhật LocalStorage làm cache
+            try {
+              localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(serverProducts));
+              localStorage.setItem(STORAGE_CATEGORIES_KEY, JSON.stringify(serverCategories));
+              localStorage.setItem(STORAGE_CATEGORY_PRODUCTS_KEY, JSON.stringify(serverMappings));
+              localStorage.setItem(STORAGE_ORDER_KEY, JSON.stringify(serverOrders));
+            } catch {
+              // ignore
+            }
+
+            setIsLoaded(true);
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn("Could not fetch server data, falling back to LocalStorage:", e);
       }
-      if (savedCategoryProducts) {
-        setCategoryProductsState(JSON.parse(savedCategoryProducts));
+
+      // Fallback: Đọc từ LocalStorage nếu API lỗi hoặc offline
+      try {
+        const savedProducts = localStorage.getItem(STORAGE_PRODUCTS_KEY);
+        const savedCategories = localStorage.getItem(STORAGE_CATEGORIES_KEY);
+        const savedCategoryProducts = localStorage.getItem(STORAGE_CATEGORY_PRODUCTS_KEY);
+        const savedOrders = localStorage.getItem(STORAGE_ORDER_KEY);
+
+        if (savedProducts) setProducts(JSON.parse(savedProducts));
+        if (savedCategories) setCategories(JSON.parse(savedCategories));
+        if (savedCategoryProducts) setCategoryProductsState(JSON.parse(savedCategoryProducts));
+        if (savedOrders) setOrders(JSON.parse(savedOrders));
+      } catch (e) {
+        console.error("Failed to load fallback from localStorage", e);
+      } finally {
+        setIsLoaded(true);
       }
-      if (savedOrders) {
-        setOrders(JSON.parse(savedOrders));
-      }
-    } catch (e) {
-      console.error("Failed to load data from localStorage", e);
-    } finally {
-      setIsLoaded(true);
     }
+
+    initData();
   }, []);
 
-  // Save to localStorage when state changes
+  // Save to localStorage & sync to Server alter-products.json
   const persistProducts = (newProducts: Product[], newOrders: ProductOrder[]) => {
     setProducts(newProducts);
     setOrders(newOrders);
@@ -90,8 +155,11 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     } catch (e) {
       console.error("Failed to save products to localStorage", e);
     }
+    syncToServer("products", newProducts);
+    syncToServer("orders", newOrders);
   };
 
+  // Save to localStorage & sync to Server alter-categories.json
   const persistCategories = (newCategories: Category[]) => {
     setCategories(newCategories);
     try {
@@ -99,8 +167,10 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     } catch (e) {
       console.error("Failed to save categories to localStorage", e);
     }
+    syncToServer("categories", newCategories);
   };
 
+  // Save to localStorage & sync to Server alter-category-products.json
   const persistCategoryProducts = (newCategoryProducts: CategoryProductMapping[]) => {
     setCategoryProductsState(newCategoryProducts);
     try {
@@ -108,6 +178,7 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     } catch (e) {
       console.error("Failed to save category-products to localStorage", e);
     }
+    syncToServer("categoryProducts", newCategoryProducts);
   };
 
   // --- Product CRUD ---
@@ -155,7 +226,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     persistProducts(newProducts, newOrders);
 
     if (updated.categoryId !== undefined) {
-      // Reassign product's category
       const remaining = categoryProducts.filter((cp) => cp.productId !== id);
       if (updated.categoryId) {
         persistCategoryProducts([...remaining, { categoryId: updated.categoryId, productId: id }]);
@@ -220,8 +290,19 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
   };
 
   const resetToDefault = () => {
-    persistProducts(DEFAULT_PRODUCTS, DEFAULT_ORDER);
-    persistCategoryProducts(DEFAULT_CATEGORY_PRODUCTS);
+    setProducts(DEFAULT_PRODUCTS);
+    setOrders(DEFAULT_ORDER);
+    setCategoryProductsState(DEFAULT_CATEGORY_PRODUCTS);
+    try {
+      localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(DEFAULT_PRODUCTS));
+      localStorage.setItem(STORAGE_ORDER_KEY, JSON.stringify(DEFAULT_ORDER));
+      localStorage.setItem(STORAGE_CATEGORY_PRODUCTS_KEY, JSON.stringify(DEFAULT_CATEGORY_PRODUCTS));
+    } catch {
+      // ignore
+    }
+    resetOnServer("products");
+    resetOnServer("orders");
+    resetOnServer("categoryProducts");
   };
 
   const exportJSON = () => {
@@ -264,8 +345,16 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
   };
 
   const resetCategoriesToDefault = () => {
-    persistCategories(DEFAULT_CATEGORIES);
-    persistCategoryProducts(DEFAULT_CATEGORY_PRODUCTS);
+    setCategories(DEFAULT_CATEGORIES);
+    setCategoryProductsState(DEFAULT_CATEGORY_PRODUCTS);
+    try {
+      localStorage.setItem(STORAGE_CATEGORIES_KEY, JSON.stringify(DEFAULT_CATEGORIES));
+      localStorage.setItem(STORAGE_CATEGORY_PRODUCTS_KEY, JSON.stringify(DEFAULT_CATEGORY_PRODUCTS));
+    } catch {
+      // ignore
+    }
+    resetOnServer("categories");
+    resetOnServer("categoryProducts");
   };
 
   const exportCategoriesJSON = () => {
@@ -341,7 +430,13 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
   };
 
   const resetCategoryProductsToDefault = () => {
-    persistCategoryProducts(DEFAULT_CATEGORY_PRODUCTS);
+    setCategoryProductsState(DEFAULT_CATEGORY_PRODUCTS);
+    try {
+      localStorage.setItem(STORAGE_CATEGORY_PRODUCTS_KEY, JSON.stringify(DEFAULT_CATEGORY_PRODUCTS));
+    } catch {
+      // ignore
+    }
+    resetOnServer("categoryProducts");
   };
 
   // --- Selectors ---
