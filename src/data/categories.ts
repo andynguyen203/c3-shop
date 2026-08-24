@@ -1,4 +1,5 @@
 import rawCategories from "./categories.json";
+import rawAlterCategories from "./alter-categories.json";
 
 export interface Category {
   id: string;
@@ -12,5 +13,12 @@ export interface Category {
   subcategories?: string[];
 }
 
-export const CATEGORIES: Category[] = rawCategories as unknown as Category[];
+const alterCategories = rawAlterCategories as unknown as Category[];
+const baseCategories = rawCategories as unknown as Category[];
+
+export const CATEGORIES: Category[] =
+  Array.isArray(alterCategories) && alterCategories.length > 0
+    ? alterCategories
+    : baseCategories;
+
 
