@@ -6,10 +6,10 @@ import { CATEGORIES as DEFAULT_CATEGORIES, Category } from "@/data/categories";
 import { CATEGORY_PRODUCTS as DEFAULT_CATEGORY_PRODUCTS, CategoryProductMapping } from "@/data/categoryProducts";
 import { FEATURED_PRODUCT_ORDER as DEFAULT_ORDER, ProductOrder } from "@/data/order";
 
-const STORAGE_PRODUCTS_KEY = "japan_shop_products_v1";
-const STORAGE_CATEGORIES_KEY = "japan_shop_categories_v1";
-const STORAGE_CATEGORY_PRODUCTS_KEY = "japan_shop_category_products_v1";
-const STORAGE_ORDER_KEY = "japan_shop_order_v1";
+const STORAGE_PRODUCTS_KEY = "japan_shop_products_v5";
+const STORAGE_CATEGORIES_KEY = "japan_shop_categories_v5";
+const STORAGE_CATEGORY_PRODUCTS_KEY = "japan_shop_category_products_v5";
+const STORAGE_ORDER_KEY = "japan_shop_order_v5";
 
 interface ProductContextType {
   products: Product[];

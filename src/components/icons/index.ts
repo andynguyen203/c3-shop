@@ -29,6 +29,7 @@ export { default as ListIcon } from "./ListIcon";
 export { default as ArrowUpDownIcon } from "./ArrowUpDownIcon";
 export { default as SettingsIcon } from "./SettingsIcon";
 export { default as MessengerIcon } from "./MessengerIcon";
+export { default as ZaloIcon } from "./ZaloIcon";
 export { default as TrashIcon } from "./TrashIcon";
 export * from "./type";
 

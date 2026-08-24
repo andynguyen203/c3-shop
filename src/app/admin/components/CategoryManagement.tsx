@@ -7,6 +7,7 @@ import { useProductData } from "@/context/ProductDataContext";
 import CategoryFormModal from "./CategoryFormModal";
 import PlusIcon from "@/components/icons/PlusIcon";
 import SearchIcon from "@/components/icons/SearchIcon";
+import CloseIcon from "@/components/icons/CloseIcon";
 import {
   ToothIcon,
   PillIcon,
@@ -189,7 +190,7 @@ export default function CategoryManagement() {
             Quản Lý Danh Mục Sản Phẩm
           </h2>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Thêm mới, cấu hình ngành hàng và quản lý sản phẩm thuộc danh mục (Lưu JSON cấu trúc &#123; mã DM, mã SP &#125;)
+            Thêm mới, cấu hình ngành hàng và quản lý sản phẩm thuộc danh mục
           </p>
         </div>
 
@@ -200,40 +201,6 @@ export default function CategoryManagement() {
           >
             <PlusIcon className="h-4 w-4" />
             Thêm danh mục mới
-          </button>
-          <button
-            onClick={handleExportCategoryProductsJSON}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-200 dark:border-indigo-800 bg-indigo-50/50 dark:bg-indigo-950/40 px-3.5 py-2.5 text-sm font-bold text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 transition-colors cursor-pointer"
-            title="Tải về file category_products.json cấu trúc { categoryId, productId }"
-          >
-            📥 Xuất JSON Phân Loại
-          </button>
-          <button
-            onClick={handleCopyCategoryProductsJSON}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3.5 py-2.5 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-          >
-            {copiedNotification === "mappings"
-              ? "✓ Đã chép { DM, SP }"
-              : "📋 Sao chép { DM, SP }"}
-          </button>
-          <button
-            onClick={handleExportJSON}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3.5 py-2.5 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-            title="Tải về file categories.json"
-          >
-            📥 Xuất JSON DM
-          </button>
-          <button
-            onClick={handleCopyJSON}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3.5 py-2.5 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-          >
-            {copiedNotification === "categories" ? "✓ Đã chép DM" : "📋 Sao chép DM"}
-          </button>
-          <button
-            onClick={() => setIsImportModalOpen(true)}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3.5 py-2.5 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-          >
-            📤 Nhập JSON
           </button>
           <button
             onClick={() => {
@@ -401,37 +368,54 @@ export default function CategoryManagement() {
 
       {/* Import JSON Modal */}
       {isImportModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="w-full max-w-xl rounded-3xl bg-white dark:bg-zinc-900 p-6 shadow-2xl border border-zinc-200 dark:border-zinc-800 space-y-4">
-            <h3 className="text-lg font-bold text-zinc-900 dark:text-white">
-              Nhập dữ liệu danh mục từ JSON
-            </h3>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              Dán nội dung JSON mảng danh mục vào bên dưới để nạp vào hệ thống:
-            </p>
-            <textarea
-              rows={8}
-              value={importJsonText}
-              onChange={(e) => setImportJsonText(e.target.value)}
-              placeholder="[\n  {\n    &quot;id&quot;: &quot;C-01&quot;,\n    &quot;name&quot;: &quot;...&quot;\n  }\n]"
-              className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 p-3.5 font-mono text-xs text-zinc-900 dark:text-white outline-none focus:border-indigo-500"
-            />
-            <div className="flex items-center justify-end gap-3">
-              <button
-                onClick={() => {
-                  setIsImportModalOpen(false);
-                  setImportJsonText("");
-                }}
-                className="rounded-xl border border-zinc-200 dark:border-zinc-700 px-4 py-2 text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
-              >
-                Hủy
-              </button>
-              <button
-                onClick={handleImportSubmit}
-                className="rounded-xl bg-indigo-600 px-5 py-2 text-xs font-bold text-white hover:bg-indigo-500 shadow-sm cursor-pointer"
-              >
-                Xác nhận nhập
-              </button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto">
+          <div className="relative w-full max-w-xl flex flex-col rounded-3xl bg-white dark:bg-zinc-900 shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 px-6 py-4 bg-zinc-50/50 dark:bg-zinc-900/50">
+              <div>
+                <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
+                  Nhập dữ liệu danh mục từ JSON
+                </h2>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Dán nội dung JSON mảng danh mục
+                </p>
+              </div>
+
+              {/* Action Buttons in Header */}
+              <div className="flex items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={handleImportSubmit}
+                  className="rounded-xl bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-500 shadow-sm transition-colors cursor-pointer"
+                >
+                  Lưu
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsImportModalOpen(false);
+                    setImportJsonText("");
+                  }}
+                  className="rounded-full p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors ml-1 cursor-pointer"
+                  title="Đóng"
+                >
+                  <CloseIcon className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Body */}
+            <div className="p-6 space-y-3">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                Dán nội dung JSON mảng danh mục vào bên dưới để nạp vào hệ thống:
+              </p>
+              <textarea
+                rows={8}
+                value={importJsonText}
+                onChange={(e) => setImportJsonText(e.target.value)}
+                placeholder="[\n  {\n    &quot;id&quot;: &quot;C-01&quot;,\n    &quot;name&quot;: &quot;...&quot;\n  }\n]"
+                className="w-full rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 p-3.5 font-mono text-xs text-zinc-900 dark:text-white outline-none focus:border-indigo-500"
+              />
             </div>
           </div>
         </div>
