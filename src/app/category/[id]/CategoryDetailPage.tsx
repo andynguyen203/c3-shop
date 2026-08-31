@@ -468,12 +468,6 @@ export default function CategoryDetailPage({
                         </div>
                       )}
 
-                      {product.tag && (
-                        <span className="absolute top-3 left-3 rounded-full bg-zinc-900/90 dark:bg-zinc-50/90 text-white dark:text-zinc-950 px-2.5 py-1 text-xs font-semibold shadow-xs z-10">
-                          {product.tag}
-                        </span>
-                      )}
-
                       {discount && (
                         <span className="absolute top-3 right-3 rounded-full bg-rose-600 text-white px-2 py-0.5 text-xs font-bold shadow-xs z-10">
                           -{discount}%
@@ -575,11 +569,6 @@ export default function CategoryDetailPage({
                           {category.name}
                         </span>
                       </div>
-                    )}
-                    {product.tag && (
-                      <span className="absolute top-2.5 left-2.5 rounded-full bg-zinc-900/90 text-white px-2 py-0.5 text-xs font-semibold z-10">
-                        {product.tag}
-                      </span>
                     )}
                     {discount && (
                       <span className="absolute top-2.5 right-2.5 rounded-full bg-rose-600 text-white px-2 py-0.5 text-xs font-bold z-10">

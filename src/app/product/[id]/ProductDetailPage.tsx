@@ -163,11 +163,6 @@ export default function ProductDetailPage({ product, related }: Props) {
                 </div>
               )}
 
-              {currentProduct.tag && (
-                <span className="absolute top-5 left-5 rounded-full bg-zinc-900/90 dark:bg-zinc-50/90 text-white dark:text-zinc-950 px-3 py-1.5 text-sm font-semibold shadow-md z-10">
-                  {currentProduct.tag}
-                </span>
-              )}
               {discount && (
                 <span className="absolute top-5 right-5 rounded-full bg-rose-600 text-white px-3 py-1.5 text-sm font-bold shadow-md z-10">
                   -{discount}%

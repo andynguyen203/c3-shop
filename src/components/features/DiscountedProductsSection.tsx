@@ -109,13 +109,6 @@ export default function DiscountedProductsSection() {
                         <span>-{discountPercent}%</span>
                       </span>
                     )}
-
-                    {/* Tag Badge */}
-                    {product.tag && (
-                      <span className="absolute top-2.5 right-2.5 rounded-xl bg-zinc-900/80 dark:bg-zinc-100/90 text-white dark:text-zinc-900 px-2 py-0.5 text-[11px] font-bold shadow-xs z-10">
-                        {product.tag}
-                      </span>
-                    )}
                   </div>
 
                   {/* Details */}
