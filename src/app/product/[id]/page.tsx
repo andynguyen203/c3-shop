@@ -30,7 +30,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const product = productService.getProductById(id);
+  const product = await productService.getProductById(id);
 
   if (!product) {
     return {
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const { id } = await params;
-  const product = productService.getProductById(id);
+  const product = await productService.getProductById(id);
 
   if (!product) {
     notFound();

@@ -1,6 +1,7 @@
-import { CATEGORIES, Category } from "@/data/categories";
-import { PRODUCTS, Product } from "@/data/products";
+import { Category, CATEGORIES } from "@/data/categories";
+import { Product, PRODUCTS } from "@/data/products";
 import { CATEGORY_PRODUCTS } from "@/data/categoryProducts";
+import { supabaseService } from "./supabaseService";
 
 export interface CategoryStats {
   totalProducts: number;
@@ -28,8 +29,57 @@ const normalizeId = (id: string) =>
     .replace(/^0+/, "");
 
 export const categoryService = {
+  // ==========================================================================
+  // SUPABASE CLOUD CRUD OPERATIONS (Async / Live Database)
+  // ==========================================================================
+
   /**
-   * Lấy danh sách toàn bộ danh mục
+   * Lấy danh sách toàn bộ danh mục từ Supabase Cloud
+   */
+  async getCategories(): Promise<Category[]> {
+    try {
+      const data = await supabaseService.getCategories();
+      return data.length > 0 ? data : CATEGORIES;
+    } catch (err) {
+      console.warn("[categoryService] Fallback to local categories due to Supabase error:", err);
+      return CATEGORIES;
+    }
+  },
+
+  /**
+   * Tạo danh mục mới trên Supabase Cloud
+   */
+  async createCategory(category: Category): Promise<Category> {
+    return await supabaseService.createCategory(category);
+  },
+
+  /**
+   * Chỉnh sửa danh mục trên Supabase Cloud
+   */
+  async updateCategory(id: string, updates: Partial<Category>): Promise<void> {
+    return await supabaseService.updateCategory(id, updates);
+  },
+
+  /**
+   * Xóa danh mục trên Supabase Cloud
+   */
+  async deleteCategory(id: string): Promise<void> {
+    return await supabaseService.deleteCategory(id);
+  },
+
+  /**
+   * Đồng bộ / Cập nhật hàng loạt danh mục lên Supabase Cloud
+   */
+  async bulkUpsertCategories(categories: Category[]): Promise<void> {
+    return await supabaseService.bulkUpsertCategories(categories);
+  },
+
+  // ==========================================================================
+  // SYNCHRONOUS / STATIC HELPER METHODS (Static Generation & Fallback)
+  // ==========================================================================
+
+  /**
+   * Lấy danh sách toàn bộ danh mục đồng bộ (dùng cho generateStaticParams / render)
    */
   getAllCategories(): Category[] {
     return CATEGORIES;
@@ -75,12 +125,15 @@ export const categoryService = {
     ) {
       return CATEGORIES.find((c) => c.id === "C-02");
     }
+    if (targetSlug.includes("gia-dung") || targetSlug.includes("do-gia-dung")) {
+      return CATEGORIES.find((c) => c.id === "C-05");
+    }
 
     return undefined;
   },
 
   /**
-   * Lấy chi tiết danh mục theo tên (ví dụ: "Chăm Sóc Răng Miệng")
+   * Lấy chi tiết danh mục theo tên
    */
   getCategoryByName(name: string): Category | undefined {
     if (!name) return undefined;
@@ -104,41 +157,39 @@ export const categoryService = {
       ).map((cp) => cp.productId)
     );
 
-    return PRODUCTS.filter((p) => matchedProductIds.has(p.id));
+    return PRODUCTS.filter((product) => matchedProductIds.has(product.id));
   },
 
   /**
-   * Tính toán thống kê cho danh mục (số lượng, giá thấp nhất, giá cao nhất, rating trung bình)
+   * Thống kê tổng hợp số liệu của danh mục
    */
-  getCategoryStats(categoryIdInput: string): CategoryStats {
-    const category = this.getCategoryById(categoryIdInput);
-    const categoryId = category ? category.id : categoryIdInput;
-    const products = this.getProductsByCategoryId(categoryId);
-
-    if (products.length === 0) {
+  getCategoryStats(categoryId: string): CategoryStats {
+    const prods = this.getProductsByCategoryId(categoryId);
+    if (prods.length === 0) {
       return {
         totalProducts: 0,
         minPrice: 0,
         maxPrice: 0,
-        avgRating: 0,
-        totalReviews: 0
+        avgRating: 5.0,
+        totalReviews: 0,
       };
     }
 
-    const prices = products.map((p) => p.price);
+    const prices = prods.map((p) => p.price);
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
-    const totalReviews = products.reduce((acc, p) => acc + p.reviews, 0);
-    const avgRating = Number(
-      (products.reduce((acc, p) => acc + p.rating, 0) / products.length).toFixed(1)
-    );
+    const avgRating =
+      prods.reduce((sum, p) => sum + p.rating, 0) / prods.length;
+    const totalReviews = prods.reduce((sum, p) => sum + p.reviews, 0);
 
     return {
-      totalProducts: products.length,
+      totalProducts: prods.length,
       minPrice,
       maxPrice,
-      avgRating,
-      totalReviews
+      avgRating: Number(avgRating.toFixed(1)),
+      totalReviews,
     };
-  }
+  },
 };
+
+export default categoryService;

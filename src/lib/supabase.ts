@@ -20,3 +20,6 @@ export const supabase: SupabaseClient | null = isSupabaseConfigured()
       },
     })
   : null;
+
+export { supabaseService } from "@/services/supabaseService";
+
