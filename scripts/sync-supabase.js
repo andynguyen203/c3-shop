@@ -127,12 +127,39 @@ async function sync() {
   console.log(`✅ Synced ${dbCatProd.length} category mappings.`);
 
   // 4. Orders
+  await fetch(`${supabaseUrl}/rest/v1/product_orders?order_num=gte.0`, {
+    method: 'DELETE',
+    headers: headers
+  });
+
   const dbOrders = orders.map(o => ({
     product_id: o.productId,
     order_num: o.order,
+    banner: o.banner || 'featured',
   }));
-  await postBatch('product_orders?on_conflict=product_id', dbOrders);
-  console.log(`✅ Synced ${dbOrders.length} product orders.`);
+  try {
+    await postBatch('product_orders', dbOrders);
+  } catch (err) {
+    if (err.message && err.message.includes("banner")) {
+      console.warn("⚠️ Cột 'banner' chưa có trong bảng 'product_orders'. Đang đồng bộ danh sách bán chạy...");
+      // Filter unique product_id for backward compatibility
+      const seen = new Set();
+      const uniqueOrders = [];
+      for (const o of orders) {
+        if (!seen.has(o.productId)) {
+          seen.add(o.productId);
+          uniqueOrders.push({
+            product_id: o.productId,
+            order_num: o.order,
+          });
+        }
+      }
+      await postBatch('product_orders?on_conflict=product_id', uniqueOrders);
+    } else {
+      throw err;
+    }
+  }
+  console.log(`✅ Synced ${dbOrders.length} product banner orders.`);
 
   console.log('🎉 ---------------------------------------------');
   console.log('🎉 ALL DATA SYNCED SUCCESSFULLY TO SUPABASE CLOUD!');

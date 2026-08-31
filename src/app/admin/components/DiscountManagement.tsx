@@ -50,10 +50,10 @@ export default function DiscountManagement() {
   const {
     products,
     categories,
-    getFeaturedProducts,
+    getProductsByBanner,
     getCategoryIdByProductId,
     updateProduct,
-    updateProductOrder,
+    setBannerProducts,
   } = useProductData();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -75,16 +75,16 @@ export default function DiscountManagement() {
 
   // Initialize localSlots from saved context on mount or when context changes
   useEffect(() => {
-    const featured = getFeaturedProducts(MAX_DISCOUNT_SLOTS);
+    const discountItems = getProductsByBanner("discount", MAX_DISCOUNT_SLOTS);
     const initial: (Product | null)[] = Array(MAX_DISCOUNT_SLOTS).fill(null);
-    featured.forEach((p, idx) => {
+    discountItems.forEach((p, idx) => {
       if (idx < MAX_DISCOUNT_SLOTS) {
         initial[idx] = p;
       }
     });
     setLocalSlots(initial);
     setIsSaved(true);
-  }, [getFeaturedProducts]);
+  }, [getProductsByBanner]);
 
   // Set of product IDs currently placed in the 10 slots
   const activeSlotProductIds = useMemo(() => {
@@ -325,25 +325,14 @@ export default function DiscountManagement() {
 
   // --- Save Changes to Database / Context ---
   const handleSaveChanges = () => {
-    const assignedIds = new Set<string>();
-
-    localSlots.forEach((p, idx) => {
+    const productIds: string[] = [];
+    localSlots.forEach((p) => {
       if (p) {
-        assignedIds.add(p.id);
-        updateProduct(p.id, {
-          tag: p.tag || "Ưu đãi hot",
-          order: idx + 1,
-        });
-        updateProductOrder(p.id, idx + 1);
+        productIds.push(p.id);
       }
     });
 
-    // Remove tag from products no longer in the slots
-    products.forEach((p) => {
-      if (p.tag && !assignedIds.has(p.id)) {
-        updateProduct(p.id, { tag: undefined });
-      }
-    });
+    setBannerProducts("discount", productIds);
 
     setIsSaved(true);
     setSaveToast(true);
@@ -356,9 +345,9 @@ export default function DiscountManagement() {
         "Hủy toàn bộ thay đổi chưa lưu và quay lại cấu hình hiện tại?"
       )
     ) {
-      const featured = getFeaturedProducts(MAX_DISCOUNT_SLOTS);
+      const discountItems = getProductsByBanner("discount", MAX_DISCOUNT_SLOTS);
       const initial: (Product | null)[] = Array(MAX_DISCOUNT_SLOTS).fill(null);
-      featured.forEach((p, idx) => {
+      discountItems.forEach((p, idx) => {
         if (idx < MAX_DISCOUNT_SLOTS) {
           initial[idx] = p;
         }

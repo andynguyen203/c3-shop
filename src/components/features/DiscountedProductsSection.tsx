@@ -20,14 +20,12 @@ const calcDiscountPercent = (price: number, oldPrice?: number) => {
 };
 
 export default function DiscountedProductsSection() {
-  const { products, getCategoryIdByProductId, categories } = useProductData();
+  const { getProductsByBanner, getCategoryIdByProductId, categories } = useProductData();
   const { addToCart } = useCart();
   const [addedId, setAddedId] = useState<string | null>(null);
 
-  // Filter products currently having discounts (oldPrice > price)
-  const discountedProducts = products
-    .filter((p) => p.oldPrice && p.oldPrice > p.price)
-    .slice(0, 10);
+  // Filter products by banner "discount" (or "Sản phẩm giảm giá")
+  const discountedProducts = getProductsByBanner("discount", 10);
 
   const handleAdd = (product: Product) => {
     addToCart(product, 1);

@@ -102,12 +102,18 @@ export const productService = {
     );
 
     const featured = [...PRODUCTS]
-      .filter((product) => product.tag !== undefined || product.rating >= 4.7)
+      .filter((product) => orderMap.has(product.id))
       .sort((a, b) => {
         const orderA = orderMap.get(a.id) ?? Number.MAX_SAFE_INTEGER;
         const orderB = orderMap.get(b.id) ?? Number.MAX_SAFE_INTEGER;
         return orderA - orderB;
       });
+
+    if (featured.length === 0) {
+      return [...PRODUCTS]
+        .sort((a, b) => (b.rating || 5) - (a.rating || 5))
+        .slice(0, limit || 10);
+    }
 
     return limit ? featured.slice(0, limit) : featured;
   },
