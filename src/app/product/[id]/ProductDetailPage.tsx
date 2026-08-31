@@ -12,6 +12,8 @@ import PlusIcon from "@/components/icons/PlusIcon";
 import CheckIcon from "@/components/icons/CheckIcon";
 import BoltIcon from "@/components/icons/BoltIcon";
 import Breadcrumb from "@/components/Breadcrumb";
+import ChevronLeftIcon from "@/components/icons/ChevronLeftIcon";
+import ChevronRightIcon from "@/components/icons/ChevronRightIcon";
 import { categoryService } from "@/services/categoryService";
 import { getAssetPath } from "@/utils/assetPath";
 import { useProductData } from "@/context/ProductDataContext";
@@ -49,6 +51,15 @@ export default function ProductDetailPage({ product, related }: Props) {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<"desc" | "ingredients">("desc");
   const [added, setAdded] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  const imageList =
+    currentProduct.images && currentProduct.images.length > 0
+      ? currentProduct.images
+      : currentProduct.image
+      ? [currentProduct.image]
+      : [];
+  const activeImage = imageList[activeImageIndex] || currentProduct.image || "";
 
   const handleAddToCart = () => {
     addToCart(currentProduct, quantity);
@@ -86,18 +97,17 @@ export default function ProductDetailPage({ product, related }: Props) {
       {/* Main Content */}
       <div className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          {/* Product Image */}
+          {/* Product Image & Gallery Slider */}
           <div className="flex flex-col gap-4">
-            <div
-              className="relative w-full aspect-square rounded-3xl bg-white dark:bg-zinc-900 overflow-hidden shadow-xl border border-zinc-200/60 dark:border-zinc-800 p-4 sm:p-6 flex items-center justify-center"
-            >
-              {currentProduct.image ? (
+            <div className="relative w-full aspect-square rounded-3xl bg-white dark:bg-zinc-900 overflow-hidden shadow-xl border border-zinc-200/60 dark:border-zinc-800 p-4 sm:p-6 flex items-center justify-center group">
+              {activeImage ? (
                 <Image
-                  src={getAssetPath(currentProduct.image)}
+                  key={activeImage}
+                  src={getAssetPath(activeImage)}
                   alt={currentProduct.name}
                   fill
                   priority
-                  className="object-contain p-2 sm:p-4 transition-transform duration-300 hover:scale-105"
+                  className="object-contain p-2 sm:p-4 transition-transform duration-300 group-hover:scale-105"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               ) : (
@@ -107,6 +117,54 @@ export default function ProductDetailPage({ product, related }: Props) {
                   </span>
                 </div>
               )}
+
+              {/* Slider Arrows */}
+              {imageList.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveImageIndex((prev) => (prev === 0 ? imageList.length - 1 : prev - 1));
+                    }}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 dark:bg-zinc-800/90 text-zinc-800 dark:text-zinc-100 shadow-lg backdrop-blur-sm transition-all hover:bg-white dark:hover:bg-zinc-700 hover:scale-110 cursor-pointer z-20"
+                    aria-label="Hình trước"
+                  >
+                    <ChevronLeftIcon className="h-5 w-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setActiveImageIndex((prev) => (prev === imageList.length - 1 ? 0 : prev + 1));
+                    }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 dark:bg-zinc-800/90 text-zinc-800 dark:text-zinc-100 shadow-lg backdrop-blur-sm transition-all hover:bg-white dark:hover:bg-zinc-700 hover:scale-110 cursor-pointer z-20"
+                    aria-label="Hình tiếp theo"
+                  >
+                    <ChevronRightIcon className="h-5 w-5" />
+                  </button>
+                </>
+              )}
+
+              {/* Dots indicator */}
+              {imageList.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20 bg-black/20 dark:bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full">
+                  {imageList.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setActiveImageIndex(idx)}
+                      className={`h-2 rounded-full transition-all cursor-pointer ${
+                        activeImageIndex === idx
+                          ? "w-6 bg-indigo-600 dark:bg-indigo-400"
+                          : "w-2 bg-white/70 dark:bg-zinc-400 hover:bg-white"
+                      }`}
+                      aria-label={`Chuyển đến ảnh ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+
               {currentProduct.tag && (
                 <span className="absolute top-5 left-5 rounded-full bg-zinc-900/90 dark:bg-zinc-50/90 text-white dark:text-zinc-950 px-3 py-1.5 text-sm font-semibold shadow-md z-10">
                   {currentProduct.tag}
@@ -118,6 +176,32 @@ export default function ProductDetailPage({ product, related }: Props) {
                 </span>
               )}
             </div>
+
+            {/* Thumbnail Gallery Strip */}
+            {imageList.length > 1 && (
+              <div className="flex items-center gap-3 overflow-x-auto pb-2 pt-1 scrollbar-thin">
+                {imageList.map((img, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setActiveImageIndex(idx)}
+                    className={`relative aspect-square w-20 h-20 shrink-0 rounded-2xl overflow-hidden border-2 bg-white dark:bg-zinc-900 p-1.5 transition-all cursor-pointer ${
+                      activeImageIndex === idx
+                        ? "border-indigo-600 ring-2 ring-indigo-600/30 scale-105 shadow-md"
+                        : "border-zinc-200 dark:border-zinc-800 opacity-60 hover:opacity-100 hover:border-zinc-400"
+                    }`}
+                  >
+                    <Image
+                      src={getAssetPath(img)}
+                      alt={`${currentProduct.name} - thumbnail ${idx + 1}`}
+                      fill
+                      className="object-contain p-1"
+                      sizes="80px"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Product Info */}
@@ -283,22 +367,24 @@ export default function ProductDetailPage({ product, related }: Props) {
               Sản phẩm liên quan
             </h2>
             <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
-              {currentRelated.map((p) => (
-                <Link
-                  key={p.id}
-                  href={`/product/${p.id}`}
-                  className="group flex flex-col gap-3"
-                >
-                  <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800 p-2">
-                    {p.image && (
-                      <Image
-                        src={getAssetPath(p.image)}
-                        alt={p.name}
-                        fill
-                        className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                      />
-                    )}
+              {currentRelated.map((p) => {
+                const relatedImg = p.images?.[0] || p.image || "";
+                return (
+                  <Link
+                    key={p.id}
+                    href={`/product/${p.id}`}
+                    className="group flex flex-col gap-3"
+                  >
+                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800 p-2">
+                      {relatedImg && (
+                        <Image
+                          src={getAssetPath(relatedImg)}
+                          alt={p.name}
+                          fill
+                          className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                        />
+                      )}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/25 z-10">
                       <span className="text-white text-xs font-semibold bg-black/40 backdrop-blur-sm px-3 py-1.5 rounded-full">
                         Xem chi tiết
@@ -325,8 +411,9 @@ export default function ProductDetailPage({ product, related }: Props) {
                       )}
                     </div>
                   </div>
-                </Link>
-              ))}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         )}

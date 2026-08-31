@@ -68,7 +68,9 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <MailIcon className="h-4 w-4 shrink-0 text-zinc-400" />
-                <span>contact@japanshop.vn</span>
+                <a href="mailto:japanshop.tuyan78@gmail.com" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                  japanshop.tuyan78@gmail.com
+                </a>
               </li>
             </ul>
           </div>

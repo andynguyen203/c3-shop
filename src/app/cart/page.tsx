@@ -195,9 +195,9 @@ export default function CartPage() {
                           href={`/product/${product.id}`}
                           className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-1.5 group"
                         >
-                          {product.image ? (
+                          {(product.images?.[0] || product.image) ? (
                             <Image
-                              src={getAssetPath(product.image)}
+                              src={getAssetPath(product.images?.[0] || product.image)}
                               alt={product.name}
                               fill
                               className="object-contain group-hover:scale-105 transition-transform"

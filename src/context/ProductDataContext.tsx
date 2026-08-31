@@ -13,7 +13,8 @@ interface DbProductRow {
   id: string;
   name: string;
   description: string | null;
-  image: string;
+  image?: string | null;
+  images?: string[] | null;
   image_bg: string | null;
   price: number;
   old_price: number | null;
@@ -47,12 +48,16 @@ interface DbProductOrderRow {
 }
 
 function mapDbProduct(row: DbProductRow): Product {
+  const images = Array.isArray(row.images) && row.images.length > 0
+    ? row.images
+    : (row.image ? [row.image] : []);
   return {
     id: row.id,
     name: row.name,
     description: row.description || "",
     ingredients: row.ingredients || undefined,
-    image: row.image,
+    images,
+    image: images[0] || "",
     imageBg: row.image_bg || undefined,
     price: Number(row.price) || 0,
     oldPrice: row.old_price !== null && row.old_price !== undefined ? Number(row.old_price) : undefined,
@@ -64,12 +69,16 @@ function mapDbProduct(row: DbProductRow): Product {
 }
 
 function mapProductToDb(p: Product) {
+  const images = Array.isArray(p.images) && p.images.length > 0
+    ? p.images
+    : (p.image ? [p.image] : []);
   return {
     id: p.id,
     name: p.name,
     description: p.description || "",
     ingredients: p.ingredients ?? null,
-    image: p.image,
+    image: images[0] || "",
+    images,
     image_bg: p.imageBg || "",
     price: p.price,
     old_price: p.oldPrice ?? null,
@@ -321,11 +330,15 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
   // --- Product CRUD with Supabase sync ---
   const addProduct = async (item: Omit<Product, "id"> & { id?: string; order?: number; categoryId?: string }) => {
     const nextId = item.id?.trim() || String(Date.now());
+    const images = Array.isArray(item.images) && item.images.length > 0
+      ? item.images
+      : (item.image ? [item.image] : []);
     const newProduct: Product = {
       id: nextId,
       name: item.name,
       description: item.description,
-      image: item.image,
+      images,
+      image: images[0] || "",
       imageBg: item.imageBg,
       price: item.price,
       oldPrice: item.oldPrice,

@@ -58,5 +58,20 @@
       "Nước rửa mắt",
       "Nhỏ mắt trẻ em"
     ]
+  },
+  {
+    "id": "C-05",
+    "name": "Đồ Gia Dụng",
+    "description": "Máy lọc nước tại vòi Cleansui, bình giữ nhiệt, hộp cơm giữ nhiệt cao cấp chính hãng nội địa Nhật Bản.",
+    "bannerGradient": "from-emerald-500 via-teal-500 to-cyan-600",
+    "badgeColor": "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
+    "iconName": "HomeIcon",
+    "itemCountText": "4 sản phẩm",
+    "subcategories": [
+      "Máy lọc nước tại vòi",
+      "Bình giữ nhiệt",
+      "Hộp cơm giữ nhiệt",
+      "Đồ dùng cho bé"
+    ]
   }
 ]

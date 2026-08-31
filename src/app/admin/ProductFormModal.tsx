@@ -54,7 +54,10 @@ export default function ProductFormModal({
       setTag(initialProduct.tag || "");
       setStock(initialProduct.stock ?? 100);
       setOrder(initialOrder);
-      setImage(initialProduct.image || "/images/C-01-01.jpg");
+      const imgText = initialProduct.images && initialProduct.images.length > 0
+        ? initialProduct.images.join("\n")
+        : (initialProduct.image || "/images/C-01-01.jpg");
+      setImage(imgText);
       setDescription(initialProduct.description || "");
       setIngredients(initialProduct.ingredients || "");
     } else {
@@ -82,6 +85,9 @@ export default function ProductFormModal({
       return;
     }
 
+    const imgList = image.split(/[\n,]+/).map((s) => s.trim()).filter(Boolean);
+    const finalImages = imgList.length > 0 ? imgList : ["/images/C-01-01.jpg"];
+
     onSave({
       id: isEdit ? id : id.trim() || undefined,
       name: name.trim(),
@@ -90,7 +96,8 @@ export default function ProductFormModal({
       tag: tag.trim() || undefined,
       stock: Number(stock),
       order: Number(order),
-      image: image.trim(),
+      images: finalImages,
+      image: finalImages[0],
       description: description.trim(),
       ingredients: ingredients.trim() || undefined,
       rating: initialProduct?.rating ?? 5.0,

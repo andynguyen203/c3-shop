@@ -386,5 +386,21 @@
   {
     "categoryId": "C-02",
     "productId": "97"
+  },
+  {
+    "categoryId": "C-05",
+    "productId": "98"
+  },
+  {
+    "categoryId": "C-05",
+    "productId": "99"
+  },
+  {
+    "categoryId": "C-05",
+    "productId": "100"
+  },
+  {
+    "categoryId": "C-05",
+    "productId": "101"
   }
 ]

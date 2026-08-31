@@ -1,10 +1,14 @@
 import FeaturedProductsSection from "@/components/features/FeaturedProductsSection";
+import DiscountedProductsSection from "@/components/features/DiscountedProductsSection";
 
 export default function Home() {
   return (
     <div className="flex-1 bg-zinc-50 dark:bg-zinc-950">
       {/* Featured Products */}
       <FeaturedProductsSection />
+
+      {/* Discounted Products */}
+      <DiscountedProductsSection />
 
       {/* CTA Section */}
       <section className="bg-zinc-50 dark:bg-zinc-950 py-16 sm:py-24">

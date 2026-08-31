@@ -530,9 +530,9 @@ export default function FeaturedManagement() {
 
                       {/* Image Thumbnail */}
                       <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 p-1 mb-2">
-                        {p.image ? (
+                        {(p.images?.[0] || p.image) ? (
                           <Image
-                            src={getAssetPath(p.image)}
+                            src={getAssetPath(p.images?.[0] || p.image)}
                             alt={p.name}
                             fill
                             className="object-contain pointer-events-none group-hover:scale-105 transition-transform"
@@ -673,9 +673,9 @@ export default function FeaturedManagement() {
                         {p ? (
                           <div className="flex flex-col items-center flex-1 justify-between">
                             <div className="relative h-14 w-14 overflow-hidden rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-0.5 mb-1">
-                              {p.image ? (
+                              {(p.images?.[0] || p.image) ? (
                                 <Image
-                                  src={getAssetPath(p.image)}
+                                  src={getAssetPath(p.images?.[0] || p.image)}
                                   alt={p.name}
                                   fill
                                   className="object-contain pointer-events-none"
@@ -790,9 +790,9 @@ export default function FeaturedManagement() {
                         {p ? (
                           <div className="flex flex-col items-center flex-1 justify-between">
                             <div className="relative h-14 w-14 overflow-hidden rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-0.5 mb-1">
-                              {p.image ? (
+                              {(p.images?.[0] || p.image) ? (
                                 <Image
-                                  src={getAssetPath(p.image)}
+                                  src={getAssetPath(p.images?.[0] || p.image)}
                                   alt={p.name}
                                   fill
                                   className="object-contain pointer-events-none"
@@ -906,9 +906,9 @@ export default function FeaturedManagement() {
                   >
                     <div>
                       <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 p-2">
-                        {product.image ? (
+                        {(product.images?.[0] || product.image) ? (
                           <Image
-                            src={getAssetPath(product.image)}
+                            src={getAssetPath(product.images?.[0] || product.image)}
                             alt={product.name}
                             fill
                             className="object-contain p-1 group-hover:scale-105 transition-transform duration-500"

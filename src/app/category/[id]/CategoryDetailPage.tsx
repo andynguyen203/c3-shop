@@ -438,6 +438,7 @@ export default function CategoryDetailPage({
                   ? calcDiscount(product.price, product.oldPrice)
                   : null;
               const isAdded = addedProductId === product.id;
+              const primaryImage = product.images?.[0] || product.image || "";
 
               return (
                 <div
@@ -447,9 +448,9 @@ export default function CategoryDetailPage({
                   <div>
                     {/* Image Area */}
                     <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 p-2">
-                      {product.image ? (
+                      {primaryImage ? (
                         <Image
-                          src={getAssetPath(product.image)}
+                          src={getAssetPath(primaryImage)}
                           alt={product.name}
                           fill
                           priority={index < 4}
@@ -548,6 +549,7 @@ export default function CategoryDetailPage({
                   ? calcDiscount(product.price, product.oldPrice)
                   : null;
               const isAdded = addedProductId === product.id;
+              const primaryImage = product.images?.[0] || product.image || "";
 
               return (
                 <div
@@ -555,9 +557,9 @@ export default function CategoryDetailPage({
                   className="group relative flex flex-col sm:flex-row items-center gap-6 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 transition-all duration-300 hover:shadow-lg"
                 >
                   <div className="relative aspect-square w-full sm:w-44 shrink-0 overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 p-2">
-                    {product.image ? (
+                    {primaryImage ? (
                       <Image
-                        src={getAssetPath(product.image)}
+                        src={getAssetPath(primaryImage)}
                         alt={product.name}
                         fill
                         priority={index < 4}

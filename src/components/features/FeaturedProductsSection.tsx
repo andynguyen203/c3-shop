@@ -52,13 +52,15 @@ export default function FeaturedProductsSection() {
             const categoryName = category ? category.name : "";
             const isJustAdded = addedId === product.id;
 
+            const primaryImage = product.images?.[0] || product.image || "";
+
             return (
               <div key={product.id} className="group relative flex flex-col justify-between">
                 <div>
                   <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 p-2">
-                    {product.image ? (
+                    {primaryImage ? (
                       <Image
-                        src={getAssetPath(product.image)}
+                        src={getAssetPath(primaryImage)}
                         alt={product.name}
                         fill
                         priority={index < 5}

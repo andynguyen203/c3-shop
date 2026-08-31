@@ -218,34 +218,84 @@ export default function AdminPage() {
     (p) => p.oldPrice && p.oldPrice > p.price
   );
 
+  const navItems = [
+    {
+      id: "products" as AdminTab,
+      label: "Quản lý Sản phẩm",
+      icon: "📦",
+      count: products.length,
+      color: "indigo",
+      desc: "Thêm, sửa, giá bán, tồn kho",
+    },
+    {
+      id: "categories" as AdminTab,
+      label: "Quản lý Danh mục",
+      icon: "🏷️",
+      count: categories.length,
+      color: "indigo",
+      desc: "Phân loại nhóm ngành hàng",
+    },
+    {
+      id: "category_products" as AdminTab,
+      label: "Sản phẩm - Danh mục",
+      icon: "🗂️",
+      count: categoryProducts.length,
+      color: "indigo",
+      desc: "Gán sản phẩm vào danh mục",
+    },
+    {
+      id: "featured" as AdminTab,
+      label: "Sản phẩm Bán chạy",
+      icon: "🔥",
+      count: featuredProducts.length,
+      color: "amber",
+      desc: "Thứ tự hiển thị trang chủ",
+    },
+    {
+      id: "discount" as AdminTab,
+      label: "Sản phẩm Giảm giá",
+      icon: "⚡",
+      count: discountedProducts.length,
+      color: "rose",
+      desc: "Chương trình khuyến mãi",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        {/* Top Bar Banner */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-zinc-200 dark:border-zinc-800 pb-6 mb-6">
-          <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800/60 px-3 py-1 text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-2">
-              <span>Hệ thống Quản trị Cửa hàng</span>
+    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-6 px-3 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1600px]">
+        {/* Top Header Bar */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-zinc-200 dark:border-zinc-800 pb-5 mb-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-md shadow-indigo-500/20 text-xl font-bold">
+              ⛩️
             </div>
-            <h1 className="text-3xl font-black tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
-              Trang Quản Trị Japan Shop
-            </h1>
-            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-              Quản lý phân loại danh mục, sản phẩm thuộc danh mục, kho sản phẩm, vị trí bán chạy và sản phẩm khuyến mãi giảm giá
-            </p>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-black tracking-tight text-zinc-900 dark:text-white sm:text-3xl">
+                  Trang Quản Trị Japan Shop
+                </h1>
+                <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-indigo-50 dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-800/80 px-2.5 py-0.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                  v2.0
+                </span>
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
+                Hệ thống quản lý phân loại danh mục, sản phẩm, kho hàng và khuyến mãi
+              </p>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 self-start sm:self-auto">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-2.5 text-sm font-semibold text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shadow-xs"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3.5 py-2 text-xs sm:text-sm font-semibold text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shadow-xs"
             >
               👁 Xem cửa hàng
             </Link>
 
             <button
               onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-rose-200 dark:border-rose-900/60 bg-rose-50/50 dark:bg-rose-950/40 px-3.5 py-2.5 text-sm font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-950 transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-rose-200 dark:border-rose-900/60 bg-rose-50/50 dark:bg-rose-950/40 px-3.5 py-2 text-xs sm:text-sm font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-950 transition-colors cursor-pointer"
               title="Khóa và đăng xuất khỏi trang admin"
             >
               🔒 Khóa / Đăng xuất
@@ -254,20 +304,20 @@ export default function AdminPage() {
         </div>
 
         {/* Database & Cloud Sync Status Banner */}
-        <div className="mb-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 shadow-sm">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="mb-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 shadow-xs">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 dark:bg-zinc-800 text-lg">
                 🗄️
               </div>
               <div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                     Cơ sở dữ liệu
                   </span>
                   {supabaseStatus === "connected" && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-400">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-400">
+                      <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
                       Supabase Cloud Online
                     </span>
                   )}
@@ -299,11 +349,11 @@ export default function AdminPage() {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2.5">
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={handleRefreshData}
                 disabled={isRefreshing}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/80 px-3.5 py-2 text-xs font-bold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-all cursor-pointer disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800/80 px-3 py-2 text-xs font-bold text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-all cursor-pointer disabled:opacity-50"
               >
                 <span>🔄</span>
                 <span>{isRefreshing ? "Đang tải lại..." : "Tải lại dữ liệu"}</span>
@@ -320,7 +370,7 @@ export default function AdminPage() {
                 className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-bold text-white shadow-xs hover:bg-indigo-500 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <span>⚡</span>
-                <span>{isSeeding ? "Đang đồng bộ mẫu..." : "Đồng bộ dữ liệu gốc lên Supabase"}</span>
+                <span>{isSeeding ? "Đang đồng bộ..." : "Đồng bộ dữ liệu gốc lên Supabase"}</span>
               </button>
             </div>
           </div>
@@ -338,125 +388,127 @@ export default function AdminPage() {
           )}
         </div>
 
-        {/* 4 Main Screens Navigation Tabs */}
-        <div className="mb-8 overflow-x-auto">
-          <div className="inline-flex p-1.5 rounded-2xl bg-zinc-200/80 dark:bg-zinc-900 border border-zinc-300/60 dark:border-zinc-800 gap-1.5 min-w-full sm:min-w-0">
-            {/* Tab 1: Categories */}
-            <button
-              onClick={() => setActiveTab("categories")}
-              className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
-                activeTab === "categories"
-                  ? "bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-md scale-[1.02]"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-zinc-800/50"
-              }`}
-            >
-              <span>🏷️ 1. Quản lý Danh mục</span>
-              <span
-                className={`px-2 py-0.5 rounded-full text-xs font-black ${
-                  activeTab === "categories"
-                    ? "bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400"
-                    : "bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300"
-                }`}
-              >
-                {categories.length}
-              </span>
-            </button>
-
-            {/* Tab 2: Category Products Assignment */}
-            <button
-              onClick={() => setActiveTab("category_products")}
-              className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
-                activeTab === "category_products"
-                  ? "bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-md scale-[1.02]"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-zinc-800/50"
-              }`}
-            >
-              <span>🗂️ 2. Sản phẩm thuộc Danh mục</span>
-              <span
-                className={`px-2 py-0.5 rounded-full text-xs font-black ${
-                  activeTab === "category_products"
-                    ? "bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400"
-                    : "bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300"
-                }`}
-              >
-                {categoryProducts.length}
-              </span>
-            </button>
-
-            {/* Tab 3: Products */}
-            <button
-              onClick={() => setActiveTab("products")}
-              className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
-                activeTab === "products"
-                  ? "bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-md scale-[1.02]"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-zinc-800/50"
-              }`}
-            >
-              <span>📦 3. Quản lý Sản phẩm</span>
-              <span
-                className={`px-2 py-0.5 rounded-full text-xs font-black ${
-                  activeTab === "products"
-                    ? "bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400"
-                    : "bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300"
-                }`}
-              >
-                {products.length}
-              </span>
-            </button>
-
-            {/* Tab 4: Featured Products */}
-            <button
-              onClick={() => setActiveTab("featured")}
-              className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
-                activeTab === "featured"
-                  ? "bg-white dark:bg-zinc-800 text-amber-600 dark:text-amber-400 shadow-md scale-[1.02]"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-zinc-800/50"
-              }`}
-            >
-              <span>🔥 4. Quản lý Sản phẩm Bán chạy</span>
-              <span
-                className={`px-2 py-0.5 rounded-full text-xs font-black ${
-                  activeTab === "featured"
-                    ? "bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400"
-                    : "bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300"
-                }`}
-              >
-                {featuredProducts.length}
-              </span>
-            </button>
-
-            {/* Tab 5: Discounted Products */}
-            <button
-              onClick={() => setActiveTab("discount")}
-              className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
-                activeTab === "discount"
-                  ? "bg-white dark:bg-zinc-800 text-rose-600 dark:text-rose-400 shadow-md scale-[1.02]"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-zinc-800/50"
-              }`}
-            >
-              <span>🏷️ 5. Quản lý Sản phẩm Giảm giá</span>
-              <span
-                className={`px-2 py-0.5 rounded-full text-xs font-black ${
-                  activeTab === "discount"
-                    ? "bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400"
-                    : "bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300"
-                }`}
-              >
-                {discountedProducts.length}
-              </span>
-            </button>
+        {/* Mobile Horizontal Tabs (< lg) */}
+        <div className="lg:hidden mb-6 overflow-x-auto pb-1">
+          <div className="flex gap-2 min-w-max p-1 rounded-2xl bg-zinc-200/70 dark:bg-zinc-900 border border-zinc-300/60 dark:border-zinc-800">
+            {navItems.map((item) => {
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                    isActive
+                      ? "bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-md scale-[1.02]"
+                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+                  }`}
+                >
+                  <span>{item.icon}</span>
+                  <span>{item.label}</span>
+                  <span
+                    className={`px-2 py-0.5 rounded-full text-xs font-black ${
+                      isActive
+                        ? "bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400"
+                        : "bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300"
+                    }`}
+                  >
+                    {item.count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Screen Content */}
-        <div>
-          {activeTab === "categories" && <CategoryManagement />}
-          {activeTab === "category_products" && <CategoryProductManagement />}
-          {activeTab === "products" && <ProductManagement />}
-          {activeTab === "featured" && <FeaturedManagement />}
-          {activeTab === "discount" && <DiscountManagement />}
+        {/* Main 2-Column Sidebar Layout (Desktop: lg+) */}
+        <div className="grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-6 items-start">
+          {/* Left Sidebar (Desktop) */}
+          <aside className="hidden lg:flex flex-col gap-4 sticky top-6">
+            <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 shadow-sm">
+              <div className="px-3 py-2 mb-2">
+                <span className="text-[11px] font-black uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                  Menu Quản Trị
+                </span>
+              </div>
+
+              <nav className="space-y-1.5">
+                {navItems.map((item) => {
+                  const isActive = activeTab === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveTab(item.id)}
+                      className={`w-full flex items-center justify-between gap-3 px-3.5 py-3 rounded-2xl text-left transition-all cursor-pointer group ${
+                        isActive
+                          ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/25 font-bold scale-[1.01]"
+                          : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 font-semibold"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className={`text-xl flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-110 ${
+                          isActive
+                            ? "bg-white/20 text-white"
+                            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
+                        }`}>
+                          {item.icon}
+                        </span>
+                        <div className="min-w-0">
+                          <div className="text-sm truncate">
+                            {item.label}
+                          </div>
+                          <div className={`text-[11px] truncate font-normal ${
+                            isActive ? "text-indigo-100" : "text-zinc-400 dark:text-zinc-500"
+                          }`}>
+                            {item.desc}
+                          </div>
+                        </div>
+                      </div>
+
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-black shrink-0 ${
+                          isActive
+                            ? "bg-white text-indigo-700 shadow-xs"
+                            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 group-hover:bg-zinc-200 dark:group-hover:bg-zinc-700"
+                        }`}
+                      >
+                        {item.count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </nav>
+
+              {/* Sidebar Quick Summary Footer */}
+              <div className="mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800/80 px-2 space-y-2">
+                <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                  <span>Tổng sản phẩm:</span>
+                  <span className="font-bold text-zinc-800 dark:text-zinc-200">{products.length} SP</span>
+                </div>
+                <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                  <span>Danh mục:</span>
+                  <span className="font-bold text-zinc-800 dark:text-zinc-200">{categories.length} nhóm</span>
+                </div>
+                <div className="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400">
+                  <span>Đang giảm giá:</span>
+                  <span className="font-bold text-rose-600 dark:text-rose-400">{discountedProducts.length} SP</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          {/* Right Main Content Area */}
+          <main className="min-w-0">
+            <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 sm:p-6 lg:p-7 shadow-sm">
+              {activeTab === "products" && <ProductManagement />}
+              {activeTab === "categories" && <CategoryManagement />}
+              {activeTab === "category_products" && <CategoryProductManagement />}
+              {activeTab === "featured" && <FeaturedManagement />}
+              {activeTab === "discount" && <DiscountManagement />}
+            </div>
+          </main>
         </div>
       </div>
     </div>
   );
 }
+

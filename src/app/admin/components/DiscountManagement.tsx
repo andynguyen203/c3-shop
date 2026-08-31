@@ -668,9 +668,9 @@ export default function DiscountManagement() {
 
                       {/* Image Thumbnail */}
                       <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700 p-1 mb-2">
-                        {p.image ? (
+                        {(p.images?.[0] || p.image) ? (
                           <Image
-                            src={getAssetPath(p.image)}
+                            src={getAssetPath(p.images?.[0] || p.image)}
                             alt={p.name}
                             fill
                             className="object-contain pointer-events-none group-hover:scale-105 transition-transform"
@@ -818,9 +818,9 @@ export default function DiscountManagement() {
                         {p ? (
                           <div className="flex flex-col items-center flex-1 justify-between">
                             <div className="relative h-14 w-14 overflow-hidden rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-0.5 mb-1">
-                              {p.image ? (
+                              {(p.images?.[0] || p.image) ? (
                                 <Image
-                                  src={getAssetPath(p.image)}
+                                  src={getAssetPath(p.images?.[0] || p.image)}
                                   alt={p.name}
                                   fill
                                   className="object-contain pointer-events-none"
@@ -936,9 +936,9 @@ export default function DiscountManagement() {
                         {p ? (
                           <div className="flex flex-col items-center flex-1 justify-between">
                             <div className="relative h-14 w-14 overflow-hidden rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-0.5 mb-1">
-                              {p.image ? (
+                              {(p.images?.[0] || p.image) ? (
                                 <Image
-                                  src={getAssetPath(p.image)}
+                                  src={getAssetPath(p.images?.[0] || p.image)}
                                   alt={p.name}
                                   fill
                                   className="object-contain pointer-events-none"
@@ -1082,9 +1082,9 @@ export default function DiscountManagement() {
                         <td className="py-3 px-3">
                           <div className="flex items-center gap-3">
                             <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
-                              {p.image ? (
+                              {(p.images?.[0] || p.image) ? (
                                 <Image
-                                  src={getAssetPath(p.image)}
+                                  src={getAssetPath(p.images?.[0] || p.image)}
                                   alt={p.name}
                                   fill
                                   className="object-contain"
@@ -1196,9 +1196,9 @@ export default function DiscountManagement() {
                   </div>
 
                   <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-zinc-50 dark:bg-zinc-800 mb-2">
-                    {product.image && (
+                    {(product.images?.[0] || product.image) && (
                       <Image
-                        src={getAssetPath(product.image)}
+                        src={getAssetPath(product.images?.[0] || product.image)}
                         alt={product.name}
                         fill
                         className="object-contain"

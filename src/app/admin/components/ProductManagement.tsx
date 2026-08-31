@@ -359,9 +359,9 @@ export default function ProductManagement() {
                       <td className="py-4 px-4 sm:px-6">
                         <div className="flex items-center gap-3">
                           <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-1">
-                            {p.image ? (
+                            {(p.images?.[0] || p.image) ? (
                               <Image
-                                src={getAssetPath(p.image)}
+                                src={getAssetPath(p.images?.[0] || p.image)}
                                 alt={p.name}
                                 fill
                                 className="object-contain"
