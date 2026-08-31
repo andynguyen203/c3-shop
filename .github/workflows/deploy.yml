@@ -41,6 +41,8 @@ jobs:
           NODE_ENV: production
           NEXT_PUBLIC_BASE_PATH: /c3-shop
           NEXT_PUBLIC_ADMIN_PASSKEY: ${{ secrets.ADMIN_PASSKEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
