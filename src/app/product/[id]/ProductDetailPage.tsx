@@ -56,10 +56,8 @@ export default function ProductDetailPage({ product, related }: Props) {
   const imageList =
     currentProduct.images && currentProduct.images.length > 0
       ? currentProduct.images
-      : currentProduct.image
-      ? [currentProduct.image]
       : [];
-  const activeImage = imageList[activeImageIndex] || currentProduct.image || "";
+  const activeImage = imageList[activeImageIndex] || "";
 
   const handleAddToCart = () => {
     addToCart(currentProduct, quantity);
@@ -368,7 +366,7 @@ export default function ProductDetailPage({ product, related }: Props) {
             </h2>
             <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
               {currentRelated.map((p) => {
-                const relatedImg = p.images?.[0] || p.image || "";
+                const relatedImg = p.images?.[0] || "";
                 return (
                   <Link
                     key={p.id}

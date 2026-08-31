@@ -52,7 +52,7 @@ export default function FeaturedProductsSection() {
             const categoryName = category ? category.name : "";
             const isJustAdded = addedId === product.id;
 
-            const primaryImage = product.images?.[0] || product.image || "";
+            const primaryImage = product.images?.[0] || "";
 
             return (
               <div key={product.id} className="group relative flex flex-col justify-between">

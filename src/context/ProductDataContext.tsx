@@ -57,7 +57,6 @@ function mapDbProduct(row: DbProductRow): Product {
     description: row.description || "",
     ingredients: row.ingredients || undefined,
     images,
-    image: images[0] || "",
     imageBg: row.image_bg || undefined,
     price: Number(row.price) || 0,
     oldPrice: row.old_price !== null && row.old_price !== undefined ? Number(row.old_price) : undefined,
@@ -71,7 +70,7 @@ function mapDbProduct(row: DbProductRow): Product {
 function mapProductToDb(p: Product) {
   const images = Array.isArray(p.images) && p.images.length > 0
     ? p.images
-    : (p.image ? [p.image] : []);
+    : [];
   return {
     id: p.id,
     name: p.name,
@@ -332,13 +331,12 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     const nextId = item.id?.trim() || String(Date.now());
     const images = Array.isArray(item.images) && item.images.length > 0
       ? item.images
-      : (item.image ? [item.image] : []);
+      : [];
     const newProduct: Product = {
       id: nextId,
       name: item.name,
       description: item.description,
       images,
-      image: images[0] || "",
       imageBg: item.imageBg,
       price: item.price,
       oldPrice: item.oldPrice,

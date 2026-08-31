@@ -56,7 +56,7 @@ export default function ProductFormModal({
       setOrder(initialOrder);
       const imgText = initialProduct.images && initialProduct.images.length > 0
         ? initialProduct.images.join("\n")
-        : (initialProduct.image || "/images/C-01-01.jpg");
+        : "/images/C-01-01.jpg";
       setImage(imgText);
       setDescription(initialProduct.description || "");
       setIngredients(initialProduct.ingredients || "");
@@ -97,7 +97,6 @@ export default function ProductFormModal({
       stock: Number(stock),
       order: Number(order),
       images: finalImages,
-      image: finalImages[0],
       description: description.trim(),
       ingredients: ingredients.trim() || undefined,
       rating: initialProduct?.rating ?? 5.0,

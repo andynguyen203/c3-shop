@@ -302,9 +302,9 @@ export default function CategoryProductManagement() {
               <div>
                 {/* Image & Tag */}
                 <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-zinc-50 dark:bg-zinc-800 border border-zinc-100 dark:border-zinc-700/60 p-2 mb-3">
-                  {(p.images?.[0] || p.image) ? (
+                  {p.images?.[0] ? (
                     <Image
-                      src={getAssetPath(p.images?.[0] || p.image)}
+                      src={getAssetPath(p.images[0])}
                       alt={p.name}
                       fill
                       className="object-contain group-hover:scale-105 transition-transform"
@@ -429,9 +429,9 @@ export default function CategoryProductManagement() {
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="relative h-12 w-12 shrink-0 rounded-lg overflow-hidden bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-1">
-                        {(p.images?.[0] || p.image) ? (
+                        {p.images?.[0] ? (
                           <Image
-                            src={getAssetPath(p.images?.[0] || p.image)}
+                            src={getAssetPath(p.images[0])}
                             alt={p.name}
                             fill
                             className="object-contain"

@@ -5,7 +5,6 @@ export interface Product {
   name: string;
   description: string;
   images: string[];
-  image?: string; // Optional legacy fallback
   imageBg?: string; // Tailwind gradient background
   price: number;
   oldPrice?: number;

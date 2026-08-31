@@ -74,7 +74,7 @@ export default function DiscountedProductsSection() {
             const category = categories.find((c) => c.id === catId);
             const categoryName = category ? category.name : "";
             const isJustAdded = addedId === product.id;
-            const primaryImage = product.images?.[0] || product.image || "";
+            const primaryImage = product.images?.[0] || "";
             const discountPercent = calcDiscountPercent(product.price, product.oldPrice);
 
             return (

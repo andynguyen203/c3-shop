@@ -438,7 +438,7 @@ export default function CategoryDetailPage({
                   ? calcDiscount(product.price, product.oldPrice)
                   : null;
               const isAdded = addedProductId === product.id;
-              const primaryImage = product.images?.[0] || product.image || "";
+              const primaryImage = product.images?.[0] || "";
 
               return (
                 <div
@@ -549,7 +549,7 @@ export default function CategoryDetailPage({
                   ? calcDiscount(product.price, product.oldPrice)
                   : null;
               const isAdded = addedProductId === product.id;
-              const primaryImage = product.images?.[0] || product.image || "";
+              const primaryImage = product.images?.[0] || "";
 
               return (
                 <div
