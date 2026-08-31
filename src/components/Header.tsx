@@ -62,8 +62,8 @@ export default function Header() {
           <nav className="hidden md:flex items-center gap-6">
             {categories.map((category) => (
               <Link
-                key={category.name}
-                href={`/category/${category.slug}`}
+                key={category.id || category.name}
+                href={`/category/${category.id}`}
                 className="text-sm font-medium text-zinc-600 transition-colors hover:text-indigo-600 dark:text-zinc-300 dark:hover:text-indigo-400"
               >
                 {category.name}
@@ -196,8 +196,8 @@ export default function Header() {
           <nav className="flex flex-col gap-2">
             {categories.map((category) => (
               <Link
-                key={category.name}
-                href={`/category/${category.slug}`}
+                key={category.id || category.name}
+                href={`/category/${category.id}`}
                 onClick={() => setIsMenuOpen(false)}
                 className="rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 hover:text-indigo-600 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-indigo-400"
               >

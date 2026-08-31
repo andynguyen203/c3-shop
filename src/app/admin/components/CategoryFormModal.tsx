@@ -68,16 +68,6 @@ const GRADIENT_PRESETS = [
   },
 ];
 
-const generateSlug = (str: string) => {
-  return str
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/đ/g, "d")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-};
-
 export default function CategoryFormModal({
   isOpen,
   onClose,
@@ -89,7 +79,6 @@ export default function CategoryFormModal({
 
   const [id, setId] = useState("");
   const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");
   const [description, setDescription] = useState("");
   const [iconName, setIconName] = useState<Category["iconName"]>("SparklesIcon");
   const [selectedGradientIndex, setSelectedGradientIndex] = useState(0);
@@ -98,7 +87,6 @@ export default function CategoryFormModal({
     if (initialCategory) {
       setId(initialCategory.id);
       setName(initialCategory.name);
-      setSlug(initialCategory.slug);
       setDescription(initialCategory.description || "");
       setIconName(initialCategory.iconName || "SparklesIcon");
 
@@ -110,7 +98,6 @@ export default function CategoryFormModal({
       const nextNum = String(existingCount + 1).padStart(2, "0");
       setId(`C-${nextNum}`);
       setName("");
-      setSlug("");
       setDescription("");
       setIconName("SparklesIcon");
       setSelectedGradientIndex(0);
@@ -118,11 +105,6 @@ export default function CategoryFormModal({
   }, [initialCategory, existingCount, isOpen]);
 
   if (!isOpen) return null;
-
-  const handleNameChange = (val: string) => {
-    setName(val);
-    setSlug(generateSlug(val));
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -136,7 +118,6 @@ export default function CategoryFormModal({
     const categoryData: Category = {
       id: id.trim() || `C-${Date.now()}`,
       name: name.trim(),
-      slug: (slug.trim() || generateSlug(name)).toLowerCase(),
       description: description.trim(),
       iconName,
       bannerGradient: currentGrad.value,
@@ -213,26 +194,11 @@ export default function CategoryFormModal({
                 required
                 autoFocus
                 value={name}
-                onChange={(e) => handleNameChange(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="VD: Chăm Sóc Da Mặt"
                 className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-2.5 text-sm text-zinc-900 dark:text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 font-semibold"
               />
             </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center justify-between">
-              <span>Đường dẫn tĩnh (Slug URL)</span>
-              <span className="text-[10px] text-zinc-400 font-normal lowercase tracking-normal bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded">Tự động theo tên</span>
-            </label>
-            <input
-              type="text"
-              readOnly
-              disabled
-              value={slug}
-              placeholder="cham-soc-da-mat"
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800/80 px-4 py-2.5 text-xs text-zinc-600 dark:text-zinc-300 outline-none font-mono cursor-not-allowed"
-            />
           </div>
 
           {/* Mô tả */}

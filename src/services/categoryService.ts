@@ -36,32 +36,47 @@ export const categoryService = {
   },
 
   /**
-   * Lấy chi tiết danh mục theo slug (ví dụ: "thoi-trang", "cham-soc-rang-mieng")
-   */
-  getCategoryBySlug(slug: string): Category | undefined {
-    if (!slug) return undefined;
-    const targetSlug = normalize(slug);
-    return CATEGORIES.find(
-      (cat) =>
-        normalize(cat.slug) === targetSlug ||
-        normalize(cat.id) === targetSlug ||
-        normalizeId(cat.id) === normalizeId(slug)
-    );
-  },
-
-  /**
-   * Lấy chi tiết danh mục theo ID
+   * Lấy chi tiết danh mục theo ID (ví dụ: "C-01", "c-01", "1")
    */
   getCategoryById(id: string): Category | undefined {
     if (!id) return undefined;
     const targetId = id.trim().toLowerCase();
     const targetNum = normalizeId(id);
-    return CATEGORIES.find(
+
+    const direct = CATEGORIES.find(
       (cat) =>
         cat.id.toLowerCase() === targetId ||
         normalizeId(cat.id) === targetNum ||
-        normalize(cat.slug) === normalize(id)
+        normalize(cat.name) === normalize(id)
     );
+    if (direct) return direct;
+
+    // Fallback alias matching
+    const targetSlug = normalize(id);
+    if (targetSlug.includes("me") && targetSlug.includes("be")) {
+      return CATEGORIES.find((c) => c.id === "C-03");
+    }
+    if (targetSlug.includes("mat")) {
+      return CATEGORIES.find((c) => c.id === "C-04");
+    }
+    if (
+      targetSlug.includes("ca-nhan") ||
+      targetSlug.includes("personal") ||
+      targetSlug.includes("rang") ||
+      targetSlug.includes("mieng")
+    ) {
+      return CATEGORIES.find((c) => c.id === "C-01");
+    }
+    if (
+      targetSlug.includes("thuc-pham") ||
+      targetSlug.includes("bo-sung") ||
+      targetSlug.includes("tpcn") ||
+      targetSlug.includes("chuc-nang")
+    ) {
+      return CATEGORIES.find((c) => c.id === "C-02");
+    }
+
+    return undefined;
   },
 
   /**
@@ -95,11 +110,9 @@ export const categoryService = {
   /**
    * Tính toán thống kê cho danh mục (số lượng, giá thấp nhất, giá cao nhất, rating trung bình)
    */
-  getCategoryStats(categoryIdOrSlug: string): CategoryStats {
-    const category =
-      this.getCategoryById(categoryIdOrSlug) ||
-      this.getCategoryBySlug(categoryIdOrSlug);
-    const categoryId = category ? category.id : categoryIdOrSlug;
+  getCategoryStats(categoryIdInput: string): CategoryStats {
+    const category = this.getCategoryById(categoryIdInput);
+    const categoryId = category ? category.id : categoryIdInput;
     const products = this.getProductsByCategoryId(categoryId);
 
     if (products.length === 0) {

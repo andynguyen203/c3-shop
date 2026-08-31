@@ -46,21 +46,25 @@ export default function FeaturedProductsSection() {
         </div>
 
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-8">
-          {featuredProducts.map((product) => {
+          {featuredProducts.map((product, index) => {
             const catId = getCategoryIdByProductId(product.id);
             const category = categories.find((c) => c.id === catId);
             const categoryName = category ? category.name : "";
             const isJustAdded = addedId === product.id;
 
+            const primaryImage = product.images?.[0] || "";
+
             return (
               <div key={product.id} className="group relative flex flex-col justify-between">
                 <div>
                   <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200/60 dark:border-zinc-800 p-2">
-                    {product.image ? (
+                    {primaryImage ? (
                       <Image
-                        src={getAssetPath(product.image)}
+                        src={getAssetPath(primaryImage)}
                         alt={product.name}
                         fill
+                        priority={index < 5}
+                        loading={index < 5 ? "eager" : "lazy"}
                         className="object-contain p-1 group-hover:scale-105 transition-transform duration-500"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
                       />

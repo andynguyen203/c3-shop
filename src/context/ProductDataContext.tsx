@@ -1,15 +1,121 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { PRODUCTS as DEFAULT_PRODUCTS, Product } from "@/data/products";
 import { CATEGORIES as DEFAULT_CATEGORIES, Category } from "@/data/categories";
 import { CATEGORY_PRODUCTS as DEFAULT_CATEGORY_PRODUCTS, CategoryProductMapping } from "@/data/categoryProducts";
 import { FEATURED_PRODUCT_ORDER as DEFAULT_ORDER, ProductOrder } from "@/data/order";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
-const STORAGE_PRODUCTS_KEY = "japan_shop_products_v5";
-const STORAGE_CATEGORIES_KEY = "japan_shop_categories_v5";
-const STORAGE_CATEGORY_PRODUCTS_KEY = "japan_shop_category_products_v5";
-const STORAGE_ORDER_KEY = "japan_shop_order_v5";
+
+// Database row mappings
+interface DbProductRow {
+  id: string;
+  name: string;
+  description: string | null;
+  image?: string | null;
+  images?: string[] | null;
+  image_bg: string | null;
+  price: number;
+  old_price: number | null;
+  rating: number;
+  reviews: number;
+  tag: string | null;
+  stock: number;
+  ingredients: string | null;
+}
+
+interface DbCategoryRow {
+  id: string;
+  slug?: string | null;
+  name: string;
+  description: string | null;
+  banner_gradient: string | null;
+  badge_color: string | null;
+  icon_name: string | null;
+  item_count_text: string | null;
+  subcategories: string[] | null;
+}
+
+interface DbCategoryProductRow {
+  category_id: string;
+  product_id: string;
+}
+
+interface DbProductOrderRow {
+  product_id: string;
+  order_num: number;
+}
+
+function mapDbProduct(row: DbProductRow): Product {
+  const images = Array.isArray(row.images) && row.images.length > 0
+    ? row.images
+    : (row.image ? [row.image] : []);
+  return {
+    id: row.id,
+    name: row.name,
+    description: row.description || "",
+    ingredients: row.ingredients || undefined,
+    images,
+    imageBg: row.image_bg || undefined,
+    price: Number(row.price) || 0,
+    oldPrice: row.old_price !== null && row.old_price !== undefined ? Number(row.old_price) : undefined,
+    rating: Number(row.rating) || 5.0,
+    reviews: Number(row.reviews) || 0,
+    tag: row.tag || undefined,
+    stock: Number(row.stock) || 0,
+  };
+}
+
+function mapProductToDb(p: Product) {
+  const images = Array.isArray(p.images) && p.images.length > 0
+    ? p.images
+    : [];
+  return {
+    id: p.id,
+    name: p.name,
+    description: p.description || "",
+    ingredients: p.ingredients ?? null,
+    image: images[0] || "",
+    images,
+    image_bg: p.imageBg || "",
+    price: p.price,
+    old_price: p.oldPrice ?? null,
+    rating: p.rating ?? 5.0,
+    reviews: p.reviews ?? 0,
+    tag: p.tag ?? null,
+    stock: p.stock ?? 0,
+  };
+}
+
+function mapDbCategory(row: DbCategoryRow): Category {
+  return {
+    id: row.id,
+    name: row.name,
+    description: row.description || "",
+    bannerGradient: row.banner_gradient || "from-indigo-600 to-violet-700",
+    badgeColor: row.badge_color || "bg-indigo-500",
+    iconName: (row.icon_name || "SparklesIcon") as Category["iconName"],
+    itemCountText: row.item_count_text || "0 sản phẩm",
+    subcategories: Array.isArray(row.subcategories) ? row.subcategories : [],
+  };
+}
+
+function mapCategoryToDb(c: Category) {
+  return {
+    id: c.id,
+    slug: c.id.toLowerCase(),
+    name: c.name,
+    description: c.description || "",
+    banner_gradient: c.bannerGradient || "from-indigo-600 to-violet-700",
+    badge_color: c.badgeColor || "bg-indigo-500",
+    icon_name: c.iconName || "SparklesIcon",
+    item_count_text: c.itemCountText || "0 sản phẩm",
+    subcategories: c.subcategories || [],
+  };
+}
+
+export type SupabaseConnectionStatus = "connected" | "not_configured" | "error" | "loading";
 
 interface ProductContextType {
   products: Product[];
@@ -17,31 +123,34 @@ interface ProductContextType {
   categoryProducts: CategoryProductMapping[];
   orders: ProductOrder[];
   isLoaded: boolean;
-  addProduct: (product: Omit<Product, "id"> & { id?: string; order?: number; categoryId?: string }) => void;
-  updateProduct: (id: string, updated: Partial<Product> & { order?: number; categoryId?: string }) => void;
-  deleteProduct: (id: string) => void;
-  updateProductOrder: (productId: string, newOrder: number) => void;
-  toggleFeatured: (productId: string, isFeatured: boolean, tag?: string) => void;
-  moveProductOrder: (productId: string, direction: "up" | "down") => void;
+  supabaseStatus: SupabaseConnectionStatus;
+  addProduct: (product: Omit<Product, "id"> & { id?: string; order?: number; categoryId?: string }) => Promise<void>;
+  updateProduct: (id: string, updated: Partial<Product> & { order?: number; categoryId?: string }) => Promise<void>;
+  deleteProduct: (id: string) => Promise<void>;
+  updateProductOrder: (productId: string, newOrder: number) => Promise<void>;
+  toggleFeatured: (productId: string, isFeatured: boolean, tag?: string) => Promise<void>;
+  moveProductOrder: (productId: string, direction: "up" | "down") => Promise<void>;
   resetToDefault: () => void;
   exportJSON: () => string;
   importJSON: (jsonString: string) => boolean;
-  addCategory: (category: Category) => void;
-  updateCategory: (id: string, updated: Partial<Category>) => void;
-  deleteCategory: (id: string) => void;
+  addCategory: (category: Category) => Promise<void>;
+  updateCategory: (id: string, updated: Partial<Category>) => Promise<void>;
+  deleteCategory: (id: string) => Promise<void>;
   resetCategoriesToDefault: () => void;
   exportCategoriesJSON: () => string;
   importCategoriesJSON: (jsonString: string) => boolean;
   getProductsByCategoryId: (categoryId: string) => Product[];
   getCategoryIdByProductId: (productId: string) => string | undefined;
-  setCategoryProducts: (categoryId: string, productIds: string[]) => void;
-  assignProductToCategory: (productId: string, categoryId: string) => void;
-  removeProductFromCategory: (productId: string, categoryId: string) => void;
+  setCategoryProducts: (categoryId: string, productIds: string[]) => Promise<void>;
+  assignProductToCategory: (productId: string, categoryId: string) => Promise<void>;
+  removeProductFromCategory: (productId: string, categoryId: string) => Promise<void>;
   exportCategoryProductsJSON: () => string;
   importCategoryProductsJSON: (jsonString: string) => boolean;
   resetCategoryProductsToDefault: () => void;
   getProductById: (id: string) => Product | undefined;
   getFeaturedProducts: (limit?: number) => Product[];
+  seedInitialDataToSupabase: () => Promise<{ success: boolean; message: string }>;
+  refreshFromSupabase: () => Promise<void>;
 }
 
 const ProductDataContext = createContext<ProductContextType | undefined>(undefined);
@@ -52,64 +161,182 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
   const [categoryProducts, setCategoryProductsState] = useState<CategoryProductMapping[]>(DEFAULT_CATEGORY_PRODUCTS);
   const [orders, setOrders] = useState<ProductOrder[]>(DEFAULT_ORDER);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [supabaseStatus, setSupabaseStatus] = useState<SupabaseConnectionStatus>("loading");
 
-  // Load from localStorage on mount
-  useEffect(() => {
+  // Fetch all data from Supabase
+  const fetchDataFromSupabase = useCallback(async () => {
+    if (!supabase || !isSupabaseConfigured()) {
+      setSupabaseStatus("not_configured");
+      return false;
+    }
+
     try {
-      const savedProducts = localStorage.getItem(STORAGE_PRODUCTS_KEY);
-      const savedCategories = localStorage.getItem(STORAGE_CATEGORIES_KEY);
-      const savedCategoryProducts = localStorage.getItem(STORAGE_CATEGORY_PRODUCTS_KEY);
-      const savedOrders = localStorage.getItem(STORAGE_ORDER_KEY);
+      const [catRes, prodRes, catProdRes, ordRes] = await Promise.all([
+        supabase.from("categories").select("*").order("name", { ascending: true }),
+        supabase.from("products").select("*").order("created_at", { ascending: false }),
+        supabase.from("category_products").select("category_id, product_id"),
+        supabase.from("product_orders").select("product_id, order_num").order("order_num", { ascending: true }),
+      ]);
 
-      if (savedProducts) setProducts(JSON.parse(savedProducts));
-      if (savedCategories) setCategories(JSON.parse(savedCategories));
-      if (savedCategoryProducts) setCategoryProductsState(JSON.parse(savedCategoryProducts));
-      if (savedOrders) setOrders(JSON.parse(savedOrders));
-    } catch (e) {
-      console.error("Failed to load data from localStorage", e);
-    } finally {
-      setIsLoaded(true);
+      if (catRes.error || prodRes.error || catProdRes.error || ordRes.error) {
+        const isTableNotFound =
+          catRes.error?.code === "PGRST205" ||
+          prodRes.error?.code === "PGRST205" ||
+          catProdRes.error?.code === "PGRST205" ||
+          ordRes.error?.code === "PGRST205";
+
+        if (isTableNotFound) {
+          console.warn(
+            "⚠️ Chưa tìm thấy bảng dữ liệu trên Supabase (Mã PGRST205). Vui lòng vào Supabase SQL Editor và chạy file 'supabase-schema.sql' để khởi tạo bảng."
+          );
+        } else {
+          console.error("Supabase fetch error:", {
+            categories: catRes.error,
+            products: prodRes.error,
+            categoryProducts: catProdRes.error,
+            orders: ordRes.error,
+          });
+        }
+        setSupabaseStatus("error");
+        return false;
+      }
+
+      // If database has records
+      const dbCategories = (catRes.data as unknown as DbCategoryRow[]) || [];
+      const dbProducts = (prodRes.data as unknown as DbProductRow[]) || [];
+      const dbCatProducts = (catProdRes.data as unknown as DbCategoryProductRow[]) || [];
+      const dbOrders = (ordRes.data as unknown as DbProductOrderRow[]) || [];
+
+      if (dbProducts.length > 0 || dbCategories.length > 0) {
+        const loadedProducts = dbProducts.map(mapDbProduct);
+        const loadedCategories = dbCategories.map(mapDbCategory);
+        const loadedCatProducts: CategoryProductMapping[] = dbCatProducts.map((cp) => ({
+          categoryId: cp.category_id,
+          productId: cp.product_id,
+        }));
+        const loadedOrders: ProductOrder[] = dbOrders.map((o) => ({
+          productId: o.product_id,
+          order: o.order_num,
+        }));
+
+        setProducts(loadedProducts);
+        setCategories(loadedCategories);
+        setCategoryProductsState(loadedCatProducts);
+        setOrders(loadedOrders);
+        setSupabaseStatus("connected");
+        return true;
+      } else {
+        // Table exists but is empty
+        setSupabaseStatus("connected");
+        return false;
+      }
+    } catch (err) {
+      console.error("Failed to connect to Supabase", err);
+      setSupabaseStatus("error");
+      return false;
     }
   }, []);
 
-  // Save to localStorage when state changes
-  const persistProducts = (newProducts: Product[], newOrders: ProductOrder[]) => {
-    setProducts(newProducts);
-    setOrders(newOrders);
+  // Initial Load
+  useEffect(() => {
+    let isMounted = true;
+
+    // Purge any legacy localStorage keys to keep browser clean
     try {
-      localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(newProducts));
-      localStorage.setItem(STORAGE_ORDER_KEY, JSON.stringify(newOrders));
-    } catch (e) {
-      console.error("Failed to save products to localStorage", e);
+      const keysToClean = [
+        "japan_shop_products", "japan_shop_products_v2", "japan_shop_products_v3", "japan_shop_products_v4", "japan_shop_products_v5", "japan_shop_products_v6",
+        "japan_shop_categories", "japan_shop_categories_v2", "japan_shop_categories_v3", "japan_shop_categories_v4", "japan_shop_categories_v5", "japan_shop_categories_v6",
+        "japan_shop_category_products", "japan_shop_category_products_v2", "japan_shop_category_products_v3", "japan_shop_category_products_v4", "japan_shop_category_products_v5", "japan_shop_category_products_v6",
+        "japan_shop_order", "japan_shop_order_v2", "japan_shop_order_v3", "japan_shop_order_v4", "japan_shop_order_v5", "japan_shop_order_v6",
+      ];
+      keysToClean.forEach((k) => localStorage.removeItem(k));
+    } catch {
+      // ignore
+    }
+
+    async function init() {
+      if (isSupabaseConfigured()) {
+        await fetchDataFromSupabase();
+      } else {
+        if (isMounted) {
+          setSupabaseStatus("not_configured");
+        }
+      }
+
+      if (isMounted) {
+        setIsLoaded(true);
+      }
+    }
+
+    init();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [fetchDataFromSupabase]);
+
+  // --- Seed Initial Data to Supabase ---
+  const seedInitialDataToSupabase = async (): Promise<{ success: boolean; message: string }> => {
+    if (!supabase || !isSupabaseConfigured()) {
+      return { success: false, message: "Chưa cấu hình Supabase URL và Anon Key trong .env" };
+    }
+
+    try {
+      setSupabaseStatus("loading");
+
+      // 1. Categories
+      const categoriesToInsert = DEFAULT_CATEGORIES.map(mapCategoryToDb);
+      const { error: catErr } = await supabase.from("categories").upsert(categoriesToInsert, { onConflict: "id" });
+      if (catErr) throw new Error(`Lỗi danh mục: ${catErr.message}`);
+
+      // 2. Products
+      const productsToInsert = DEFAULT_PRODUCTS.map(mapProductToDb);
+      const { error: prodErr } = await supabase.from("products").upsert(productsToInsert, { onConflict: "id" });
+      if (prodErr) throw new Error(`Lỗi sản phẩm: ${prodErr.message}`);
+
+      // 3. Category Products
+      const catProdToInsert = DEFAULT_CATEGORY_PRODUCTS.map((cp) => ({
+        category_id: cp.categoryId,
+        product_id: cp.productId,
+      }));
+      // Clear old mappings to avoid duplicates
+      await supabase.from("category_products").delete().neq("id", 0);
+      const { error: cpErr } = await supabase.from("category_products").insert(catProdToInsert);
+      if (cpErr) throw new Error(`Lỗi liên kết danh mục - sản phẩm: ${cpErr.message}`);
+
+      // 4. Orders
+      const ordersToInsert = DEFAULT_ORDER.map((o) => ({
+        product_id: o.productId,
+        order_num: o.order,
+      }));
+      const { error: ordErr } = await supabase.from("product_orders").upsert(ordersToInsert, { onConflict: "product_id" });
+      if (ordErr) throw new Error(`Lỗi thứ tự hiển thị: ${ordErr.message}`);
+
+      await fetchDataFromSupabase();
+      setSupabaseStatus("connected");
+      return { success: true, message: `Đồng bộ thành công ${DEFAULT_PRODUCTS.length} sản phẩm và ${DEFAULT_CATEGORIES.length} danh mục lên Supabase!` };
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : String(err);
+      setSupabaseStatus("error");
+      return { success: false, message: `Thất bại: ${errorMsg}` };
     }
   };
 
-  const persistCategories = (newCategories: Category[]) => {
-    setCategories(newCategories);
-    try {
-      localStorage.setItem(STORAGE_CATEGORIES_KEY, JSON.stringify(newCategories));
-    } catch (e) {
-      console.error("Failed to save categories to localStorage", e);
-    }
+  const refreshFromSupabase = async () => {
+    await fetchDataFromSupabase();
   };
 
-  const persistCategoryProducts = (newCategoryProducts: CategoryProductMapping[]) => {
-    setCategoryProductsState(newCategoryProducts);
-    try {
-      localStorage.setItem(STORAGE_CATEGORY_PRODUCTS_KEY, JSON.stringify(newCategoryProducts));
-    } catch (e) {
-      console.error("Failed to save category-products to localStorage", e);
-    }
-  };
-
-  // --- Product CRUD ---
-  const addProduct = (item: Omit<Product, "id"> & { id?: string; order?: number; categoryId?: string }) => {
+  // --- Product CRUD with Supabase sync ---
+  const addProduct = async (item: Omit<Product, "id"> & { id?: string; order?: number; categoryId?: string }) => {
     const nextId = item.id?.trim() || String(Date.now());
+    const images = Array.isArray(item.images) && item.images.length > 0
+      ? item.images
+      : [];
     const newProduct: Product = {
       id: nextId,
       name: item.name,
       description: item.description,
-      image: item.image,
+      images,
       imageBg: item.imageBg,
       price: item.price,
       oldPrice: item.oldPrice,
@@ -117,54 +344,102 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
       reviews: item.reviews ?? 0,
       tag: item.tag,
       stock: item.stock,
-      specs: item.specs,
+      ingredients: item.ingredients,
     };
 
     const nextOrder = item.order ?? (orders.length > 0 ? Math.max(...orders.map((o) => o.order)) + 1 : 1);
     const newOrders = [...orders, { productId: nextId, order: nextOrder }];
     const newProducts = [...products, newProduct];
-
-    persistProducts(newProducts, newOrders);
+    let newCategoryProducts = [...categoryProducts];
 
     if (item.categoryId) {
-      assignProductToCategory(nextId, item.categoryId);
+      newCategoryProducts = [...newCategoryProducts, { categoryId: item.categoryId, productId: nextId }];
+    }
+
+    setProducts(newProducts);
+    setOrders(newOrders);
+    setCategoryProductsState(newCategoryProducts);
+
+    if (supabase && isSupabaseConfigured()) {
+      try {
+        await supabase.from("products").insert(mapProductToDb(newProduct));
+        await supabase.from("product_orders").upsert({ product_id: nextId, order_num: nextOrder });
+        if (item.categoryId) {
+          await supabase.from("category_products").insert({ category_id: item.categoryId, product_id: nextId });
+        }
+      } catch (err) {
+        console.error("Failed to add product to Supabase", err);
+      }
     }
   };
 
-  const updateProduct = (id: string, updated: Partial<Product> & { order?: number; categoryId?: string }) => {
-    const newProducts = products.map((p) => (p.id === id ? { ...p, ...updated } : p));
-    let newOrders = [...orders];
+  const updateProduct = async (id: string, updated: Partial<Product> & { order?: number; categoryId?: string }) => {
+    const updatedProducts = products.map((p) => (p.id === id ? { ...p, ...updated } : p));
+    let updatedOrders = [...orders];
+    let updatedCategoryProducts = [...categoryProducts];
 
     if (updated.order !== undefined) {
-      const existing = newOrders.find((o) => o.productId === id);
+      const existing = updatedOrders.find((o) => o.productId === id);
       if (existing) {
-        newOrders = newOrders.map((o) => (o.productId === id ? { ...o, order: updated.order! } : o));
+        updatedOrders = updatedOrders.map((o) => (o.productId === id ? { ...o, order: updated.order! } : o));
       } else {
-        newOrders.push({ productId: id, order: updated.order });
+        updatedOrders.push({ productId: id, order: updated.order });
       }
     }
 
-    persistProducts(newProducts, newOrders);
-
     if (updated.categoryId !== undefined) {
-      const remaining = categoryProducts.filter((cp) => cp.productId !== id);
+      updatedCategoryProducts = updatedCategoryProducts.filter((cp) => cp.productId !== id);
       if (updated.categoryId) {
-        persistCategoryProducts([...remaining, { categoryId: updated.categoryId, productId: id }]);
-      } else {
-        persistCategoryProducts(remaining);
+        updatedCategoryProducts.push({ categoryId: updated.categoryId, productId: id });
+      }
+    }
+
+    setProducts(updatedProducts);
+    setOrders(updatedOrders);
+    setCategoryProductsState(updatedCategoryProducts);
+
+    if (supabase && isSupabaseConfigured()) {
+      try {
+        const fullProduct = updatedProducts.find((p) => p.id === id);
+        if (fullProduct) {
+          await supabase.from("products").update(mapProductToDb(fullProduct)).eq("id", id);
+        }
+        if (updated.order !== undefined) {
+          await supabase.from("product_orders").upsert({ product_id: id, order_num: updated.order });
+        }
+        if (updated.categoryId !== undefined) {
+          await supabase.from("category_products").delete().eq("product_id", id);
+          if (updated.categoryId) {
+            await supabase.from("category_products").insert({ category_id: updated.categoryId, product_id: id });
+          }
+        }
+      } catch (err) {
+        console.error("Failed to update product in Supabase", err);
       }
     }
   };
 
-  const deleteProduct = (id: string) => {
+  const deleteProduct = async (id: string) => {
     const newProducts = products.filter((p) => p.id !== id);
     const newOrders = orders.filter((o) => o.productId !== id);
     const newCategoryProducts = categoryProducts.filter((cp) => cp.productId !== id);
-    persistProducts(newProducts, newOrders);
-    persistCategoryProducts(newCategoryProducts);
+
+    setProducts(newProducts);
+    setOrders(newOrders);
+    setCategoryProductsState(newCategoryProducts);
+
+    if (supabase && isSupabaseConfigured()) {
+      try {
+        await supabase.from("products").delete().eq("id", id);
+        await supabase.from("category_products").delete().eq("product_id", id);
+        await supabase.from("product_orders").delete().eq("product_id", id);
+      } catch (err) {
+        console.error("Failed to delete product in Supabase", err);
+      }
+    }
   };
 
-  const updateProductOrder = (productId: string, newOrder: number) => {
+  const updateProductOrder = async (productId: string, newOrder: number) => {
     const existing = orders.find((o) => o.productId === productId);
     let newOrders: ProductOrder[];
     if (existing) {
@@ -172,21 +447,30 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     } else {
       newOrders = [...orders, { productId, order: newOrder }];
     }
-    persistProducts(products, newOrders);
+
+    setOrders(newOrders);
+
+    if (supabase && isSupabaseConfigured()) {
+      try {
+        await supabase.from("product_orders").upsert({ product_id: productId, order_num: newOrder });
+      } catch (err) {
+        console.error("Failed to update order in Supabase", err);
+      }
+    }
   };
 
-  const toggleFeatured = (productId: string, isFeatured: boolean, defaultTag = "Bán chạy") => {
+  const toggleFeatured = async (productId: string, isFeatured: boolean, defaultTag = "Bán chạy") => {
     const target = products.find((p) => p.id === productId);
     if (!target) return;
 
     if (isFeatured) {
-      updateProduct(productId, { tag: target.tag || defaultTag });
+      await updateProduct(productId, { tag: target.tag || defaultTag });
     } else {
-      updateProduct(productId, { tag: undefined });
+      await updateProduct(productId, { tag: undefined });
     }
   };
 
-  const moveProductOrder = (productId: string, direction: "up" | "down") => {
+  const moveProductOrder = async (productId: string, direction: "up" | "down") => {
     const currentFeatured = getFeaturedProducts();
     const currentIndex = currentFeatured.findIndex((p) => p.id === productId);
     if (currentIndex === -1) return;
@@ -207,70 +491,64 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
       return o;
     });
 
-    persistProducts(products, newOrders);
-  };
+    setOrders(newOrders);
 
-  const resetToDefault = () => {
-    persistProducts(DEFAULT_PRODUCTS, DEFAULT_ORDER);
-    persistCategoryProducts(DEFAULT_CATEGORY_PRODUCTS);
-  };
-
-  const exportJSON = () => {
-    return JSON.stringify(products, null, 2);
-  };
-
-  const importJSON = (jsonString: string): boolean => {
-    try {
-      const parsed = JSON.parse(jsonString);
-      if (!Array.isArray(parsed)) return false;
-      
-      const newOrders: ProductOrder[] = parsed.map((p: Product, idx: number) => ({
-        productId: String(p.id),
-        order: idx + 1,
-      }));
-
-      persistProducts(parsed, newOrders);
-      return true;
-    } catch {
-      return false;
+    if (supabase && isSupabaseConfigured()) {
+      try {
+        await supabase.from("product_orders").upsert([
+          { product_id: productId, order_num: otherOrder },
+          { product_id: otherProduct.id, order_num: currentOrder },
+        ]);
+      } catch (err) {
+        console.error("Failed to update move order in Supabase", err);
+      }
     }
   };
 
-  // --- Category CRUD ---
-  const addCategory = (category: Category) => {
+  // --- Category CRUD with Supabase sync ---
+  const addCategory = async (category: Category) => {
     const newCategories = [...categories, category];
-    persistCategories(newCategories);
+    setCategories(newCategories);
+
+    if (supabase && isSupabaseConfigured()) {
+      try {
+        await supabase.from("categories").insert(mapCategoryToDb(category));
+      } catch (err) {
+        console.error("Failed to add category in Supabase", err);
+      }
+    }
   };
 
-  const updateCategory = (id: string, updated: Partial<Category>) => {
+  const updateCategory = async (id: string, updated: Partial<Category>) => {
     const newCategories = categories.map((cat) => (cat.id === id ? { ...cat, ...updated } : cat));
-    persistCategories(newCategories);
+    setCategories(newCategories);
+
+    if (supabase && isSupabaseConfigured()) {
+      try {
+        const fullCat = newCategories.find((c) => c.id === id);
+        if (fullCat) {
+          await supabase.from("categories").update(mapCategoryToDb(fullCat)).eq("id", id);
+        }
+      } catch (err) {
+        console.error("Failed to update category in Supabase", err);
+      }
+    }
   };
 
-  const deleteCategory = (id: string) => {
+  const deleteCategory = async (id: string) => {
     const newCategories = categories.filter((cat) => cat.id !== id);
     const newCategoryProducts = categoryProducts.filter((cp) => cp.categoryId !== id);
-    persistCategories(newCategories);
-    persistCategoryProducts(newCategoryProducts);
-  };
 
-  const resetCategoriesToDefault = () => {
-    persistCategories(DEFAULT_CATEGORIES);
-    persistCategoryProducts(DEFAULT_CATEGORY_PRODUCTS);
-  };
+    setCategories(newCategories);
+    setCategoryProductsState(newCategoryProducts);
 
-  const exportCategoriesJSON = () => {
-    return JSON.stringify(categories, null, 2);
-  };
-
-  const importCategoriesJSON = (jsonString: string): boolean => {
-    try {
-      const parsed = JSON.parse(jsonString);
-      if (!Array.isArray(parsed)) return false;
-      persistCategories(parsed);
-      return true;
-    } catch {
-      return false;
+    if (supabase && isSupabaseConfigured()) {
+      try {
+        await supabase.from("categories").delete().eq("id", id);
+        await supabase.from("category_products").delete().eq("category_id", id);
+      } catch (err) {
+        console.error("Failed to delete category in Supabase", err);
+      }
     }
   };
 
@@ -290,49 +568,122 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     return match?.categoryId;
   };
 
-  const setCategoryProducts = (categoryId: string, productIds: string[]) => {
+  const setCategoryProducts = async (categoryId: string, productIds: string[]) => {
     const targetId = categoryId.trim();
     const remaining = categoryProducts.filter((cp) => cp.categoryId !== targetId);
     const newMappings: CategoryProductMapping[] = productIds.map((pId) => ({
       categoryId: targetId,
       productId: pId,
     }));
-    persistCategoryProducts([...remaining, ...newMappings]);
+
+    const updated = [...remaining, ...newMappings];
+    setCategoryProductsState(updated);
+
+    if (supabase && isSupabaseConfigured()) {
+      try {
+        await supabase.from("category_products").delete().eq("category_id", targetId);
+        if (newMappings.length > 0) {
+          await supabase.from("category_products").insert(
+            newMappings.map((m) => ({ category_id: m.categoryId, product_id: m.productId }))
+          );
+        }
+      } catch (err) {
+        console.error("Failed to set category products in Supabase", err);
+      }
+    }
   };
 
-  const assignProductToCategory = (productId: string, categoryId: string) => {
+  const assignProductToCategory = async (productId: string, categoryId: string) => {
     const exists = categoryProducts.some(
       (cp) => cp.productId === productId && cp.categoryId === categoryId
     );
     if (!exists) {
-      persistCategoryProducts([...categoryProducts, { categoryId, productId }]);
+      const updated = [...categoryProducts, { categoryId, productId }];
+      setCategoryProductsState(updated);
+
+      if (supabase && isSupabaseConfigured()) {
+        try {
+          await supabase.from("category_products").insert({ category_id: categoryId, product_id: productId });
+        } catch (err) {
+          console.error("Failed to assign product category in Supabase", err);
+        }
+      }
     }
   };
 
-  const removeProductFromCategory = (productId: string, categoryId: string) => {
+  const removeProductFromCategory = async (productId: string, categoryId: string) => {
     const updated = categoryProducts.filter(
       (cp) => !(cp.productId === productId && cp.categoryId === categoryId)
     );
-    persistCategoryProducts(updated);
+    setCategoryProductsState(updated);
+
+    if (supabase && isSupabaseConfigured()) {
+      try {
+        await supabase.from("category_products").delete().match({ category_id: categoryId, product_id: productId });
+      } catch (err) {
+        console.error("Failed to remove product from category in Supabase", err);
+      }
+    }
   };
 
-  const exportCategoryProductsJSON = () => {
-    return JSON.stringify(categoryProducts, null, 2);
+  // --- Reset & JSON Import/Export ---
+  const resetToDefault = () => {
+    setProducts(DEFAULT_PRODUCTS);
+    setOrders(DEFAULT_ORDER);
+    setCategoryProductsState(DEFAULT_CATEGORY_PRODUCTS);
   };
 
-  const importCategoryProductsJSON = (jsonString: string): boolean => {
+  const resetCategoriesToDefault = () => {
+    setCategories(DEFAULT_CATEGORIES);
+    setCategoryProductsState(DEFAULT_CATEGORY_PRODUCTS);
+  };
+
+  const resetCategoryProductsToDefault = () => {
+    setCategoryProductsState(DEFAULT_CATEGORY_PRODUCTS);
+  };
+
+  const exportJSON = () => JSON.stringify(products, null, 2);
+
+  const importJSON = (jsonString: string): boolean => {
     try {
       const parsed = JSON.parse(jsonString);
       if (!Array.isArray(parsed)) return false;
-      persistCategoryProducts(parsed);
+      const newOrders: ProductOrder[] = parsed.map((p: Product, idx: number) => ({
+        productId: String(p.id),
+        order: idx + 1,
+      }));
+      setProducts(parsed);
+      setOrders(newOrders);
       return true;
     } catch {
       return false;
     }
   };
 
-  const resetCategoryProductsToDefault = () => {
-    persistCategoryProducts(DEFAULT_CATEGORY_PRODUCTS);
+  const exportCategoriesJSON = () => JSON.stringify(categories, null, 2);
+
+  const importCategoriesJSON = (jsonString: string): boolean => {
+    try {
+      const parsed = JSON.parse(jsonString);
+      if (!Array.isArray(parsed)) return false;
+      setCategories(parsed);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const exportCategoryProductsJSON = () => JSON.stringify(categoryProducts, null, 2);
+
+  const importCategoryProductsJSON = (jsonString: string): boolean => {
+    try {
+      const parsed = JSON.parse(jsonString);
+      if (!Array.isArray(parsed)) return false;
+      setCategoryProductsState(parsed);
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   // --- Selectors ---
@@ -362,6 +713,7 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
         categoryProducts,
         orders,
         isLoaded,
+        supabaseStatus,
         addProduct,
         updateProduct,
         deleteProduct,
@@ -387,6 +739,8 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
         resetCategoryProductsToDefault,
         getProductById,
         getFeaturedProducts,
+        seedInitialDataToSupabase,
+        refreshFromSupabase,
       }}
     >
       {children}

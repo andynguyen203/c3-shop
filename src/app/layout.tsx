@@ -18,6 +18,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Japan Shop",
   description: "",
+  referrer: "no-referrer",
 };
 
 export default function RootLayout({

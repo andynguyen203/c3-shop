@@ -74,7 +74,6 @@ export default function CategoryManagement() {
       (c) =>
         c.name.toLowerCase().includes(q) ||
         c.id.toLowerCase().includes(q) ||
-        c.slug.toLowerCase().includes(q) ||
         c.description.toLowerCase().includes(q)
     );
   }, [categories, searchQuery]);
@@ -197,7 +196,7 @@ export default function CategoryManagement() {
         <div className="relative flex-1 max-w-md">
           <input
             type="text"
-            placeholder="Tìm kiếm theo tên danh mục, mã ID, đường dẫn slug..."
+            placeholder="Tìm kiếm theo tên danh mục, mã ID..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 py-2 pl-10 pr-4 text-sm text-zinc-900 dark:text-white outline-none focus:border-indigo-500 focus:bg-white dark:focus:bg-zinc-900 transition-colors"
@@ -257,9 +256,9 @@ export default function CategoryManagement() {
                   </span>
                 </div>
 
-                {/* Slug */}
+                {/* Category ID Link */}
                 <p className="text-xs font-mono text-indigo-600 dark:text-indigo-400 mb-2">
-                  /category/{cat.slug}
+                  /category/{cat.id}
                 </p>
 
                 {/* Description */}
@@ -271,7 +270,7 @@ export default function CategoryManagement() {
               {/* Action Buttons */}
               <div className="flex items-center justify-between pt-4 border-t border-zinc-100 dark:border-zinc-800 z-10">
                 <Link
-                  href={`/category/${cat.slug}`}
+                  href={`/category/${cat.id}`}
                   target="_blank"
                   className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline inline-flex items-center gap-1"
                 >
