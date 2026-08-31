@@ -125,7 +125,7 @@ export default function ProductManagement() {
             Quản Lý Toàn Bộ Sản Phẩm
           </h2>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Thêm mới, sửa giá bán, mô tả, thông số kỹ thuật, số lượng tồn kho và phân loại
+            Thêm mới, sửa giá bán, mô tả, thành phần, số lượng tồn kho và phân loại
           </p>
         </div>
 

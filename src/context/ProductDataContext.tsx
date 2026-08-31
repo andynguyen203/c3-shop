@@ -7,10 +7,6 @@ import { CATEGORY_PRODUCTS as DEFAULT_CATEGORY_PRODUCTS, CategoryProductMapping 
 import { FEATURED_PRODUCT_ORDER as DEFAULT_ORDER, ProductOrder } from "@/data/order";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
-const STORAGE_PRODUCTS_KEY = "japan_shop_products_v5";
-const STORAGE_CATEGORIES_KEY = "japan_shop_categories_v5";
-const STORAGE_CATEGORY_PRODUCTS_KEY = "japan_shop_category_products_v5";
-const STORAGE_ORDER_KEY = "japan_shop_order_v5";
 
 // Database row mappings
 interface DbProductRow {
@@ -25,12 +21,12 @@ interface DbProductRow {
   reviews: number;
   tag: string | null;
   stock: number;
-  specs: Record<string, string> | null;
+  ingredients: string | null;
 }
 
 interface DbCategoryRow {
   id: string;
-  slug: string;
+  slug?: string | null;
   name: string;
   description: string | null;
   banner_gradient: string | null;
@@ -55,6 +51,7 @@ function mapDbProduct(row: DbProductRow): Product {
     id: row.id,
     name: row.name,
     description: row.description || "",
+    ingredients: row.ingredients || undefined,
     image: row.image,
     imageBg: row.image_bg || undefined,
     price: Number(row.price) || 0,
@@ -63,7 +60,6 @@ function mapDbProduct(row: DbProductRow): Product {
     reviews: Number(row.reviews) || 0,
     tag: row.tag || undefined,
     stock: Number(row.stock) || 0,
-    specs: row.specs || undefined,
   };
 }
 
@@ -72,6 +68,7 @@ function mapProductToDb(p: Product) {
     id: p.id,
     name: p.name,
     description: p.description || "",
+    ingredients: p.ingredients ?? null,
     image: p.image,
     image_bg: p.imageBg || "",
     price: p.price,
@@ -80,14 +77,12 @@ function mapProductToDb(p: Product) {
     reviews: p.reviews ?? 0,
     tag: p.tag ?? null,
     stock: p.stock ?? 0,
-    specs: p.specs ?? {},
   };
 }
 
 function mapDbCategory(row: DbCategoryRow): Category {
   return {
     id: row.id,
-    slug: row.slug,
     name: row.name,
     description: row.description || "",
     bannerGradient: row.banner_gradient || "from-indigo-600 to-violet-700",
@@ -101,7 +96,7 @@ function mapDbCategory(row: DbCategoryRow): Category {
 function mapCategoryToDb(c: Category) {
   return {
     id: c.id,
-    slug: c.slug,
+    slug: c.id.toLowerCase(),
     name: c.name,
     description: c.description || "",
     banner_gradient: c.bannerGradient || "from-indigo-600 to-violet-700",
@@ -159,23 +154,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
   const [orders, setOrders] = useState<ProductOrder[]>(DEFAULT_ORDER);
   const [isLoaded, setIsLoaded] = useState(false);
   const [supabaseStatus, setSupabaseStatus] = useState<SupabaseConnectionStatus>("loading");
-
-  // Save to localStorage as backup / offline cache
-  const persistToLocalStorage = useCallback((
-    newProducts: Product[],
-    newCategories: Category[],
-    newCategoryProducts: CategoryProductMapping[],
-    newOrders: ProductOrder[]
-  ) => {
-    try {
-      localStorage.setItem(STORAGE_PRODUCTS_KEY, JSON.stringify(newProducts));
-      localStorage.setItem(STORAGE_CATEGORIES_KEY, JSON.stringify(newCategories));
-      localStorage.setItem(STORAGE_CATEGORY_PRODUCTS_KEY, JSON.stringify(newCategoryProducts));
-      localStorage.setItem(STORAGE_ORDER_KEY, JSON.stringify(newOrders));
-    } catch (e) {
-      console.warn("Failed to persist data to localStorage", e);
-    }
-  }, []);
 
   // Fetch all data from Supabase
   const fetchDataFromSupabase = useCallback(async () => {
@@ -237,7 +215,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
         setCategories(loadedCategories);
         setCategoryProductsState(loadedCatProducts);
         setOrders(loadedOrders);
-        persistToLocalStorage(loadedProducts, loadedCategories, loadedCatProducts, loadedOrders);
         setSupabaseStatus("connected");
         return true;
       } else {
@@ -250,41 +227,26 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
       setSupabaseStatus("error");
       return false;
     }
-  }, [persistToLocalStorage]);
+  }, []);
 
   // Initial Load
   useEffect(() => {
     let isMounted = true;
 
+    // Purge any legacy localStorage keys to keep browser clean
+    try {
+      const keysToClean = [
+        "japan_shop_products", "japan_shop_products_v2", "japan_shop_products_v3", "japan_shop_products_v4", "japan_shop_products_v5", "japan_shop_products_v6",
+        "japan_shop_categories", "japan_shop_categories_v2", "japan_shop_categories_v3", "japan_shop_categories_v4", "japan_shop_categories_v5", "japan_shop_categories_v6",
+        "japan_shop_category_products", "japan_shop_category_products_v2", "japan_shop_category_products_v3", "japan_shop_category_products_v4", "japan_shop_category_products_v5", "japan_shop_category_products_v6",
+        "japan_shop_order", "japan_shop_order_v2", "japan_shop_order_v3", "japan_shop_order_v4", "japan_shop_order_v5", "japan_shop_order_v6",
+      ];
+      keysToClean.forEach((k) => localStorage.removeItem(k));
+    } catch {
+      // ignore
+    }
+
     async function init() {
-      // 1. First load from localStorage for instant display
-      let initialProducts = DEFAULT_PRODUCTS;
-      let initialCategories = DEFAULT_CATEGORIES;
-      let initialCatProducts = DEFAULT_CATEGORY_PRODUCTS;
-      let initialOrders = DEFAULT_ORDER;
-
-      try {
-        const savedProducts = localStorage.getItem(STORAGE_PRODUCTS_KEY);
-        const savedCategories = localStorage.getItem(STORAGE_CATEGORIES_KEY);
-        const savedCategoryProducts = localStorage.getItem(STORAGE_CATEGORY_PRODUCTS_KEY);
-        const savedOrders = localStorage.getItem(STORAGE_ORDER_KEY);
-
-        if (savedProducts) initialProducts = JSON.parse(savedProducts);
-        if (savedCategories) initialCategories = JSON.parse(savedCategories);
-        if (savedCategoryProducts) initialCatProducts = JSON.parse(savedCategoryProducts);
-        if (savedOrders) initialOrders = JSON.parse(savedOrders);
-
-        if (isMounted) {
-          setProducts(initialProducts);
-          setCategories(initialCategories);
-          setCategoryProductsState(initialCatProducts);
-          setOrders(initialOrders);
-        }
-      } catch (e) {
-        console.warn("Failed to load data from localStorage", e);
-      }
-
-      // 2. Fetch latest data from Supabase
       if (isSupabaseConfigured()) {
         await fetchDataFromSupabase();
       } else {
@@ -371,7 +333,7 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
       reviews: item.reviews ?? 0,
       tag: item.tag,
       stock: item.stock,
-      specs: item.specs,
+      ingredients: item.ingredients,
     };
 
     const nextOrder = item.order ?? (orders.length > 0 ? Math.max(...orders.map((o) => o.order)) + 1 : 1);
@@ -386,7 +348,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     setProducts(newProducts);
     setOrders(newOrders);
     setCategoryProductsState(newCategoryProducts);
-    persistToLocalStorage(newProducts, categories, newCategoryProducts, newOrders);
 
     if (supabase && isSupabaseConfigured()) {
       try {
@@ -425,7 +386,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     setProducts(updatedProducts);
     setOrders(updatedOrders);
     setCategoryProductsState(updatedCategoryProducts);
-    persistToLocalStorage(updatedProducts, categories, updatedCategoryProducts, updatedOrders);
 
     if (supabase && isSupabaseConfigured()) {
       try {
@@ -456,7 +416,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     setProducts(newProducts);
     setOrders(newOrders);
     setCategoryProductsState(newCategoryProducts);
-    persistToLocalStorage(newProducts, categories, newCategoryProducts, newOrders);
 
     if (supabase && isSupabaseConfigured()) {
       try {
@@ -479,7 +438,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     }
 
     setOrders(newOrders);
-    persistToLocalStorage(products, categories, categoryProducts, newOrders);
 
     if (supabase && isSupabaseConfigured()) {
       try {
@@ -523,7 +481,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     });
 
     setOrders(newOrders);
-    persistToLocalStorage(products, categories, categoryProducts, newOrders);
 
     if (supabase && isSupabaseConfigured()) {
       try {
@@ -541,7 +498,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
   const addCategory = async (category: Category) => {
     const newCategories = [...categories, category];
     setCategories(newCategories);
-    persistToLocalStorage(products, newCategories, categoryProducts, orders);
 
     if (supabase && isSupabaseConfigured()) {
       try {
@@ -555,7 +511,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
   const updateCategory = async (id: string, updated: Partial<Category>) => {
     const newCategories = categories.map((cat) => (cat.id === id ? { ...cat, ...updated } : cat));
     setCategories(newCategories);
-    persistToLocalStorage(products, newCategories, categoryProducts, orders);
 
     if (supabase && isSupabaseConfigured()) {
       try {
@@ -575,7 +530,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
 
     setCategories(newCategories);
     setCategoryProductsState(newCategoryProducts);
-    persistToLocalStorage(products, newCategories, newCategoryProducts, orders);
 
     if (supabase && isSupabaseConfigured()) {
       try {
@@ -613,7 +567,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
 
     const updated = [...remaining, ...newMappings];
     setCategoryProductsState(updated);
-    persistToLocalStorage(products, categories, updated, orders);
 
     if (supabase && isSupabaseConfigured()) {
       try {
@@ -636,7 +589,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     if (!exists) {
       const updated = [...categoryProducts, { categoryId, productId }];
       setCategoryProductsState(updated);
-      persistToLocalStorage(products, categories, updated, orders);
 
       if (supabase && isSupabaseConfigured()) {
         try {
@@ -653,7 +605,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
       (cp) => !(cp.productId === productId && cp.categoryId === categoryId)
     );
     setCategoryProductsState(updated);
-    persistToLocalStorage(products, categories, updated, orders);
 
     if (supabase && isSupabaseConfigured()) {
       try {
@@ -669,18 +620,15 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
     setProducts(DEFAULT_PRODUCTS);
     setOrders(DEFAULT_ORDER);
     setCategoryProductsState(DEFAULT_CATEGORY_PRODUCTS);
-    persistToLocalStorage(DEFAULT_PRODUCTS, categories, DEFAULT_CATEGORY_PRODUCTS, DEFAULT_ORDER);
   };
 
   const resetCategoriesToDefault = () => {
     setCategories(DEFAULT_CATEGORIES);
     setCategoryProductsState(DEFAULT_CATEGORY_PRODUCTS);
-    persistToLocalStorage(products, DEFAULT_CATEGORIES, DEFAULT_CATEGORY_PRODUCTS, orders);
   };
 
   const resetCategoryProductsToDefault = () => {
     setCategoryProductsState(DEFAULT_CATEGORY_PRODUCTS);
-    persistToLocalStorage(products, categories, DEFAULT_CATEGORY_PRODUCTS, orders);
   };
 
   const exportJSON = () => JSON.stringify(products, null, 2);
@@ -695,7 +643,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
       }));
       setProducts(parsed);
       setOrders(newOrders);
-      persistToLocalStorage(parsed, categories, categoryProducts, newOrders);
       return true;
     } catch {
       return false;
@@ -709,7 +656,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
       const parsed = JSON.parse(jsonString);
       if (!Array.isArray(parsed)) return false;
       setCategories(parsed);
-      persistToLocalStorage(products, parsed, categoryProducts, orders);
       return true;
     } catch {
       return false;
@@ -723,7 +669,6 @@ export function ProductDataProvider({ children }: { children: React.ReactNode })
       const parsed = JSON.parse(jsonString);
       if (!Array.isArray(parsed)) return false;
       setCategoryProductsState(parsed);
-      persistToLocalStorage(products, categories, parsed, orders);
       return true;
     } catch {
       return false;

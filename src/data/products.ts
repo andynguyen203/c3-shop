@@ -12,7 +12,7 @@ export interface Product {
   reviews: number;
   tag?: string;
   stock: number;
-  specs?: Record<string, string>;
+  ingredients?: string;
 }
 
 export const PRODUCTS: Product[] = rawProducts as unknown as Product[];

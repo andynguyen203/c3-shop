@@ -4,13 +4,27 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ProductDetailPage from "./ProductDetailPage";
 
+export const dynamicParams = false;
+
 interface Props {
   params: Promise<{ id: string }>;
 }
 
 export function generateStaticParams() {
-  return productService.getAllProducts().map((product) => ({
-    id: product.id,
+  const products = productService.getAllProducts();
+  const ids = new Set<string>();
+
+  products.forEach((p) => {
+    if (p.id) ids.add(p.id);
+  });
+
+  // Pre-generate range 1 to 200 for safety with static export
+  for (let i = 1; i <= 200; i++) {
+    ids.add(String(i));
+  }
+
+  return Array.from(ids).map((id) => ({
+    id,
   }));
 }
 

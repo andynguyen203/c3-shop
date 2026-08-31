@@ -7,8 +7,14 @@ import CategoryManagement from "./components/CategoryManagement";
 import CategoryProductManagement from "./components/CategoryProductManagement";
 import ProductManagement from "./components/ProductManagement";
 import FeaturedManagement from "./components/FeaturedManagement";
+import DiscountManagement from "./components/DiscountManagement";
 
-type AdminTab = "categories" | "category_products" | "products" | "featured";
+type AdminTab =
+  | "categories"
+  | "category_products"
+  | "products"
+  | "featured"
+  | "discount";
 
 const AUTH_STORAGE_KEY = "japan_shop_admin_authenticated_v1";
 const ADMIN_PASSKEY = process.env.NEXT_PUBLIC_ADMIN_PASSKEY || "japan2024";
@@ -208,6 +214,9 @@ export default function AdminPage() {
   }
 
   const featuredProducts = getFeaturedProducts();
+  const discountedProducts = products.filter(
+    (p) => p.oldPrice && p.oldPrice > p.price
+  );
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-8 px-4 sm:px-6 lg:px-8">
@@ -222,7 +231,7 @@ export default function AdminPage() {
               Trang Quản Trị Japan Shop
             </h1>
             <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-              Quản lý phân loại danh mục, sản phẩm thuộc danh mục, kho sản phẩm và vị trí hiển thị bán chạy
+              Quản lý phân loại danh mục, sản phẩm thuộc danh mục, kho sản phẩm, vị trí bán chạy và sản phẩm khuyến mãi giảm giá
             </p>
           </div>
 
@@ -265,7 +274,7 @@ export default function AdminPage() {
                   {supabaseStatus === "not_configured" && (
                     <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 dark:bg-amber-950/80 border border-amber-200 dark:border-amber-800 px-2.5 py-0.5 text-xs font-bold text-amber-700 dark:text-amber-400">
                       <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-                      Local Storage (Chưa điền Key Supabase)
+                      Dữ liệu mặc định (Chưa điền Key Supabase)
                     </span>
                   )}
                   {supabaseStatus === "error" && (
@@ -283,7 +292,7 @@ export default function AdminPage() {
                 </div>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
                   {supabaseStatus === "connected" && "Mọi thay đổi thêm/sửa/xóa sẽ tự động cập nhật lên Supabase Cloud và hiển thị ngay cho khách hàng."}
-                  {supabaseStatus === "not_configured" && "Chạy ở chế độ bộ nhớ đệm trình duyệt. Điền NEXT_PUBLIC_SUPABASE_URL và NEXT_PUBLIC_SUPABASE_ANON_KEY trong file .env để đồng bộ đám mây."}
+                  {supabaseStatus === "not_configured" && "Đang đọc trực tiếp từ tệp JSON. Điền NEXT_PUBLIC_SUPABASE_URL và NEXT_PUBLIC_SUPABASE_ANON_KEY trong file .env để đồng bộ đám mây."}
                   {supabaseStatus === "error" && "Chưa tìm thấy bảng trên Supabase. Vui lòng mở Supabase SQL Editor và chạy nội dung file supabase-schema.sql để khởi tạo bảng."}
                   {supabaseStatus === "loading" && "Đang kiểm tra kết nối tới Supabase Cloud..."}
                 </p>
@@ -415,6 +424,27 @@ export default function AdminPage() {
                 {featuredProducts.length}
               </span>
             </button>
+
+            {/* Tab 5: Discounted Products */}
+            <button
+              onClick={() => setActiveTab("discount")}
+              className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all cursor-pointer ${
+                activeTab === "discount"
+                  ? "bg-white dark:bg-zinc-800 text-rose-600 dark:text-rose-400 shadow-md scale-[1.02]"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-zinc-800/50"
+              }`}
+            >
+              <span>🏷️ 5. Quản lý Sản phẩm Giảm giá</span>
+              <span
+                className={`px-2 py-0.5 rounded-full text-xs font-black ${
+                  activeTab === "discount"
+                    ? "bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400"
+                    : "bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300"
+                }`}
+              >
+                {discountedProducts.length}
+              </span>
+            </button>
           </div>
         </div>
 
@@ -424,6 +454,7 @@ export default function AdminPage() {
           {activeTab === "category_products" && <CategoryProductManagement />}
           {activeTab === "products" && <ProductManagement />}
           {activeTab === "featured" && <FeaturedManagement />}
+          {activeTab === "discount" && <DiscountManagement />}
         </div>
       </div>
     </div>

@@ -5,8 +5,6 @@ import Image from "next/image";
 import { Product } from "@/data/products";
 import { getAssetPath } from "@/utils/assetPath";
 import CloseIcon from "@/components/icons/CloseIcon";
-import PlusIcon from "@/components/icons/PlusIcon";
-import TrashIcon from "@/components/icons/TrashIcon";
 import CheckIcon from "@/components/icons/CheckIcon";
 
 interface Props {
@@ -16,21 +14,6 @@ interface Props {
   initialProduct?: Product | null;
   initialOrder?: number;
 }
-
-interface SpecRow {
-  key: string;
-  value: string;
-}
-
-const COMMON_SPECS = [
-  "Xuất xứ",
-  "Quy cách",
-  "Thành phần",
-  "Hạn sử dụng",
-  "Nhà sản xuất",
-  "Dạng bào chế",
-  "Đối tượng dùng",
-];
 
 const AVAILABLE_GALLERY_IMAGES = [
   { path: "/images/C-01-01.jpg", name: "C-01-01.jpg", desc: "Kem đánh răng Sunstar" },
@@ -59,7 +42,7 @@ export default function ProductFormModal({
   const [order, setOrder] = useState<number>(1);
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
-  const [specRows, setSpecRows] = useState<SpecRow[]>([]);
+  const [ingredients, setIngredients] = useState("");
   const [isCustomPath, setIsCustomPath] = useState(false);
 
   useEffect(() => {
@@ -73,21 +56,7 @@ export default function ProductFormModal({
       setOrder(initialOrder);
       setImage(initialProduct.image || "/images/C-01-01.jpg");
       setDescription(initialProduct.description || "");
-
-      if (initialProduct.specs) {
-        setSpecRows(
-          Object.entries(initialProduct.specs).map(([k, v]) => ({
-            key: k,
-            value: v,
-          }))
-        );
-      } else {
-        setSpecRows([
-          { key: "Xuất xứ", value: "Nhật Bản" },
-          { key: "Quy cách", value: "" },
-          { key: "Thành phần", value: "" },
-        ]);
-      }
+      setIngredients(initialProduct.ingredients || "");
     } else {
       // Defaults for new product
       setId("");
@@ -99,29 +68,11 @@ export default function ProductFormModal({
       setOrder(initialOrder);
       setImage("/images/C-01-01.jpg");
       setDescription("CÔNG DỤNG:\n- Công dụng 1...\n- Công dụng 2...");
-      setSpecRows([
-        { key: "Xuất xứ", value: "Nhật Bản" },
-        { key: "Quy cách", value: "" },
-        { key: "Thành phần", value: "" },
-      ]);
+      setIngredients("Xuất xứ: Nhật Bản\n\nThành phần:\n- ");
     }
   }, [initialProduct, initialOrder, isOpen]);
 
   if (!isOpen) return null;
-
-  const handleAddSpecRow = (defaultKey = "") => {
-    setSpecRows([...specRows, { key: defaultKey, value: "" }]);
-  };
-
-  const handleRemoveSpecRow = (index: number) => {
-    setSpecRows(specRows.filter((_, i) => i !== index));
-  };
-
-  const handleSpecChange = (index: number, field: "key" | "value", val: string) => {
-    const next = [...specRows];
-    next[index][field] = val;
-    setSpecRows(next);
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,14 +81,6 @@ export default function ProductFormModal({
       alert("Vui lòng nhập tên sản phẩm");
       return;
     }
-
-    // Build specs record
-    const specsRecord: Record<string, string> = {};
-    specRows.forEach((row) => {
-      if (row.key.trim()) {
-        specsRecord[row.key.trim()] = row.value.trim();
-      }
-    });
 
     onSave({
       id: isEdit ? id : id.trim() || undefined,
@@ -149,7 +92,7 @@ export default function ProductFormModal({
       order: Number(order),
       image: image.trim(),
       description: description.trim(),
-      specs: Object.keys(specsRecord).length > 0 ? specsRecord : undefined,
+      ingredients: ingredients.trim() || undefined,
       rating: initialProduct?.rating ?? 5.0,
       reviews: initialProduct?.reviews ?? 0,
     });
@@ -171,7 +114,7 @@ export default function ProductFormModal({
             </h2>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
               {isEdit
-                ? "Chỉnh sửa thông tin, hình ảnh & thông số kỹ thuật"
+                ? "Chỉnh sửa thông tin, hình ảnh & thành phần"
                 : "Nhập đầy đủ thông tin để lưu sản phẩm vào hệ thống"}
             </p>
           </div>
@@ -373,109 +316,76 @@ export default function ProductFormModal({
               </div>
             </div>
 
-            {/* CỘT 2 (Bên phải): Thông số / Thành phần chi tiết - Mở rộng */}
-            <div className="lg:col-span-6 space-y-3 bg-zinc-50 dark:bg-zinc-950/50 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800">
+            {/* CỘT 2 (Bên phải): Thành phần & Thông tin chi tiết */}
+            <div className="lg:col-span-6 space-y-4 bg-zinc-50 dark:bg-zinc-950/50 p-5 rounded-2xl border border-zinc-200 dark:border-zinc-800 flex flex-col h-full">
               <div className="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-zinc-800">
                 <div>
                   <span className="text-xs font-black uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-                    2. Thông Số / Thành Phần Chi Tiết
-                  </span>
-                  <span className="ml-2 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 text-[11px] font-black">
-                    {specRows.length} mục
+                    2. Thành Phần & Thông Tin Chi Tiết
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => handleAddSpecRow()}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/80 px-3 py-1.5 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900 transition-colors cursor-pointer shadow-2xs"
-                >
-                  <PlusIcon className="h-3.5 w-3.5" />
-                  Thêm thông số
-                </button>
+                <span className="text-[11px] text-zinc-400">
+                  (Hỗ trợ xuống dòng tự do)
+                </span>
               </div>
 
-              {/* Quick Preset Tags */}
+              {/* Quick Template Insert Buttons */}
               <div className="space-y-1.5">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                  Thêm nhanh mẫu phổ biến:
+                  Chèn mẫu cấu trúc nhanh:
                 </span>
                 <div className="flex flex-wrap gap-1.5">
-                  {COMMON_SPECS.map((s) => (
-                    <button
-                      key={s}
-                      type="button"
-                      onClick={() => handleAddSpecRow(s)}
-                      className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/80 px-2.5 py-1 text-[11px] font-medium text-zinc-700 dark:text-zinc-300 hover:border-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer shadow-2xs"
-                    >
-                      + {s}
-                    </button>
-                  ))}
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setIngredients(
+                        (prev) =>
+                          (prev ? prev + "\n\n" : "") +
+                          "Xuất xứ: Nhật Bản\nNhà sản xuất: Kobayashi Pharmaceutical Co., Ltd.\nDung tích: Chai 500ml\n\nThành phần:\n- Dipotassium Glycyrrhizinate: 25mg\n- Chlorpheniramine Maleate: 3mg\n- Vitamin B6: 10mg\n- Taurine: 100mg\n- Vitamin B12: 1mg"
+                      )
+                    }
+                    className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/80 px-2.5 py-1 text-[11px] font-medium text-zinc-700 dark:text-zinc-300 hover:border-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer shadow-2xs"
+                  >
+                    + Mẫu Thuốc nhỏ mắt
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setIngredients(
+                        (prev) =>
+                          (prev ? prev + "\n\n" : "") +
+                          "Xuất xứ: Nhật Bản\nQuy cách: Hộp 60 viên\nĐối tượng: Trẻ từ 1 tuổi trở lên\n\nThành phần:\n- Canxi: 250mg\n- Axit Folic: 400mcg\n- Sắt: 10mg\n- Vitamin D3: 5mcg"
+                      )
+                    }
+                    className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/80 px-2.5 py-1 text-[11px] font-medium text-zinc-700 dark:text-zinc-300 hover:border-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer shadow-2xs"
+                  >
+                    + Mẫu Thực phẩm bổ sung
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setIngredients(
+                        (prev) =>
+                          (prev ? prev + "\n\n" : "") +
+                          "Xuất xứ: Nhật Bản\nTrọng lượng: Tuýp 50g\nChỉ số chống nắng: SPF50+ PA++++\n\nThành phần:\n- Chiết xuất dầu Jojoba\n- Chiết xuất quả Acerola\n- Hyaluronic Acid"
+                      )
+                    }
+                    className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800/80 px-2.5 py-1 text-[11px] font-medium text-zinc-700 dark:text-zinc-300 hover:border-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors cursor-pointer shadow-2xs"
+                  >
+                    + Mẫu Kem / Mỹ phẩm
+                  </button>
                 </div>
               </div>
 
-              {/* List of Spec rows */}
-              <div className="max-h-[560px] overflow-y-auto space-y-3 pr-1 mt-2">
-                {specRows.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center py-14 text-center text-zinc-400">
-                    <span className="text-3xl mb-1.5">📋</span>
-                    <p className="text-xs font-medium">Chưa có thông số nào.</p>
-                    <button
-                      type="button"
-                      onClick={() => handleAddSpecRow("Xuất xứ")}
-                      className="mt-2.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 underline cursor-pointer"
-                    >
-                      + Thêm thông số đầu tiên
-                    </button>
-                  </div>
-                ) : (
-                  specRows.map((row, index) => {
-                    const isComponentOrLong =
-                      row.key.toLowerCase().includes("thành phần") ||
-                      row.key.toLowerCase().includes("công dụng") ||
-                      row.key.toLowerCase().includes("hướng dẫn") ||
-                      row.value.length > 60;
-
-                    return (
-                      <div
-                        key={index}
-                        className={`rounded-2xl border bg-white dark:bg-zinc-900 p-3.5 shadow-2xs space-y-2 transition-colors ${
-                          row.key.toLowerCase().includes("thành phần")
-                            ? "border-indigo-200 dark:border-indigo-900/60 ring-1 ring-indigo-500/10"
-                            : "border-zinc-200 dark:border-zinc-800"
-                        }`}
-                      >
-                        <div className="flex items-center justify-between gap-2">
-                          <input
-                            type="text"
-                            placeholder="Tên thông số (VD: Thành phần, Xuất xứ...)"
-                            value={row.key}
-                            onChange={(e) => handleSpecChange(index, "key", e.target.value)}
-                            className="flex-1 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-3 py-1.5 text-xs font-bold text-zinc-900 dark:text-white outline-none focus:border-indigo-500"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveSpecRow(index)}
-                            className="rounded-lg p-1.5 text-zinc-400 hover:bg-rose-50 hover:text-rose-500 dark:hover:bg-rose-950/50 transition-colors cursor-pointer"
-                            title="Xóa thông số này"
-                          >
-                            <TrashIcon className="h-4 w-4" />
-                          </button>
-                        </div>
-                        <textarea
-                          rows={isComponentOrLong ? 5 : 3}
-                          placeholder={
-                            row.key.toLowerCase().includes("thành phần")
-                              ? "VD: - Alpha-GPC: Hỗ trợ não bộ...\n- Arginine: Kích thích hormone tăng trưởng...\n- Canxi san hô: Bổ sung canxi tự nhiên..."
-                              : "Nội dung chi tiết thông số..."
-                          }
-                          value={row.value}
-                          onChange={(e) => handleSpecChange(index, "value", e.target.value)}
-                          className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50/50 dark:bg-zinc-800/60 p-3 text-xs text-zinc-900 dark:text-white outline-none focus:border-indigo-500 leading-relaxed resize-y font-sans"
-                        />
-                      </div>
-                    );
-                  })
-                )}
+              {/* Textarea for ingredients */}
+              <div className="flex-1 flex flex-col">
+                <textarea
+                  rows={14}
+                  value={ingredients}
+                  onChange={(e) => setIngredients(e.target.value)}
+                  placeholder="Nhập thông tin xuất xứ, nhà sản xuất, quy cách đóng gói và danh sách thành phần chi tiết..."
+                  className="w-full flex-1 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-4 text-sm text-zinc-900 dark:text-white outline-none focus:border-indigo-500 leading-relaxed min-h-[320px] resize-y font-sans"
+                />
               </div>
             </div>
           </div>

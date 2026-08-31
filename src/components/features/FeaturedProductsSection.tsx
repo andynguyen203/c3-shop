@@ -46,7 +46,7 @@ export default function FeaturedProductsSection() {
         </div>
 
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-8">
-          {featuredProducts.map((product) => {
+          {featuredProducts.map((product, index) => {
             const catId = getCategoryIdByProductId(product.id);
             const category = categories.find((c) => c.id === catId);
             const categoryName = category ? category.name : "";
@@ -61,6 +61,8 @@ export default function FeaturedProductsSection() {
                         src={getAssetPath(product.image)}
                         alt={product.name}
                         fill
+                        priority={index < 5}
+                        loading={index < 5 ? "eager" : "lazy"}
                         className="object-contain p-1 group-hover:scale-105 transition-transform duration-500"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
                       />

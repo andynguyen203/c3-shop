@@ -47,7 +47,7 @@ export default function ProductDetailPage({ product, related }: Props) {
       : null) || related;
 
   const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<"desc" | "specs">("desc");
+  const [activeTab, setActiveTab] = useState<"desc" | "ingredients">("desc");
   const [added, setAdded] = useState(false);
 
   const handleAddToCart = () => {
@@ -68,7 +68,7 @@ export default function ProductDetailPage({ product, related }: Props) {
 
   const category = categoryService.getCategoryById(currentProductCategoryId);
   const categoryName = category ? category.name : "Sản phẩm";
-  const categoryHref = category ? `/category/${category.slug}` : "/";
+  const categoryHref = category ? `/category/${category.id}` : "/";
 
   return (
     <div className="flex-1 bg-zinc-50 dark:bg-zinc-950">
@@ -237,10 +237,10 @@ export default function ProductDetailPage({ product, related }: Props) {
           </div>
         </div>
 
-        {/* Tabs: Description & Specs */}
+        {/* Tabs: Description & Ingredients */}
         <div className="mt-16">
           <div className="flex gap-1 border-b border-zinc-200 dark:border-zinc-800 mb-8">
-            {(["desc", "specs"] as const).map((tab) => (
+            {(["desc", "ingredients"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -250,47 +250,29 @@ export default function ProductDetailPage({ product, related }: Props) {
                     : "text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
                 }`}
               >
-                {tab === "desc" ? "Mô tả sản phẩm" : "Thông số kỹ thuật"}
+                {tab === "desc" ? "Mô tả sản phẩm" : "Thành phần"}
               </button>
             ))}
           </div>
 
           {activeTab === "desc" && (
-            <div className="">
+            <div>
               <p className="text-base leading-8 text-zinc-600 dark:text-zinc-400 whitespace-pre-line">
                 {currentProduct.description}
               </p>
             </div>
           )}
 
-          {activeTab === "specs" && currentProduct.specs && (
-            <div className="w-full overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800">
-              <table className="w-full text-sm">
-                <tbody>
-                  {Object.entries(currentProduct.specs).map(([key, value], index) => (
-                    <tr
-                      key={key}
-                      className={
-                        index % 2 === 0
-                          ? "bg-zinc-50 dark:bg-zinc-900"
-                          : "bg-white dark:bg-zinc-950"
-                      }
-                    >
-                      <td className="py-3.5 px-5 font-semibold text-zinc-700 dark:text-zinc-300 w-1/4 sm:w-1/5 align-top border-r border-zinc-200 dark:border-zinc-800">
-                        {key}
-                      </td>
-                      <td className="py-3.5 px-5 text-zinc-600 dark:text-zinc-400 whitespace-pre-line leading-relaxed align-top">
-                        {value}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          {activeTab === "ingredients" && currentProduct.ingredients && (
+            <div>
+              <p className="text-base leading-8 text-zinc-600 dark:text-zinc-400 whitespace-pre-line">
+                {currentProduct.ingredients}
+              </p>
             </div>
           )}
 
-          {activeTab === "specs" && !currentProduct.specs && (
-            <p className="text-zinc-400 dark:text-zinc-500 text-sm">Không có thông số kỹ thuật.</p>
+          {activeTab === "ingredients" && !currentProduct.ingredients && (
+            <p className="text-zinc-400 dark:text-zinc-500 text-sm">Không có thông tin thành phần.</p>
           )}
         </div>
 

@@ -137,7 +137,7 @@ export default function CategoryDetailPage({
         (p) =>
           p.name.toLowerCase().includes(sub) ||
           p.description.toLowerCase().includes(sub) ||
-          (p.specs && Object.values(p.specs).some((val) => val.toLowerCase().includes(sub)))
+          (p.ingredients && p.ingredients.toLowerCase().includes(sub))
       );
     }
 
@@ -162,7 +162,7 @@ export default function CategoryDetailPage({
     return result;
   }, [products, searchQuery, selectedSubcategory, priceFilter, sortBy]);
 
-  const otherCategories = allCategories.filter((c) => c.slug !== category.slug);
+  const otherCategories = allCategories.filter((c) => c.id !== category.id);
 
   return (
     <div className="flex-1 bg-zinc-50 dark:bg-zinc-950 pb-20">
@@ -432,7 +432,7 @@ export default function CategoryDetailPage({
         {/* Product Grid View */}
         {filteredProducts.length > 0 && viewMode === "grid" && (
           <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredProducts.map((product) => {
+            {filteredProducts.map((product, index) => {
               const discount =
                 product.oldPrice && product.oldPrice > product.price
                   ? calcDiscount(product.price, product.oldPrice)
@@ -452,6 +452,8 @@ export default function CategoryDetailPage({
                           src={getAssetPath(product.image)}
                           alt={product.name}
                           fill
+                          priority={index < 4}
+                          loading={index < 4 ? "eager" : "lazy"}
                           className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
@@ -540,7 +542,7 @@ export default function CategoryDetailPage({
         {/* Product List View */}
         {filteredProducts.length > 0 && viewMode === "list" && (
           <div className="flex flex-col gap-4">
-            {filteredProducts.map((product) => {
+            {filteredProducts.map((product, index) => {
               const discount =
                 product.oldPrice && product.oldPrice > product.price
                   ? calcDiscount(product.price, product.oldPrice)
@@ -558,6 +560,8 @@ export default function CategoryDetailPage({
                         src={getAssetPath(product.image)}
                         alt={product.name}
                         fill
+                        priority={index < 4}
+                        loading={index < 4 ? "eager" : "lazy"}
                         className="object-contain p-1 group-hover:scale-105 transition-transform duration-300"
                         sizes="(max-width: 640px) 100vw, 176px"
                       />
@@ -673,7 +677,7 @@ export default function CategoryDetailPage({
             {otherCategories.map((cat) => (
               <Link
                 key={cat.id}
-                href={`/category/${cat.slug}`}
+                href={`/category/${cat.id}`}
                 className="group relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 transition-all duration-300 hover:shadow-xl hover:border-indigo-300 dark:hover:border-indigo-800"
               >
                 <div
