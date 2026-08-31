@@ -78,6 +78,7 @@ export interface DbCategoryProductRow {
 export interface DbProductOrderRow {
   product_id: string;
   order_num: number;
+  banner?: string | null;
 }
 
 export function mapDbProductToProduct(row: DbProductRow): Product {
@@ -356,7 +357,7 @@ export const supabaseService = {
   },
 
   // --------------------------------------------------------------------------
-  // PRODUCT ORDERS (FEATURED SORTING)
+  // PRODUCT ORDERS (BANNER SORTING: FEATURED, DISCOUNT, ETC.)
   // --------------------------------------------------------------------------
   async getProductOrders(): Promise<ProductOrder[]> {
     if (!supabase) return [];
@@ -368,23 +369,41 @@ export const supabaseService = {
     return (data || []).map((r) => ({
       productId: r.product_id,
       order: r.order_num,
+      banner: r.banner || "featured",
     }));
   },
 
-  async updateProductOrder(productId: string, orderNum: number): Promise<void> {
+  async updateProductOrder(productId: string, orderNum: number, banner: string = "featured"): Promise<void> {
     if (!supabase) throw new Error("Supabase is not configured");
     const { error } = await supabase.from("product_orders").upsert(
-      { product_id: productId, order_num: orderNum },
-      { onConflict: "product_id" }
+      { product_id: productId, order_num: orderNum, banner },
+      { onConflict: "product_id,banner" }
     );
-    if (error) throw error;
+    if (error) {
+      // Fallback if unique constraint is product_id only
+      const { error: fallbackErr } = await supabase.from("product_orders").upsert(
+        { product_id: productId, order_num: orderNum, banner },
+        { onConflict: "product_id" }
+      );
+      if (fallbackErr) throw fallbackErr;
+    }
   },
 
   async bulkUpsertProductOrders(orders: ProductOrder[]): Promise<void> {
     if (!supabase) throw new Error("Supabase is not configured");
-    const rows = orders.map((o) => ({ product_id: o.productId, order_num: o.order }));
-    const { error } = await supabase.from("product_orders").upsert(rows, { onConflict: "product_id" });
-    if (error) throw error;
+    const rows = orders.map((o) => ({
+      product_id: o.productId,
+      order_num: o.order,
+      banner: o.banner || "featured",
+    }));
+    // Try to delete existing and re-insert for clean sync
+    await supabase.from("product_orders").delete().neq("id", 0);
+    const { error } = await supabase.from("product_orders").insert(rows);
+    if (error) {
+      console.warn("[supabaseService] fallback upserting orders:", error.message);
+      const { error: upsertErr } = await supabase.from("product_orders").upsert(rows);
+      if (upsertErr) throw upsertErr;
+    }
   },
 
   // --------------------------------------------------------------------------

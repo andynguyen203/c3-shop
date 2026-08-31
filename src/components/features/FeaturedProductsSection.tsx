@@ -36,13 +36,6 @@ export default function FeaturedProductsSection() {
               Được mua nhiều nhất tuần này
             </p>
           </div>
-          <Link
-            href="/admin"
-            className="mt-4 sm:mt-0 text-sm font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 flex items-center gap-1"
-          >
-            Quản lý danh sách
-            <ChevronRightIcon className="h-4 w-4" />
-          </Link>
         </div>
 
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-8">

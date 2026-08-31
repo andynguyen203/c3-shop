@@ -41,10 +41,10 @@ export default function FeaturedManagement() {
   const {
     products,
     categories,
-    getFeaturedProducts,
+    getProductsByBanner,
     getCategoryIdByProductId,
     updateProduct,
-    updateProductOrder,
+    setBannerProducts,
   } = useProductData();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -64,7 +64,7 @@ export default function FeaturedManagement() {
 
   // Initialize localSlots from saved context on mount or when context changes
   useEffect(() => {
-    const featured = getFeaturedProducts(MAX_FEATURED_SLOTS);
+    const featured = getProductsByBanner("featured", MAX_FEATURED_SLOTS);
     const initial: (Product | null)[] = Array(MAX_FEATURED_SLOTS).fill(null);
     featured.forEach((p, idx) => {
       if (idx < MAX_FEATURED_SLOTS) {
@@ -73,7 +73,7 @@ export default function FeaturedManagement() {
     });
     setLocalSlots(initial);
     setIsSaved(true);
-  }, [getFeaturedProducts]);
+  }, [getProductsByBanner]);
 
   // Set of product IDs currently placed in the 10 slots
   const activeSlotProductIds = useMemo(() => {
@@ -260,27 +260,14 @@ export default function FeaturedManagement() {
 
   // --- Save Changes to Database / Context ---
   const handleSaveChanges = () => {
-    // 1. Gather all active products from localSlots
-    const assignedIds = new Set<string>();
-
-    localSlots.forEach((p, idx) => {
+    const productIds: string[] = [];
+    localSlots.forEach((p) => {
       if (p) {
-        assignedIds.add(p.id);
-        // Update product tag and order
-        updateProduct(p.id, {
-          tag: p.tag || "Bán chạy",
-          order: idx + 1,
-        });
-        updateProductOrder(p.id, idx + 1);
+        productIds.push(p.id);
       }
     });
 
-    // 2. Remove featured tag from any product that was removed from the 10 slots
-    products.forEach((p) => {
-      if (p.tag && !assignedIds.has(p.id)) {
-        updateProduct(p.id, { tag: undefined });
-      }
-    });
+    setBannerProducts("featured", productIds);
 
     setIsSaved(true);
     setSaveToast(true);
@@ -293,7 +280,7 @@ export default function FeaturedManagement() {
         "Hủy toàn bộ thay đổi chưa lưu và quay lại cấu hình hiện tại?"
       )
     ) {
-      const featured = getFeaturedProducts(MAX_FEATURED_SLOTS);
+      const featured = getProductsByBanner("featured", MAX_FEATURED_SLOTS);
       const initial: (Product | null)[] = Array(MAX_FEATURED_SLOTS).fill(null);
       featured.forEach((p, idx) => {
         if (idx < MAX_FEATURED_SLOTS) {
